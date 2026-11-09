@@ -23,6 +23,8 @@ export function validateCatalog(catalog) {
       if (typeof bridge[field] !== 'string' || !bridge[field].trim())
         throw new Error(`Missing ${field}: ${bridge.slug}`);
     }
+    if (bridge.logo !== null && bridge.logo !== `/assets/bridges/${bridge.slug}.svg`)
+      throw new Error(`Incorrect local logo path: ${bridge.slug}`);
     if (bridge.archived !== (bridge.slug === 'idm-energy')) throw new Error(`Incorrect archive status: ${bridge.slug}`);
     const repository = `https://github.com/open-mqtt-bridges/${bridge.slug}`;
     const readme = ['adguardhome', 'idm-energy'].includes(bridge.slug);

@@ -23,3 +23,7 @@ Use `SPECIFY_FEATURE_DIRECTORY=specs/900-organization-readiness` for this featur
 ## Approved framework/deployment refinement
 
 Use Nuxt 4.6.3, Nuxt UI 4.12.0 and the pinned pnpm lockfile. Prerender the home, imprint and privacy routes into `.output/public`. Keep the catalog authoritative, with Vue rendering native links in SSR HTML. Derive footer version from package version plus deployment SHA; test explicit overrides and source-archive fallback. Use the owner-confirmed Crateview publisher/contact details and GitHub Pages-specific privacy facts. No analytics, external fonts, external icon API or server routes. Validate lint, types, format, Node tests, generate/static checks, no-JS and browser hydration/navigation/theme states. The user explicitly approved these additions while implementation was active.
+
+## Bridge-card artwork follow-up
+
+Issue #5, branch `5-bridge-card-logos`. Copy existing SVG artwork without modification, retain GPL/MIT notices, add optional catalog paths and a fixed-size decorative image with initials fallback. Verify lint, types, format, tests, generate/static assets and browser light/dark plus narrow/wide layouts.
