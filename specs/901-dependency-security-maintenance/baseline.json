@@ -1,0 +1,11 @@
+{
+  "base": "e7389721bab79382662ccba7939f8950436f5db2",
+  "runtime": {
+    "node": ">=26.13.0 <27"
+  },
+  "packageManager": "pnpm@11.28.9",
+  "manifests": {
+    "package.json": "{\n  \"name\": \"open-mqtt-bridges-website\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"license\": \"MIT\",\n  \"engines\": {\n    \"node\": \">=26.13.0 <27\"\n  },\n  \"scripts\": {\n    \"dev\": \"nuxt dev --host 127.0.0.1 --port 4173\",\n    \"build\": \"nuxt generate\",\n    \"preview\": \"python3 -m http.server 4173 --directory .output/public\",\n    \"postinstall\": \"nuxt prepare\",\n    \"lint\": \"eslint . --max-warnings=0\",\n    \"typecheck\": \"nuxt typecheck\",\n    \"format\": \"prettier --write .\",\n    \"format:check\": \"prettier --check .\",\n    \"check\": \"node scripts/check.mjs\",\n    \"test\": \"node --test\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io.git\"\n  },\n  \"homepage\": \"https://open-mqtt-bridges.github.io/\",\n  \"bugs\": {\n    \"url\": \"https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/issues\"\n  },\n  \"version\": \"0.1.0\",\n  \"packageManager\": \"pnpm@11.28.9\",\n  \"dependencies\": {\n    \"@iconify-json/lucide\": \"^1.2.0\",\n    \"@nuxt/ui\": \"4.12.0\",\n    \"nuxt\": \"4.6.3\",\n    \"tailwindcss\": \"^4.1.0\"\n  },\n  \"devDependencies\": {\n    \"@nuxt/eslint\": \"1.15.0\",\n    \"@types/node\": \"^26.6.6\",\n    \"eslint\": \"^10.14.0\",\n    \"eslint-config-prettier\": \"^10.1.8\",\n    \"prettier\": \"^3.9.10\",\n    \"typescript\": \"^6.0.3\",\n    \"vue-tsc\": \"^3.1.0\"\n  }\n}\n",
+    "pnpm-workspace.yaml": "allowBuilds:\n  '@parcel/watcher': true\n  esbuild: true\n  unrs-resolver: true\n  vue-demi: true\noverrides:\n  minimatch: ^11.0.3\n  glob: ^14.0.3\n  esbuild: ^0.28.2\n"
+  }
+}
