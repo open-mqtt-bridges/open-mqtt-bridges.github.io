@@ -4,6 +4,6 @@ allowBuilds:
   unrs-resolver: true
   vue-demi: true
 overrides:
-  minimatch: ^11.0.3
-  glob: ^14.0.3
+  minimatch: ^11.0.5
+  glob: ^14.0.4
   esbuild: ^0.28.2
