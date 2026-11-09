@@ -32,6 +32,14 @@
           <div>
             <NuxtLink to="/" class="brand text-base">Open MQTT Bridges</NuxtLink>
             <p class="mt-3 text-sm text-muted">Independent projects. Shared protocol.</p>
+            <UButton
+              to="https://buymeacoffee.com/tobiaswaelde"
+              icon="i-lucide-coffee"
+              label="Buy me a coffee"
+              size="sm"
+              class="mt-4 bg-[#ffdd00] text-[#1b1b1b] hover:bg-[#f3ce00]"
+              aria-label="Support Tobias Wälde on Buy Me a Coffee"
+            />
           </div>
           <nav class="grid grid-cols-2 gap-x-8 gap-y-3 text-sm text-muted" aria-label="Footer navigation">
             <NuxtLink to="/#bridges">Bridge directory</NuxtLink>
@@ -44,7 +52,10 @@
         </UContainer>
       </template>
       <template #left>
-        <p class="text-xs text-muted">Built with Nuxt UI. Made for your infrastructure.</p>
+        <p class="text-xs text-muted">
+          Built with Nuxt UI. Made for your infrastructure.
+          <a href="https://tobiaswaelde.com" class="ml-3 hover:text-primary">By Tobias Wälde</a>
+        </p>
       </template>
       <template #right>
         <a

@@ -33,3 +33,7 @@ On 2026-11-09 the user requested visual similarity to crateview.de and repovio.d
 ## Approved Nuxt UI and legal refinement
 
 The user requested actual Nuxt UI components, deployment version in the footer, imprint and privacy pages. Use Nuxt 4.6.3 / Nuxt UI 4.12.0 with static prerendering, frozen pnpm installs and local fonts/icons. Package version plus the actual deployment SHA identifies every generated footer. Legal pages are directly loadable and linked from every page. The user confirmed Crateview publisher/contact details. Describe GitHub Pages hosting rather than the reference sites’ hosting. Validate hydration/search/theme states, direct legal routes, no-JS catalog links, local assets and version metadata.
+
+## Approved footer refinement
+
+Add a locally rendered Buy Me a Coffee badge for `tobiaswaelde` below the footer brand/tagline and a bottom-row “By Tobias Wälde” link to https://tobiaswaelde.com. Use a bundled coffee icon, without a third-party image request or embed.

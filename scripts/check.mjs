@@ -28,6 +28,8 @@ const version = deploymentVersion(pkg.version, commit, process.env.NUXT_PUBLIC_S
 for (const route of ['', 'imprint/', 'privacy-policy/']) {
   const page = await readFile(new URL(`${route}index.html`, output), 'utf8');
   assert.ok(page.includes(`data-site-version="${version}"`), `Wrong deployment version: ${route}`);
+  assert.ok(page.includes('href="https://buymeacoffee.com/tobiaswaelde"'), `Missing support badge: ${route}`);
+  assert.ok(page.includes('href="https://tobiaswaelde.com"'), `Missing author footer: ${route}`);
   assert.ok(
     page.includes('href="/imprint"') && page.includes('href="/privacy-policy"'),
     `Missing legal footer: ${route}`,
