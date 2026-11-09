@@ -10,6 +10,7 @@ const output = new URL('../.output/public/', import.meta.url);
 const html = await readFile(new URL('index.html', output), 'utf8');
 for (const bridge of catalog) {
   assert.ok(html.includes(`data-bridge-slug="${bridge.slug}"`), `Missing SSR card: ${bridge.slug}`);
+  if (bridge.logo) assert.ok(html.includes(`src="${bridge.logo}"`), `Missing SSR logo: ${bridge.slug}`);
   assert.ok(html.includes(`href="${bridge.repository}"`));
   assert.ok(html.includes(`href="${bridge.documentation}"`));
 }

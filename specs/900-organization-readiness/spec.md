@@ -37,3 +37,7 @@ The user requested actual Nuxt UI components, deployment version in the footer, 
 ## Approved footer refinement
 
 Add a locally rendered Buy Me a Coffee badge for `tobiaswaelde` below the footer brand/tagline and a bottom-row “By Tobias Wälde” link to https://tobiaswaelde.com. Use a bundled coffee icon, without a third-party image request or embed.
+
+## Approved bridge-card logo refinement
+
+Issue #5: reuse the seven existing bridge-repository logos and the official AdGuard Home/PocketBase upstream icons as local assets, preserve source/licensing notices and render decorative 40 px images beside category labels. IDM Energy retains initials because its repository contains no bridge artwork. AdGuard Home and PocketBase use official upstream assets with preserved licenses. Preserve all links, archive labels, SSR and local search. Leave the follow-up PR open for review.

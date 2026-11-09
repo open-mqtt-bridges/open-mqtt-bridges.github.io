@@ -117,9 +117,20 @@
         >
           <template #header>
             <div class="flex items-center gap-3">
-              <span class="grid size-10 place-items-center rounded-lg bg-primary/10 font-mono text-xs text-primary">{{
-                bridge.initials
-              }}</span>
+              <img
+                v-if="bridge.logo"
+                class="size-10 shrink-0 rounded-lg object-contain"
+                width="40"
+                height="40"
+                alt=""
+                :src="bridge.logo"
+              />
+              <span
+                v-else
+                class="grid size-10 shrink-0 place-items-center rounded-lg bg-primary/10 font-mono text-xs text-primary"
+                aria-hidden="true"
+                >{{ bridge.initials }}</span
+              >
               <span class="text-xs text-muted">{{ bridge.category }}</span>
             </div>
           </template>

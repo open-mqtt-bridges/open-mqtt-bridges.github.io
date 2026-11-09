@@ -9,7 +9,8 @@
     "repository": "https://github.com/open-mqtt-bridges/adguardhome",
     "documentation": "https://github.com/open-mqtt-bridges/adguardhome#readme",
     "documentationType": "readme",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/adguardhome.svg"
   },
   {
     "slug": "display",
@@ -21,7 +22,8 @@
     "repository": "https://github.com/open-mqtt-bridges/display",
     "documentation": "https://open-mqtt-bridges.github.io/display/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/display.svg"
   },
   {
     "slug": "homeconnect",
@@ -33,7 +35,8 @@
     "repository": "https://github.com/open-mqtt-bridges/homeconnect",
     "documentation": "https://open-mqtt-bridges.github.io/homeconnect/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/homeconnect.svg"
   },
   {
     "slug": "idm-energy",
@@ -45,7 +48,8 @@
     "repository": "https://github.com/open-mqtt-bridges/idm-energy",
     "documentation": "https://github.com/open-mqtt-bridges/idm-energy#readme",
     "documentationType": "readme",
-    "archived": true
+    "archived": true,
+    "logo": null
   },
   {
     "slug": "landroid",
@@ -57,7 +61,8 @@
     "repository": "https://github.com/open-mqtt-bridges/landroid",
     "documentation": "https://open-mqtt-bridges.github.io/landroid/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/landroid.svg"
   },
   {
     "slug": "modbus",
@@ -69,7 +74,8 @@
     "repository": "https://github.com/open-mqtt-bridges/modbus",
     "documentation": "https://open-mqtt-bridges.github.io/modbus/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/modbus.svg"
   },
   {
     "slug": "philips-hue",
@@ -81,7 +87,8 @@
     "repository": "https://github.com/open-mqtt-bridges/philips-hue",
     "documentation": "https://open-mqtt-bridges.github.io/philips-hue/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/philips-hue.svg"
   },
   {
     "slug": "pocketbase",
@@ -93,7 +100,8 @@
     "repository": "https://github.com/open-mqtt-bridges/pocketbase",
     "documentation": "https://open-mqtt-bridges.github.io/pocketbase/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/pocketbase.svg"
   },
   {
     "slug": "roborock",
@@ -105,7 +113,8 @@
     "repository": "https://github.com/open-mqtt-bridges/roborock",
     "documentation": "https://open-mqtt-bridges.github.io/roborock/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/roborock.svg"
   },
   {
     "slug": "wled",
@@ -117,6 +126,7 @@
     "repository": "https://github.com/open-mqtt-bridges/wled",
     "documentation": "https://open-mqtt-bridges.github.io/wled/",
     "documentationType": "site",
-    "archived": false
+    "archived": false,
+    "logo": "/assets/bridges/wled.svg"
   }
 ]
