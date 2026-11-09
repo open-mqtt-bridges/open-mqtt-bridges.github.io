@@ -40,4 +40,4 @@ Add a locally rendered Buy Me a Coffee badge for `tobiaswaelde` below the footer
 
 ## Approved bridge-card logo refinement
 
-Issue #5: reuse the seven existing bridge-repository logos as local assets, preserve source/licensing notices and render decorative 40 px images beside category labels. AdGuard Home, IDM Energy and PocketBase retain initials because their repositories contain no bridge artwork. Preserve all links, archive labels, SSR and local search. Leave the follow-up PR open for review.
+Issue #5: reuse the seven existing bridge-repository logos and the official AdGuard Home/PocketBase upstream icons as local assets, preserve source/licensing notices and render decorative 40 px images beside category labels. IDM Energy retains initials because its repository contains no bridge artwork. AdGuard Home and PocketBase use official upstream assets with preserved licenses. Preserve all links, archive labels, SSR and local search. Leave the follow-up PR open for review.

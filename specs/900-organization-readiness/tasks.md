@@ -15,4 +15,4 @@ Review: https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/pull/2.
 
 - [x] T07: Bundle existing artwork and source/license notices; render catalog logos with initials fallback; validate checks and browser appearance; commit and open review PR.
 
-T07 validation: lint, typecheck, format check, four existing tests, static generation and generated route/asset/profile checks passed. Browser: all seven SVGs loaded at 40 × 40 px, desktop dark and 390 px mobile light layouts inspected, search and reset passed, no console errors.
+T07 validation: lint, typecheck, format check, four existing tests, static generation and generated route/asset/profile checks passed. Browser: all nine SVGs loaded at 40 × 40 px, desktop dark and 390 px mobile light layouts inspected, search and reset passed, no console errors.

@@ -10,7 +10,7 @@
     "documentation": "https://github.com/open-mqtt-bridges/adguardhome#readme",
     "documentationType": "readme",
     "archived": false,
-    "logo": null
+    "logo": "/assets/bridges/adguardhome.svg"
   },
   {
     "slug": "display",
@@ -101,7 +101,7 @@
     "documentation": "https://open-mqtt-bridges.github.io/pocketbase/",
     "documentationType": "site",
     "archived": false,
-    "logo": null
+    "logo": "/assets/bridges/pocketbase.svg"
   },
   {
     "slug": "roborock",

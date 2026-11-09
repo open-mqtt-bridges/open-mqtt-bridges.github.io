@@ -1,6 +1,6 @@
 # Bridge artwork
 
-These unmodified SVGs are copied from each bridge repository. They are served locally; no third-party image requests are made. They identify independent bridge projects, not official manufacturer endorsement.
+These unmodified SVGs are copied from bridge repositories or the official upstream project. They are served locally; no third-party image requests are made. They identify independent bridge projects, not official manufacturer endorsement.
 
 | Asset | Source | License |
 | --- | --- | --- |
@@ -14,4 +14,8 @@ These unmodified SVGs are copied from each bridge repository. They are served lo
 
 The website source and organization branding remain MIT licensed. `modbus.svg` retains its upstream GPL-3.0 license; its complete editable source and license are distributed alongside it. WLED retains its upstream MIT notice.
 
-AdGuard Home, IDM Energy and PocketBase currently have no local bridge logo in their repositories, so their cards retain initials. When adding artwork, set the catalog `logo` to `/assets/bridges/<slug>.svg`, bundle the asset and preserve its source/license notice.
+IDM Energy has no local bridge artwork and retains its initials. AdGuard Home and PocketBase use their official upstream artwork, with notices preserved in `LICENSE-adguardhome.txt` (GPL-3.0) and `LICENSE-pocketbase.txt` (MIT). When adding artwork, set the catalog `logo` to `/assets/bridges/<slug>.svg`, bundle the asset and preserve its source/license notice.
+
+- `adguardhome.svg`: [official upstream source](https://github.com/AdguardTeam/AdGuardHome/blob/f44bb2281384d72007c337dc7898fc36852e9b76/client_v2/public/assets/favicon.svg), GPL-3.0; complete editable source and license bundled locally.
+
+- `pocketbase.svg`: [official upstream source](https://github.com/pocketbase/pocketbase/blob/7f2773ec234b62d0b80ca47c508397cb3d0da3ea/ui/public/images/logo.svg), MIT; complete editable source and license bundled locally.
