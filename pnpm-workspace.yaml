@@ -1,0 +1,9 @@
+allowBuilds:
+  '@parcel/watcher': true
+  esbuild: true
+  unrs-resolver: true
+  vue-demi: true
+overrides:
+  minimatch: ^11.0.3
+  glob: ^14.0.3
+  esbuild: ^0.28.2

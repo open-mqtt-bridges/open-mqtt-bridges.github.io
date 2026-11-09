@@ -1,0 +1,9 @@
+.agents
+.specify
+.nuxt
+.output
+node_modules
+pnpm-lock.yaml
+assets
+public
+docs/screenshots
