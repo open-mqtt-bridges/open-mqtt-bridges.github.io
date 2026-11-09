@@ -29,3 +29,7 @@ The .github repository owns the shared audit matrix, contributor templates, alph
 ## Approved design refinement
 
 On 2026-11-09 the user requested visual similarity to crateview.de and repovio.de: centered oversized hero, quiet network illustration, neutral light/dark surfaces, turquoise accents, rounded cards and compact navigation. Keep the static implementation and bridge content. Add system/light/dark color modes without external assets or analytics.
+
+## Approved Nuxt UI and legal refinement
+
+The user requested actual Nuxt UI components, deployment version in the footer, imprint and privacy pages. Use Nuxt 4.6.3 / Nuxt UI 4.12.0 with static prerendering, frozen pnpm installs and local fonts/icons. Package version plus the actual deployment SHA identifies every generated footer. Legal pages are directly loadable and linked from every page. The user confirmed Crateview publisher/contact details. Describe GitHub Pages hosting rather than the reference sites’ hosting. Validate hydration/search/theme states, direct legal routes, no-JS catalog links, local assets and version metadata.

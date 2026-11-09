@@ -19,10 +19,14 @@ Run the applicable checks below and report missing tests, pre-existing failures 
 
 ## Verification
 
-- `node --run build`
-- `node --run check`
+- `pnpm lint`
+- `pnpm typecheck`
+- `pnpm format:check`
+- `pnpm test`
+- `pnpm build`
+- `pnpm check`
 
 ## Governance
 Record specification, implementation plan and ordered tasks before implementation. Review changes against these principles. Amend explicitly: breaking principle changes are major, additional principles minor, clarifications patch. Preserve upstream templates and installed skills; use project documents for local policy. Merge and release approval remain separate from implementation approval.
 
-**Version**: 1.0.0 | **Ratified**: 2026-11-09 | **Last Amended**: 2026-11-09
+**Version**: 1.0.1 | **Ratified**: 2026-11-09 | **Last Amended**: 2026-11-09
