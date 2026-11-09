@@ -2,7 +2,7 @@
 
 ## Toolchain and checks
 
-The manifest, owning lockfile and existing CI define the toolchain. Use `none` where applicable. Preserve the established formatter/linter configuration; do not edit generated or vendored code. Run these commands from the repository root:
+The manifest, owning lockfile and existing CI define the toolchain. Use Node.js 26.13.0; no package installation is required. Preserve the established formatter/linter configuration; do not edit generated or vendored code. Run these commands from the repository root:
 
 - `node --run build`
 - `node --run check`

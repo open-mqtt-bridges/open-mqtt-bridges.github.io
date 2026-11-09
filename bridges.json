@@ -1,0 +1,122 @@
+[
+  {
+    "slug": "adguardhome",
+    "name": "AdGuard Home",
+    "description": "Publish DNS statistics and control network protection over MQTT.",
+    "category": "Network",
+    "tag": "DNS",
+    "initials": "AG",
+    "repository": "https://github.com/open-mqtt-bridges/adguardhome",
+    "documentation": "https://github.com/open-mqtt-bridges/adguardhome#readme",
+    "documentationType": "readme",
+    "archived": false
+  },
+  {
+    "slug": "display",
+    "name": "Display",
+    "description": "Connect monitor brightness and DDC/CI controls to your MQTT broker.",
+    "category": "Hardware",
+    "tag": "DDC/CI",
+    "initials": "DP",
+    "repository": "https://github.com/open-mqtt-bridges/display",
+    "documentation": "https://open-mqtt-bridges.github.io/display/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "homeconnect",
+    "name": "Home Connect",
+    "description": "Bring connected home appliances into your MQTT automations.",
+    "category": "Appliances",
+    "tag": "Home Connect",
+    "initials": "HC",
+    "repository": "https://github.com/open-mqtt-bridges/homeconnect",
+    "documentation": "https://open-mqtt-bridges.github.io/homeconnect/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "idm-energy",
+    "name": "IDM Energy",
+    "description": "A historical MQTT integration for IDM heat-pump systems.",
+    "category": "Energy",
+    "tag": "Archived",
+    "initials": "ID",
+    "repository": "https://github.com/open-mqtt-bridges/idm-energy",
+    "documentation": "https://github.com/open-mqtt-bridges/idm-energy#readme",
+    "documentationType": "readme",
+    "archived": true
+  },
+  {
+    "slug": "landroid",
+    "name": "Landroid",
+    "description": "Connect your robotic lawn mower to MQTT-based automations.",
+    "category": "Garden",
+    "tag": "Robotic mower",
+    "initials": "LA",
+    "repository": "https://github.com/open-mqtt-bridges/landroid",
+    "documentation": "https://open-mqtt-bridges.github.io/landroid/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "modbus",
+    "name": "Modbus",
+    "description": "Bridge Modbus devices and registers to your MQTT network.",
+    "category": "Industrial",
+    "tag": "Modbus",
+    "initials": "MB",
+    "repository": "https://github.com/open-mqtt-bridges/modbus",
+    "documentation": "https://open-mqtt-bridges.github.io/modbus/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "philips-hue",
+    "name": "Philips Hue",
+    "description": "Connect Hue lights and your MQTT lighting automations.",
+    "category": "Lighting",
+    "tag": "Philips Hue",
+    "initials": "PH",
+    "repository": "https://github.com/open-mqtt-bridges/philips-hue",
+    "documentation": "https://open-mqtt-bridges.github.io/philips-hue/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "pocketbase",
+    "name": "PocketBase",
+    "description": "Publish collection updates as MQTT events or retained state.",
+    "category": "Data",
+    "tag": "PocketBase",
+    "initials": "PB",
+    "repository": "https://github.com/open-mqtt-bridges/pocketbase",
+    "documentation": "https://open-mqtt-bridges.github.io/pocketbase/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "roborock",
+    "name": "Roborock",
+    "description": "Connect vacuum accounts, device state and commands to MQTT.",
+    "category": "Cleaning",
+    "tag": "Roborock",
+    "initials": "RR",
+    "repository": "https://github.com/open-mqtt-bridges/roborock",
+    "documentation": "https://open-mqtt-bridges.github.io/roborock/",
+    "documentationType": "site",
+    "archived": false
+  },
+  {
+    "slug": "wled",
+    "name": "WLED",
+    "description": "Connect multiple WLED controllers to MQTT lighting scenes.",
+    "category": "Lighting",
+    "tag": "WLED",
+    "initials": "WL",
+    "repository": "https://github.com/open-mqtt-bridges/wled",
+    "documentation": "https://open-mqtt-bridges.github.io/wled/",
+    "documentationType": "site",
+    "archived": false
+  }
+]

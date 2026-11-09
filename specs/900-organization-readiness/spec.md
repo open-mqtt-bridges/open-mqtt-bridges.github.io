@@ -1,6 +1,6 @@
 # Organization readiness: open-mqtt-bridges.github.io
 
-Status: approved for implementation on 2026-11-09. Task: https://github.com/open-mqtt-bridges/.github/issues/2.
+Status: approved for implementation on 2026-11-09. Task: https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/issues/1.
 
 ## User outcomes
 
@@ -25,3 +25,7 @@ Spec Kit helpers resolve this explicit feature directory and usable spec/plan/ta
 ## Additional organization deliverables
 
 The .github repository owns the shared audit matrix, contributor templates, alphabetic README/profile lists and brand assets. The open-mqtt-bridges.github.io repository owns the static landing-page source, authoritative ten-bridge catalog, progressive search and root-domain Pages workflow. Both use the same logo. Website links remain usable without JavaScript. Archived IDM Energy is labeled; AdGuard Home and IDM Energy use README documentation.
+
+## Approved design refinement
+
+On 2026-11-09 the user requested visual similarity to crateview.de and repovio.de: centered oversized hero, quiet network illustration, neutral light/dark surfaces, turquoise accents, rounded cards and compact navigation. Keep the static implementation and bridge content. Add system/light/dark color modes without external assets or analytics.

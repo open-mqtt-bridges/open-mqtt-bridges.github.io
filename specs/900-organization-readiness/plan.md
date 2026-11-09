@@ -1,6 +1,6 @@
 # Implementation plan: open-mqtt-bridges.github.io
 
-Issue: https://github.com/open-mqtt-bridges/.github/issues/2. Base: `main`. Branch: `2-organization-landing-page`.
+Issue: https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/issues/1. Base: `main`. Branch: `2-organization-landing-page`.
 
 Use the existing checkout. Follow the repository's established language, package manager, lockfile, formatting and test suite. Keep implementation and merge approval separate. Spec Kit is the specification/task layer; ordinary Git owns branches and commits.
 

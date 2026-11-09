@@ -1,0 +1,23 @@
+{
+  "name": "open-mqtt-bridges-website",
+  "private": true,
+  "type": "module",
+  "license": "MIT",
+  "engines": {
+    "node": ">=26.13.0 <27"
+  },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "check": "node scripts/check.mjs",
+    "test": "node --test",
+    "preview": "python3 -m http.server 4173 --directory dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io.git"
+  },
+  "homepage": "https://open-mqtt-bridges.github.io/",
+  "bugs": {
+    "url": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/issues"
+  }
+}
