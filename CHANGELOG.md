@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.2
+
+### Patch Changes
+
+- [#76](https://github.com/open-mqtt-bridges/pocketbase/pull/76) [`94d6610`](https://github.com/open-mqtt-bridges/pocketbase/commit/94d6610dc43ce3f02478989dee525936b5c67a21) Thanks [@tobiaswaelde](https://github.com/tobiaswaelde)! - Remove unused npm and its bundled vulnerable dependencies from the runtime container image.
+
 ## 1.0.1
 
 ### Patch Changes
