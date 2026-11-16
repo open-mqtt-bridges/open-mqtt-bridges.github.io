@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3
+
+### Patch Changes
+
+- [#45](https://github.com/open-mqtt-bridges/philips-hue/pull/45) [`b1b4bfa`](https://github.com/open-mqtt-bridges/philips-hue/commit/b1b4bfa1ae349de9f68392e448a80e2dee245c20) Thanks [@tobiaswaelde](https://github.com/tobiaswaelde)! - Remove unused npm and its bundled vulnerable dependencies from the runtime container image.
+
 ## 1.0.2
 
 ### Patch Changes
