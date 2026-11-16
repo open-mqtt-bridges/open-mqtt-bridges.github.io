@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.0.3
+
+### Patch Changes
+
+- [#40](https://github.com/open-mqtt-bridges/wled/pull/40) [`84414d9`](https://github.com/open-mqtt-bridges/wled/commit/84414d96753d47d54779b990be2aa9d00a9d0aff) Thanks [@tobiaswaelde](https://github.com/tobiaswaelde)! - Remove unused npm and its bundled vulnerable dependencies from the runtime container image.
+
 ## 4.0.2
 
 ### Patch Changes
