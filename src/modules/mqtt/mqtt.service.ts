@@ -7,6 +7,7 @@ export type MqttMessageHandler = (topic: string, payload: string) => void;
 
 export interface MqttBridgeClient {
   publish(topic: string, payload: string | number | boolean | null): void;
+  publishAvailability(topic: string, connected: boolean): boolean;
   subscribe(topic: string, handler: MqttMessageHandler): () => void;
 }
 
@@ -53,6 +54,17 @@ export class MqttService implements MqttBridgeClient, OnModuleDestroy {
       { retain: false },
       (error) => error && this.logger.error(`Failed to publish ${topic}`, error),
     );
+  }
+
+  /**
+   * Submits current availability without adding to MQTT.js's offline queue.
+   * @returns Whether a publish was attempted, not whether the broker received it.
+   */
+  publishAvailability(topic: string, connected: boolean): boolean {
+    if (!this.client.connected) return false;
+
+    this.publish(topic, connected);
+    return true;
   }
 
   /**

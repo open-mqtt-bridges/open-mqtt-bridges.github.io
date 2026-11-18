@@ -1,6 +1,7 @@
 const mockAxiosGet = jest.fn();
 const mockAxiosCreate = jest.fn(() => ({ defaults: {}, get: mockAxiosGet }));
 const mockMqttPublish = jest.fn();
+const mockPublishAvailability = jest.fn();
 const mockMqttSubscribe = jest.fn((_topic: string, _handler: (topic: string, payload: string) => void) => jest.fn());
 
 /**
@@ -64,6 +65,7 @@ describe('Wled', () => {
     jest.clearAllMocks();
     MockWebSocket.instances.length = 0;
     mockAxiosGet.mockResolvedValue({ data: {} });
+    mockPublishAvailability.mockReturnValue(true);
   });
 
   afterEach(() => {
@@ -74,7 +76,7 @@ describe('Wled', () => {
     const wled = createWled();
     wled.setup();
 
-    expect(mockMqttPublish).toHaveBeenCalledWith('wled/test/connected', false);
+    expect(mockPublishAvailability).toHaveBeenCalledWith('wled/test/connected', false);
 
     wled.destroy();
   });
@@ -91,7 +93,7 @@ describe('Wled', () => {
       Buffer.from('{"state":{"on":true,"bri":128,"seg":[{"id":0,"col":[255,0,0]}]},"info":{"name":"Desk"}}'),
     );
 
-    expect(mockMqttPublish).toHaveBeenCalledWith('wled/test/connected', true);
+    expect(mockPublishAvailability).toHaveBeenCalledWith('wled/test/connected', true);
     expect(mockMqttPublish).toHaveBeenCalledWith(
       'wled/test/json',
       '{"state":{"on":true,"bri":128,"seg":[{"id":0,"col":[255,0,0]}]},"info":{"name":"Desk"}}',
@@ -147,7 +149,7 @@ describe('Wled', () => {
     jest.advanceTimersByTime(1_100);
 
     expect(socket.terminate).toHaveBeenCalledTimes(1);
-    expect(mockMqttPublish).toHaveBeenCalledWith('wled/test/connected', false);
+    expect(mockPublishAvailability).toHaveBeenCalledWith('wled/test/connected', false);
 
     wled.destroy();
   });
@@ -265,6 +267,55 @@ describe('Wled', () => {
     expect(mockMqttPublish).not.toHaveBeenCalledWith('wled/test/palettes', expect.anything());
     wled.destroy();
   });
+  it('repeats current availability on the shared tick without extra device work', () => {
+    jest.useFakeTimers({ now: 0 });
+    const wled = createWled();
+    wled.loop(0);
+    expect(mockPublishAvailability).not.toHaveBeenCalled();
+    wled.setup();
+    const socket = MockWebSocket.instances[0];
+    jest.setSystemTime(100);
+    socket.readyState = MockWebSocket.OPEN;
+    socket.emit('open');
+
+    wled.loop(30_099);
+    expect(mockPublishAvailability.mock.calls.map(([, state]) => state)).toEqual([false, true]);
+    wled.loop(30_100);
+    wled.loop(30_101);
+    expect(mockPublishAvailability.mock.calls.map(([, state]) => state)).toEqual([false, true, true]);
+    expect(mockAxiosGet).toHaveBeenCalledTimes(1);
+    expect(MockWebSocket.instances).toHaveLength(1);
+    expect(mockMqttPublish).not.toHaveBeenCalled();
+
+    jest.setSystemTime(30_101);
+    wled.destroy();
+    wled.loop(90_100);
+    expect(mockPublishAvailability.mock.calls.map(([, state]) => state)).toEqual([false, true, true, false]);
+  });
+
+  it('keeps the latest offline value when MQTT skips availability attempts', () => {
+    jest.useFakeTimers({ now: 0 });
+    mockPublishAvailability.mockReturnValue(false);
+    const wled = createWled();
+    wled.setup();
+    const socket = MockWebSocket.instances[0];
+    socket.readyState = MockWebSocket.OPEN;
+    socket.emit('open');
+    wled.loop(30_000);
+    socket.emit('close');
+    wled.loop(60_000);
+    expect(mockPublishAvailability.mock.calls.map(([, state]) => state)).toEqual([false, true, true, false, false]);
+
+    mockPublishAvailability.mockClear().mockReturnValue(true);
+    wled.loop(61_000);
+    wled.loop(62_000);
+    wled.loop(91_000);
+    expect(mockPublishAvailability.mock.calls).toEqual([
+      ['wled/test/connected', false],
+      ['wled/test/connected', false],
+    ]);
+    wled.destroy();
+  });
 });
 
 /**
@@ -284,6 +335,10 @@ function createWled(overrides: Partial<{ pingInterval: number; pongTimeout: numb
       topic: 'wled/test',
       ...overrides,
     },
-    { publish: mockMqttPublish, subscribe: mockMqttSubscribe } as MqttBridgeClient,
+    {
+      publish: mockMqttPublish,
+      publishAvailability: mockPublishAvailability,
+      subscribe: mockMqttSubscribe,
+    } as MqttBridgeClient,
   );
 }

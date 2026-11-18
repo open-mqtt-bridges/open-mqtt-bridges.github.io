@@ -79,5 +79,5 @@ describe('HttpMqttBridge', () => {
 
 /** Creates a test bridge backed by an MQTT client stub. @returns {TestBridge} Test bridge. */
 function createBridge(): TestBridge {
-  return new TestBridge({ publish: jest.fn(), subscribe } as MqttBridgeClient);
+  return new TestBridge({ publish: jest.fn(), publishAvailability: jest.fn(), subscribe } as MqttBridgeClient);
 }

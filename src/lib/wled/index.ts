@@ -7,6 +7,8 @@ import { objectToMap } from '~/util/object';
 import { WledConnection } from './connection';
 import { parseWledCommand, toMqttPayload, type WledSnapshot } from './protocol';
 
+const availabilityIntervalMs = 30_000;
+
 /**
  * Bridges a WLED device through one persistent WebSocket connection.
  *
@@ -19,7 +21,8 @@ export class Wled extends HttpMqttBridge<WledConfig> {
   private commandsSubscribed = false;
   private connected = false;
   private destroyed = false;
-  private hasPublishedConnectionStatus = false;
+  private hasConnectionStatus = false;
+  private lastAvailabilityAttempt?: number;
   private readonly connection: WledConnection;
 
   /**
@@ -60,6 +63,16 @@ export class Wled extends HttpMqttBridge<WledConfig> {
     this.subscribeCommands();
     this.setConnected(false);
     this.connection.connect();
+  }
+
+  /** Refreshes availability on the shared bridge tick without polling WLED. */
+  public override loop(time: number): void {
+    super.loop(time);
+    if (!this.hasConnectionStatus || this.destroyed) return;
+    if (this.lastAvailabilityAttempt !== undefined && time - this.lastAvailabilityAttempt < availabilityIntervalMs)
+      return;
+
+    this.publishAvailability(time);
   }
 
   /**
@@ -150,11 +163,17 @@ export class Wled extends HttpMqttBridge<WledConfig> {
    * @returns {void} Nothing.
    */
   private setConnected(connected: boolean): void {
-    if (this.hasPublishedConnectionStatus && this.connected === connected) return;
+    if (this.hasConnectionStatus && this.connected === connected) return;
 
     this.connected = connected;
-    this.hasPublishedConnectionStatus = true;
-    this.mqtt.publish(`${this.cfg.topic}/connected`, connected);
+    this.hasConnectionStatus = true;
+    this.publishAvailability(Date.now());
+  }
+
+  /** Advances the cadence only when the MQTT adapter submits the current state. */
+  private publishAvailability(time: number): void {
+    if (this.mqtt.publishAvailability(`${this.cfg.topic}/connected`, this.connected))
+      this.lastAvailabilityAttempt = time;
   }
   //#endregion
 

@@ -1,4 +1,5 @@
 const client = {
+  connected: false,
   end: jest.fn(),
   on: jest.fn(),
   publish: jest.fn(),
@@ -58,6 +59,22 @@ describe('MqttService', () => {
     expect(client.publish).toHaveBeenCalledWith('wled/test/cmd', '', { retain: false }, expect.any(Function));
     expect(error).toHaveBeenCalledWith('MQTT connection failed', expect.any(Error));
     expect(error).toHaveBeenCalledWith('Failed to publish wled/test/cmd', expect.any(Error));
+  });
+
+  it('skips availability without queuing it, but still submits generic publications', () => {
+    const service = new MqttService();
+    client.connected = false;
+    expect(service.publishAvailability('wled/test/connected', true)).toBe(false);
+    expect(service.publishAvailability('wled/test/connected', false)).toBe(false);
+    expect(client.publish).not.toHaveBeenCalled();
+    service.publish('wled/test/cmd', null);
+
+    client.connected = true;
+    expect(service.publishAvailability('wled/test/connected', false)).toBe(true);
+    expect(client.publish.mock.calls).toEqual([
+      ['wled/test/cmd', '', { retain: false }, expect.any(Function)],
+      ['wled/test/connected', 'false', { retain: false }, expect.any(Function)],
+    ]);
   });
 
   it('preserves configured client IDs and generates one for an empty value', () => {
