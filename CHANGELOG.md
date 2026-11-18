@@ -1,5 +1,13 @@
 # Changelog
 
+## 4.0.4
+
+### Patch Changes
+
+- [#45](https://github.com/open-mqtt-bridges/wled/pull/45) [`2e846ed`](https://github.com/open-mqtt-bridges/wled/commit/2e846edd9abc97e1a9065ba8e0ee40f5f0553fef) Thanks [@dependabot](https://github.com/apps/dependabot)! - Update the Node.js container base image to 26.13.1, NestJS to 12.5.0, Axios to 1.21.1, and dotenv to 18.0.10. Update the development dependency ESLint to 10.15.0.
+
+- [#49](https://github.com/open-mqtt-bridges/wled/pull/49) [`6304b44`](https://github.com/open-mqtt-bridges/wled/commit/6304b44c7deb227b35bf6b00ee411b63f3538f04) Thanks [@tobiaswaelde](https://github.com/tobiaswaelde)! - Refresh non-retained WLED availability every 30 seconds so late and reconnecting MQTT subscribers recover current status without reconnecting controllers. Do not queue outdated availability during broker outages. Command behavior and retention are unchanged.
+
 ## 4.0.3
 
 ### Patch Changes

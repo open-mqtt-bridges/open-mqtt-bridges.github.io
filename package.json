@@ -1,6 +1,6 @@
 {
   "name": "wled-mqtt-bridge",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "private": true,
   "description": "WLED MQTT Bridge connects device APIs to MQTT.",
   "packageManager": "pnpm@11.28.9",
