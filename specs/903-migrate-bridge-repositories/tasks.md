@@ -32,7 +32,7 @@
 - [x] T011 [US2] Import `bridges/landroid/`; verify its history and run its own locked build, tests, and existing container checks.
 - [x] T012 [US2] Import `bridges/philips-hue/`; verify its history, locked build, tests, and supported runtime checks against the baseline.
 - [x] T013 [US2] Import `bridges/roborock/`; verify its history and source CI including existing container checks, without using real user credentials.
-- [ ] T014 [US2] Import `bridges/pocketbase/`; verify its history and run its own pinned pnpm, test and coverage checks independently of the website's package manager.
+- [x] T014 [US2] Import `bridges/pocketbase/`; verify its history and run its own pinned pnpm, test and coverage checks independently of the website's package manager.
 - [ ] T015 [US2] Import `bridges/adguardhome/`; verify its history and reproduce its Yarn Classic installation and baseline checks without replacing the lockfile.
 - [ ] T016 [US2] Import `bridges/display/`; verify its history, including known documentation pins, and reproduce both Rust and Node checks.
 - [ ] T017 [US2] Import `bridges/ping/`; verify its history, pinned Rust checks, Mosquitto integration test and amd64/arm64 container checks. Report unavailable runners separately.
