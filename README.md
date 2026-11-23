@@ -27,12 +27,13 @@ Nuxt UI provides the header, footer, hero, cards, input, buttons and color-mode 
 
 ## Catalog and organization profile
 
-`bridges.json` is the authoritative ten-bridge catalog. Optional `logo` paths refer to bundled SVG artwork; cards without artwork retain their initials. See [bridge artwork and licensing](public/assets/bridges/README.md). Keep entries alphabetic by repository slug and mark archived projects. README-only documentation is labeled explicitly. Synchronize both organization README tables and check them before review:
+`bridges.json` is the authoritative bridge catalog. Optional `logo` paths refer to bundled SVG artwork; cards without artwork retain their initials. See [bridge artwork and licensing](public/assets/bridges/README.md). Keep entries alphabetic by repository slug and mark archived projects. Every documentation link points to a guide on the central website. Synchronize both organization README tables and check them before review:
 
 ```bash
 node scripts/sync-profile.mjs ../.github
 pnpm build
-pnpm check --profile-root ../.github
+pnpm build:bridge-docs
+pnpm check --bridge-docs --profile-root ../.github
 ```
 
 Synchronization edits only the delimited bridge-table regions in the sibling organization repository. Ordinary builds never edit another repository.

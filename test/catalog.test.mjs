@@ -19,10 +19,10 @@ test('public catalog rejects incorrect hosts, archived flags and README destinat
       items[3].archived = false;
     },
     (items) => {
-      items[0].documentation = 'https://open-mqtt-bridges.github.io/adguardhome/';
+      items[0].documentation = 'https://github.com/open-mqtt-bridges/adguardhome#readme';
     },
     (items) => {
-      items[0].documentationType = 'site';
+      items[0].documentation = 'https://open-mqtt-bridges.github.io/display/';
     },
   ]) {
     const invalid = structuredClone(catalog);
@@ -38,7 +38,8 @@ test('local search handles categories, case, whitespace, empty and unmatched inp
     filterBridges(catalog, '  LIGHTING  ').map((bridge) => bridge.slug),
     ['philips-hue', 'wled'],
   );
-  assert.equal(filterBridges(catalog, '').length, 10);
+  assert.equal(filterBridges(catalog, '').length, 11);
+  assert.equal(filterBridges(catalog, 'reachability')[0].slug, 'ping');
   assert.equal(filterBridges(catalog, 'does-not-exist').length, 0);
   assert.equal(filterBridges(catalog, 'IDM')[0].archived, true);
 });

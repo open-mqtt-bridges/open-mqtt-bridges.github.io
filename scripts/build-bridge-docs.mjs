@@ -2,11 +2,30 @@ import { execFileSync } from 'node:child_process';
 import { cpSync, existsSync, lstatSync, readdirSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { pathToFileURL } from 'node:url';
+import { loadCatalog } from './catalog.mjs';
 
-const bridges = [
-  { slug: 'display', directory: '.', lockfile: 'pnpm-lock.yaml', manager: 'pnpm', build: 'docs:build' },
-  { slug: 'modbus', directory: 'docs', lockfile: 'package-lock.json', manager: 'npm', build: 'build' },
-];
+const workspace = {
+  directory: '.',
+  lockfile: 'pnpm-lock.yaml',
+  command: 'pnpm',
+  install: ['install', '--frozen-lockfile'],
+  build: ['run', 'docs:build'],
+};
+const npmDocs = {
+  directory: 'docs',
+  lockfile: 'package-lock.json',
+  command: 'npm',
+  install: ['ci'],
+  build: ['run', 'build'],
+};
+const yarnDocs = {
+  directory: 'docs',
+  lockfile: 'yarn.lock',
+  command: 'npx',
+  prefix: ['--yes', 'yarn@1.22.22'],
+  install: ['install', '--frozen-lockfile'],
+  build: ['run', 'build'],
+};
 const origin = 'https://open-mqtt-bridges.github.io';
 
 function validateTree(directory) {
@@ -72,22 +91,30 @@ export function assembleBridgeDocs(publicDir, outputs) {
 }
 
 /** Build the pinned sources with their owning lockfiles and add their static output to Pages. */
-export function buildBridgeDocs(root) {
+export async function buildBridgeDocs(root) {
   const outputs = [];
-  for (const { slug, directory, lockfile, manager, build } of bridges) {
+  for (const { slug, archived } of await loadCatalog()) {
+    if (archived) continue;
+    const {
+      directory,
+      lockfile,
+      command,
+      prefix = [],
+      install,
+      build,
+    } = slug === 'adguardhome' ? yarnDocs : ['modbus', 'ping'].includes(slug) ? npmDocs : workspace;
     const source = join(root, 'bridge-sources', slug);
     const cwd = join(source, directory);
     if (!existsSync(join(cwd, lockfile)) || !existsSync(join(source, 'docs', 'index.md'))) {
       throw new Error(`Missing sources for ${slug}. Initialize the pinned Git submodules before building.`);
     }
-    const install = manager === 'pnpm' ? ['install', '--frozen-lockfile'] : ['ci'];
-    execFileSync(manager, install, { cwd, stdio: 'inherit' });
-    execFileSync(manager, ['run', build], { cwd, stdio: 'inherit' });
+    execFileSync(command, [...prefix, ...install], { cwd, stdio: 'inherit' });
+    execFileSync(command, [...prefix, ...build], { cwd, stdio: 'inherit' });
     outputs.push({ slug, output: join(source, 'docs', '.vitepress', 'dist') });
   }
   assembleBridgeDocs(join(root, '.output', 'public'), outputs);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
-  buildBridgeDocs(process.cwd());
+  await buildBridgeDocs(process.cwd());
 }

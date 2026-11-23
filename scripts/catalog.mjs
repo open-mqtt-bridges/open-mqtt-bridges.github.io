@@ -8,6 +8,7 @@ const slugs = [
   'landroid',
   'modbus',
   'philips-hue',
+  'ping',
   'pocketbase',
   'roborock',
   'wled',
@@ -16,7 +17,7 @@ const slugs = [
 /** Enforce the public catalog contract, including archive and documentation destinations. */
 export function validateCatalog(catalog) {
   if (!Array.isArray(catalog) || JSON.stringify(catalog.map((bridge) => bridge.slug)) !== JSON.stringify(slugs)) {
-    throw new Error('Catalog must contain exactly the ten bridges in alphabetic repository order.');
+    throw new Error('Catalog must contain all eleven bridges in alphabetic repository order.');
   }
   for (const bridge of catalog) {
     for (const field of ['name', 'description', 'category', 'tag', 'initials']) {
@@ -27,15 +28,12 @@ export function validateCatalog(catalog) {
       throw new Error(`Incorrect local logo path: ${bridge.slug}`);
     if (bridge.archived !== (bridge.slug === 'idm-energy')) throw new Error(`Incorrect archive status: ${bridge.slug}`);
     const repository = `https://github.com/open-mqtt-bridges/${bridge.slug}`;
-    const readme = ['adguardhome', 'idm-energy'].includes(bridge.slug);
     if (
       bridge.repository !== repository ||
-      bridge.documentation !== (readme ? `${repository}#readme` : `https://open-mqtt-bridges.github.io/${bridge.slug}/`)
+      bridge.documentation !== `https://open-mqtt-bridges.github.io/${bridge.slug}/`
     ) {
       throw new Error(`Incorrect public URL: ${bridge.slug}`);
     }
-    if (bridge.documentationType !== (readme ? 'readme' : 'site'))
-      throw new Error(`Incorrect documentation type: ${bridge.slug}`);
   }
   return catalog;
 }
@@ -52,7 +50,7 @@ export function profileTable(catalog) {
     '| --- | --- | --- | --- |',
     ...catalog.map(
       (bridge) =>
-        `| [${bridge.name}](${bridge.repository}) | ${bridge.description} | [${bridge.documentationType === 'readme' ? 'README' : 'Docs'}](${bridge.documentation}) | ${bridge.archived ? 'Archived' : 'Active'} |`,
+        `| [${bridge.name}](${bridge.repository}) | ${bridge.description} | [Docs](${bridge.documentation}) | ${bridge.archived ? 'Archived' : 'Active'} |`,
     ),
   ].join('\n');
 }

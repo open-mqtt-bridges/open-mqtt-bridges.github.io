@@ -70,7 +70,7 @@
     <UContainer id="bridges" class="page-width border-t border-default py-14 sm:py-20" aria-labelledby="bridges-title">
       <div class="flex justify-between gap-4 text-xs">
         <p class="eyebrow">FIND YOUR CONNECTION</p>
-        <span class="text-muted">09 active · 01 archived</span>
+        <span class="text-muted">{{ activeCount }} active · {{ bridgeCount - activeCount }} archived</span>
       </div>
       <div class="mt-5 flex flex-col justify-between gap-8 md:flex-row md:items-end">
         <div>
@@ -145,9 +145,8 @@
               <a
                 class="text-primary hover:underline"
                 :href="bridge.documentation"
-                :aria-label="`${bridge.name} ${bridge.documentationType === 'readme' ? 'README documentation' : 'documentation'}`"
-                >{{ bridge.documentationType === 'readme' ? 'README docs' : 'Documentation' }}
-                <span aria-hidden="true">↗</span></a
+                :aria-label="`${bridge.name} documentation`"
+                >Documentation</a
               >
               <a
                 class="text-muted hover:text-highlighted"
@@ -167,10 +166,7 @@
         variant="subtle"
         class="mt-6"
       />
-      <p class="mt-6 text-xs leading-6 text-muted">
-        “README docs” links to documentation in the repository. Archived projects remain available as historical
-        references.
-      </p>
+      <p class="mt-6 text-xs leading-6 text-muted">Archived projects remain available as historical references.</p>
     </UContainer>
 
     <UPageSection
@@ -220,6 +216,7 @@ import catalog from '../../bridges.json';
 import { filterBridges } from '#shared/bridges';
 
 const bridgeCount = catalog.length;
+const activeCount = catalog.filter((bridge) => !bridge.archived).length;
 const query = ref('');
 const hydrated = ref(false);
 const visibleBridges = computed(() => filterBridges(catalog, query.value));
@@ -264,7 +261,7 @@ const questions = [
   {
     title: 'Are all bridges actively maintained?',
     answer:
-      'Nine projects are active. IDM Energy is archived and remains listed as a historical reference. Each repository’s license and security policy apply independently.',
+      'IDM Energy is archived and remains listed as a historical reference. Each repository’s license and security policy apply independently.',
   },
 ];
 useSeoMeta({

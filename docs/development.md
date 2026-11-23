@@ -27,6 +27,12 @@ bash .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --inclu
 
 Feature context is local checkout state, not a branch-name convention. Preserve existing specifications. Templates and skills are upstream-managed; put project policy in the constitution and this guide.
 
+## Bridge documentation
+
+Active bridges own their guides in `docs/`. The website pins each repository under `bridge-sources/` and publishes only the generated files at `/<bridge>/`. Keep useful headings and existing public paths stable. Follow the [guide contract](../specs/902-centralize-bridge-docs/contracts/guides.md) for navigation and content.
+
+For an update, fetch the reviewed source revision in the bridge's submodule, check it out, and stage that submodule path in the website. The pinned commit must remain reachable from the bridge's default branch before this website change is merged. Do not rely on a review branch that might be deleted. Run `pnpm build`, `pnpm build:bridge-docs`, and `pnpm check --bridge-docs`. Review the website diff for the intended Git pointer and verify the affected routes and anchors.
+
 ## Contributions and security
 
 Follow the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) and any local security policy. Never commit `.env`, runtime configuration, tokens or sessions. Use documented example placeholders. Preserve MQTT topics, payloads, command retention and existing deployment identifiers. A dependency upgrade, release, merge or deployment is a separate action from a Spec Kit step.

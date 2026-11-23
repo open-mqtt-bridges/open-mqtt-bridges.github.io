@@ -7,8 +7,7 @@
     "tag": "DNS",
     "initials": "AG",
     "repository": "https://github.com/open-mqtt-bridges/adguardhome",
-    "documentation": "https://github.com/open-mqtt-bridges/adguardhome#readme",
-    "documentationType": "readme",
+    "documentation": "https://open-mqtt-bridges.github.io/adguardhome/",
     "archived": false,
     "logo": "/assets/bridges/adguardhome.svg"
   },
@@ -21,7 +20,6 @@
     "initials": "DP",
     "repository": "https://github.com/open-mqtt-bridges/display",
     "documentation": "https://open-mqtt-bridges.github.io/display/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/display.svg"
   },
@@ -34,7 +32,6 @@
     "initials": "HC",
     "repository": "https://github.com/open-mqtt-bridges/homeconnect",
     "documentation": "https://open-mqtt-bridges.github.io/homeconnect/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/homeconnect.svg"
   },
@@ -46,8 +43,7 @@
     "tag": "Archived",
     "initials": "ID",
     "repository": "https://github.com/open-mqtt-bridges/idm-energy",
-    "documentation": "https://github.com/open-mqtt-bridges/idm-energy#readme",
-    "documentationType": "readme",
+    "documentation": "https://open-mqtt-bridges.github.io/idm-energy/",
     "archived": true,
     "logo": null
   },
@@ -60,7 +56,6 @@
     "initials": "LA",
     "repository": "https://github.com/open-mqtt-bridges/landroid",
     "documentation": "https://open-mqtt-bridges.github.io/landroid/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/landroid.svg"
   },
@@ -73,7 +68,6 @@
     "initials": "MB",
     "repository": "https://github.com/open-mqtt-bridges/modbus",
     "documentation": "https://open-mqtt-bridges.github.io/modbus/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/modbus.svg"
   },
@@ -86,9 +80,20 @@
     "initials": "PH",
     "repository": "https://github.com/open-mqtt-bridges/philips-hue",
     "documentation": "https://open-mqtt-bridges.github.io/philips-hue/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/philips-hue.svg"
+  },
+  {
+    "slug": "ping",
+    "name": "Ping",
+    "description": "Check which devices are reachable and publish their response times over MQTT.",
+    "category": "Network",
+    "tag": "Reachability",
+    "initials": "PG",
+    "repository": "https://github.com/open-mqtt-bridges/ping",
+    "documentation": "https://open-mqtt-bridges.github.io/ping/",
+    "archived": false,
+    "logo": null
   },
   {
     "slug": "pocketbase",
@@ -99,7 +104,6 @@
     "initials": "PB",
     "repository": "https://github.com/open-mqtt-bridges/pocketbase",
     "documentation": "https://open-mqtt-bridges.github.io/pocketbase/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/pocketbase.svg"
   },
@@ -112,7 +116,6 @@
     "initials": "RR",
     "repository": "https://github.com/open-mqtt-bridges/roborock",
     "documentation": "https://open-mqtt-bridges.github.io/roborock/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/roborock.svg"
   },
@@ -125,7 +128,6 @@
     "initials": "WL",
     "repository": "https://github.com/open-mqtt-bridges/wled",
     "documentation": "https://open-mqtt-bridges.github.io/wled/",
-    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/wled.svg"
   }

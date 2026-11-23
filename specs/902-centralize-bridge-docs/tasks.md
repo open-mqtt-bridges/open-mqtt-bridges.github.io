@@ -15,22 +15,22 @@
 **Independent test**: In a combined preview, each catalog card opens the right central guide, and each guide links back to the catalog.
 
 - [x] T003 [US1] Add the website-owned IDM Energy archive page in `app/pages/` and tests for its status and historical repository link; do not modify the archived repository.
-- [ ] T004 [US1] After T005–T008 have produced reachable revisions, pin all active docs in `.gitmodules`, update `bridges.json` and `scripts/catalog.mjs`, and verify the complete catalog and artifact using `scripts/check.mjs` and `test/`.
+- [x] T004 [US1] After T005–T008 have produced reachable revisions, pin all active docs in `.gitmodules`, update `bridges.json` and `scripts/catalog.mjs`, and verify the complete catalog and artifact using `scripts/check.mjs` and `test/`.
 
 ## Phase 4: Set up and troubleshoot without reading code (US2)
 
 **Independent test**: Against each versioned bridge, follow the guide through the first verification and find a symptom-based troubleshooting action; confirm the guide matches supported behavior.
 
-- [ ] T005 [P] [US2] Normalize Display, Home Connect, Landroid and Philips Hue in each bridge's `docs/`, including `docs/.vitepress/config.mts`; validate paths and assets with the owning builds. Prepare each bridge's README link without requiring it to go live early. Commit per repository.
-- [ ] T006 [P] [US2] Normalize Modbus, PocketBase, Roborock and WLED in each bridge's `docs/`, including `docs/.vitepress/config.mts`; retain relevant technical reference, verify old paths and run the owning builds. Prepare each README link. Commit per repository.
-- [ ] T007 [P] [US2] Add a supported AdGuard Home user guide in `adguardhome/docs/`, based on versioned configuration and deployment examples, and prepare `adguardhome/README.md`. Run the guide build and check its instructions and anchors.
-- [ ] T008 [US2] Reconcile Ping's existing local work without editing it in place; use it only with permission if not already upstream. Complete `ping/docs/` and prepare `ping/README.md`; check Linux prerequisites, verification and MQTT behavior against versioned sources.
+- [x] T005 [P] [US2] Normalize Display, Home Connect, Landroid and Philips Hue in each bridge's `docs/`, including `docs/.vitepress/config.mts`; validate paths and assets with the owning builds. Prepare each bridge's README link without requiring it to go live early. Commit per repository.
+- [x] T006 [P] [US2] Normalize Modbus, PocketBase, Roborock and WLED in each bridge's `docs/`, including `docs/.vitepress/config.mts`; retain relevant technical reference, verify old paths and run the owning builds. Prepare each README link. Commit per repository.
+- [x] T007 [P] [US2] Add a supported AdGuard Home user guide in `adguardhome/docs/`, based on versioned configuration and deployment examples, and prepare `adguardhome/README.md`. Run the guide build and check its instructions and anchors.
+- [x] T008 [US2] Reconcile Ping's existing local work without editing it in place; use it only with permission if not already upstream. Complete `ping/docs/` and prepare `ping/README.md`; check Linux prerequisites, verification and MQTT behavior against versioned sources.
 
 ## Phase 5: Preserve external entry points (US3)
 
 **Independent test**: Probe the inventoried paths against the assembled artifact; after cutover, follow repository Website and README links and repeat live probes.
 
-- [ ] T009 [US3] Preserve inventoried deep paths and anchors in the owning `docs/` files or compatibility output under `scripts/`. Prepare the `.github/profile/README.md` update using `scripts/sync-profile.mjs`; verify scope and exact link destinations.
+- [x] T009 [US3] Preserve inventoried deep paths and anchors in the owning `docs/` files or compatibility output under `scripts/`. Prepare the `.github/profile/README.md` update using `scripts/sync-profile.mjs`; verify scope and exact link destinations.
 - [ ] T010 [US3] Prepare source repository workflow changes in each `.github/workflows/docs.yml` or `.github/workflows/pages.yml` so validation can remain but independent publication can be retired. Document and rehearse the exact cutover and rollback in `docs/development.md` before changing live state.
 - [ ] T011 [US3] After separate approval and verified CI, deploy the central artifact, probe old and new routes, retire separate publishing one bridge at a time, and publish README/profile changes plus repository Website metadata. Record outcomes and rollback evidence in `specs/902-centralize-bridge-docs/baseline.md`.
 

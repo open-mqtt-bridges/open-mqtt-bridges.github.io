@@ -32,3 +32,7 @@ Each listed suffix returned HTTP 200 under its bridge's `/<slug>/` base, includi
 ## Rollback Preparation
 
 Refresh this baseline immediately before an approved cutover. Keep the recorded workflows and source revisions reachable and confirm an operator can restore workflow-mode Pages and its deployment permissions. If a probe fails after a bridge is retired, stop the sequence, restore its Pages settings and workflow, redeploy the last known-good source, and recheck the failed URL. If central output caused the failure, redeploy the prior website revision and revert changed repository metadata and landing links as needed. The inventory is not proof that rollback has been rehearsed.
+
+## Combined Artifact Rehearsal
+
+The combined build included all ten active guides and the IDM Energy archive. A comparison of live HTML against the built files confirmed that all 77 inventoried page paths and all 217 rendered legacy heading anchors were present. The website catalog and both organization README tables were checked against the combined artifact. No Pages settings or production deployment state changed.

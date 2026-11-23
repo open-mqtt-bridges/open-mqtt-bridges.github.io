@@ -6,6 +6,7 @@ import { loadCatalog, profileTable } from './catalog.mjs';
 import { deploymentVersion } from './deployment-version.mjs';
 
 const catalog = await loadCatalog();
+const checkBridgeDocs = process.argv.includes('--bridge-docs');
 const output = new URL('../.output/public/', import.meta.url);
 const html = await readFile(new URL('index.html', output), 'utf8');
 for (const bridge of catalog) {
@@ -13,6 +14,11 @@ for (const bridge of catalog) {
   if (bridge.logo) assert.ok(html.includes(`src="${bridge.logo}"`), `Missing SSR logo: ${bridge.slug}`);
   assert.ok(html.includes(`href="${bridge.repository}"`));
   assert.ok(html.includes(`href="${bridge.documentation}"`));
+  if (checkBridgeDocs) {
+    const guide = await readFile(new URL(`${bridge.slug}/index.html`, output), 'utf8');
+    const catalogLink = bridge.archived ? 'href="/"' : 'href="https://open-mqtt-bridges.github.io/"';
+    assert.ok(guide.includes(catalogLink), `Missing catalog return link: ${bridge.slug}`);
+  }
 }
 const form = html.match(/<form[^>]*data-search-form[^>]*>/)?.[0];
 assert.ok(form?.includes('display:none'), 'Search must remain hidden before hydration.');
@@ -38,8 +44,8 @@ for (const route of ['', 'imprint/', 'privacy-policy/']) {
   for (const match of page.matchAll(/(?:href|src)="([^"#]+)"/g)) {
     const url = new URL(match[1], `https://open-mqtt-bridges.github.io/${route}`);
     if (url.origin !== 'https://open-mqtt-bridges.github.io' || !['http:', 'https:'].includes(url.protocol)) continue;
-    // Bridge docs share the origin but are deployed by their own repositories.
-    if (catalog.some((bridge) => bridge.documentationType === 'site' && url.pathname.startsWith(`/${bridge.slug}/`)))
+    // The standalone Nuxt build does not include the active VitePress guides.
+    if (!checkBridgeDocs && catalog.some((bridge) => !bridge.archived && url.pathname.startsWith(`/${bridge.slug}/`)))
       continue;
     const path = new URL(url.pathname.slice(1), output);
     const candidates = [

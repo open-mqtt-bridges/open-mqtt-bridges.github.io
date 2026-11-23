@@ -4,3 +4,27 @@
 [submodule "bridge-sources/modbus"]
 	path = bridge-sources/modbus
 	url = https://github.com/open-mqtt-bridges/modbus.git
+[submodule "bridge-sources/adguardhome"]
+	path = bridge-sources/adguardhome
+	url = https://github.com/open-mqtt-bridges/adguardhome.git
+[submodule "bridge-sources/homeconnect"]
+	path = bridge-sources/homeconnect
+	url = https://github.com/open-mqtt-bridges/homeconnect.git
+[submodule "bridge-sources/landroid"]
+	path = bridge-sources/landroid
+	url = https://github.com/open-mqtt-bridges/landroid.git
+[submodule "bridge-sources/philips-hue"]
+	path = bridge-sources/philips-hue
+	url = https://github.com/open-mqtt-bridges/philips-hue.git
+[submodule "bridge-sources/ping"]
+	path = bridge-sources/ping
+	url = https://github.com/open-mqtt-bridges/ping.git
+[submodule "bridge-sources/pocketbase"]
+	path = bridge-sources/pocketbase
+	url = https://github.com/open-mqtt-bridges/pocketbase.git
+[submodule "bridge-sources/roborock"]
+	path = bridge-sources/roborock
+	url = https://github.com/open-mqtt-bridges/roborock.git
+[submodule "bridge-sources/wled"]
+	path = bridge-sources/wled
+	url = https://github.com/open-mqtt-bridges/wled.git

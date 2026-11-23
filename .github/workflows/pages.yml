@@ -28,7 +28,7 @@ jobs:
       - run: pnpm format:check
       - run: pnpm build
       - run: pnpm build:bridge-docs
-      - run: node --run check
+      - run: node --run check -- --bridge-docs
       - run: node --run test
       - uses: actions/upload-pages-artifact@v5
         with:
