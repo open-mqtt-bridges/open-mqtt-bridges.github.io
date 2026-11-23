@@ -1,0 +1,77 @@
+name: Bridge checks
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  select:
+    runs-on: ubuntu-latest
+    outputs:
+      bridges: ${{ steps.changed.outputs.bridges }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0, persist-credentials: false }
+      - id: changed
+        env:
+          BASE: ${{ github.event.pull_request.base.sha || github.event.before }}
+          HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
+        run: |
+          if [ "$GITHUB_EVENT_NAME" = pull_request ]; then BASE="$(git merge-base "$BASE" "$HEAD")"; fi
+          echo "bridges=$(node scripts/select-bridges.mjs "$BASE" "$HEAD")" >> "$GITHUB_OUTPUT"
+  wled:
+    needs: select
+    if: contains(fromJSON(needs.select.outputs.bridges), 'wled')
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: bridges/wled }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: pnpm/action-setup@v6
+        with: { package_json_file: bridges/wled/package.json }
+      - uses: actions/setup-node@v7
+        with: { node-version: 26.13.0, cache: pnpm, cache-dependency-path: bridges/wled/pnpm-lock.yaml }
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm docs:build && pnpm test:availability
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/build-push-action@v7
+        with: { context: bridges/wled, load: true, tags: wled-mqtt-bridge:ci }
+      - name: Verify container health and version
+        run: |
+          docker run -d --name bridge-ci -e PORT=3000 -p 127.0.0.1:3000:3000 \
+            -v "$PWD/config/config.example.yml:/app/config/config.yml:ro" wled-mqtt-bridge:ci
+          trap 'docker rm -f bridge-ci >/dev/null' EXIT
+          curl --retry 20 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:3000/health > "$RUNNER_TEMP/health.json"
+          node -e 'const h=require(process.env.RUNNER_TEMP+"/health.json");process.exit(h.status==="ok" && h.version===require("./package.json").version ? 0 : 1)'
+  modbus:
+    needs: select
+    if: contains(fromJSON(needs.select.outputs.bridges), 'modbus')
+    runs-on: ubuntu-latest
+    defaults:
+      run: { working-directory: bridges/modbus }
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@stable
+        with: { components: 'clippy,rustfmt' }
+      - uses: Swatinem/rust-cache@v2
+        with: { workspaces: bridges/modbus }
+      - run: |
+          cargo fmt --all --check
+          cargo clippy --locked --all-targets --all-features -- -D warnings
+          cargo test --locked --all-targets --all-features
+          cargo build --locked --release
+      - uses: actions/setup-node@v7
+        with: { node-version: 20, cache: npm, cache-dependency-path: bridges/modbus/docs/package-lock.json }
+      - run: npm ci && npm run build
+        working-directory: bridges/modbus/docs
+  bridge-checks:
+    needs: [select, wled, modbus]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          RESULTS: ${{ toJSON(needs) }}
+        run: |
+          jq -e '.select.result == "success" and all(.[]; .result == "success" or .result == "skipped")' <<< "$RESULTS"
