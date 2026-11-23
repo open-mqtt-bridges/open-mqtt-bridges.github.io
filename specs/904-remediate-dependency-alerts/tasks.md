@@ -2,7 +2,7 @@
 
 ## Setup and baseline
 
-- [ ] T001 Reconcile current Dependabot alerts and overlapping bot PRs against the three lockfiles; record the baseline and verification commands in `specs/904-remediate-dependency-alerts/evidence.md`.
+- [x] T001 Reconcile current Dependabot alerts and overlapping bot PRs against the three lockfiles; record the baseline and verification commands in `specs/904-remediate-dependency-alerts/evidence.md`.
 
 ## US1 — Active bridges
 
