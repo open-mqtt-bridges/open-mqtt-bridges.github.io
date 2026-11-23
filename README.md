@@ -93,6 +93,6 @@ recovery, and compatibility with your consumers before switching. See
 
 ## Development and license
 
-Use Linux and Rust **1.91.1**, pinned in [`rust-toolchain.toml`](rust-toolchain.toml).
+Use Linux and Rust **1.100.0**, pinned in [`rust-toolchain.toml`](rust-toolchain.toml).
 See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and [SECURITY.md](SECURITY.md)
 for private reporting. Licensed under [MIT](LICENSE).

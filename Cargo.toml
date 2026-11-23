@@ -2,7 +2,7 @@
 name = "ping-mqtt-bridge"
 version = "0.1.0"
 edition = "2024"
-rust-version = "1.91.1"
+rust-version = "1.100.0"
 license = "MIT"
 description = "Publish Linux ICMP reachability and latency over MQTT"
 repository = "https://github.com/open-mqtt-bridges/ping"
