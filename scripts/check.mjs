@@ -67,6 +67,12 @@ assert.ok(
 );
 const privacy = await readFile(new URL('privacy-policy/index.html', output), 'utf8');
 assert.ok(privacy.includes('GitHub Pages') && privacy.includes('omb-color-mode'));
+const archive = await readFile(new URL('idm-energy/index.html', output), 'utf8');
+assert.ok(archive.includes('archived and no longer maintained'), 'Missing IDM Energy archive notice.');
+assert.ok(
+  archive.includes('href="https://github.com/open-mqtt-bridges/idm-energy#readme"') && archive.includes('href="/"'),
+  'The IDM Energy archive must link to the historical README and the catalog.',
+);
 const profileIndex = process.argv.indexOf('--profile-root');
 if (profileIndex !== -1) {
   if (!process.argv[profileIndex + 1]) throw new Error('--profile-root requires a path.');

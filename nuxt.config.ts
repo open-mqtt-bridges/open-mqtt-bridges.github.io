@@ -27,7 +27,9 @@ export default defineNuxtConfig({
       siteCommit: commit,
     },
   },
-  nitro: { prerender: { routes: ['/', '/imprint', '/privacy-policy'], crawlLinks: true, failOnError: true } },
+  nitro: {
+    prerender: { routes: ['/', '/imprint', '/privacy-policy', '/idm-energy'], crawlLinks: true, failOnError: true },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'en' },

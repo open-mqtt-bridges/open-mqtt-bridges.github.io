@@ -14,7 +14,7 @@
 
 **Independent test**: In a combined preview, each catalog card opens the right central guide, and each guide links back to the catalog.
 
-- [ ] T003 [US1] Add the website-owned IDM Energy archive page in `app/pages/` and tests for its status and historical repository link; do not modify the archived repository.
+- [x] T003 [US1] Add the website-owned IDM Energy archive page in `app/pages/` and tests for its status and historical repository link; do not modify the archived repository.
 - [ ] T004 [US1] After T005–T008 have produced reachable revisions, pin all active docs in `.gitmodules`, update `bridges.json` and `scripts/catalog.mjs`, and verify the complete catalog and artifact using `scripts/check.mjs` and `test/`.
 
 ## Phase 4: Set up and troubleshoot without reading code (US2)
