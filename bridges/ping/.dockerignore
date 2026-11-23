@@ -4,3 +4,5 @@
 !LICENSE
 !src/
 !src/**
+!third_party/
+!third_party/**
