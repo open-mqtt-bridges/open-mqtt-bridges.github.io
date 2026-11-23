@@ -25,3 +25,16 @@ cargo test --locked --test mqtt_broker -- --ignored
 docker build -t ping-mqtt-bridge:ci .
 bash tests/container-smoke.sh ping-mqtt-bridge:ci
 ```
+
+The VitePress site is in `docs/`. With Node.js 24, run:
+
+```bash
+npm --prefix docs ci
+npm --prefix docs run build
+npm --prefix docs run dev
+```
+
+Open the URL printed by VitePress (including `/ping/`). The Docs workflow
+builds the site on documentation changes. To publish it, select **GitHub
+Actions** as the repository's Pages source and manually run the **Docs**
+workflow from `main` with **Deploy to GitHub Pages** enabled.
