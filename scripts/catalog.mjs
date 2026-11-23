@@ -26,11 +26,13 @@ export function validateCatalog(catalog) {
     if (bridge.logo !== null && bridge.logo !== `/assets/bridges/${bridge.slug}.svg`)
       throw new Error(`Incorrect local logo path: ${bridge.slug}`);
     if (bridge.archived !== (bridge.slug === 'idm-energy')) throw new Error(`Incorrect archive status: ${bridge.slug}`);
-    const repository = `https://github.com/open-mqtt-bridges/${bridge.slug}`;
+    const originalRepository = `https://github.com/open-mqtt-bridges/${bridge.slug}`;
+    const repository = `https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/${bridge.archived ? 'archive' : 'bridges'}/${bridge.slug}`;
     const readme = ['adguardhome', 'idm-energy'].includes(bridge.slug);
     if (
       bridge.repository !== repository ||
-      bridge.documentation !== (readme ? `${repository}#readme` : `https://open-mqtt-bridges.github.io/${bridge.slug}/`)
+      bridge.documentation !==
+        (readme ? `${originalRepository}#readme` : `https://open-mqtt-bridges.github.io/${bridge.slug}/`)
     ) {
       throw new Error(`Incorrect public URL: ${bridge.slug}`);
     }
