@@ -11,7 +11,7 @@
 ## Phase 2 — Foundation
 
 - [x] T002 Implement source capture and private recovery instructions in `scripts/migration/snapshot.mjs` and `docs/migration/recovery.md`. Follow `contracts/history.md`: capture heads, original tag objects, PRs, fork/local tips, worktree/reflog finds, relevant gitlinks and LFS references. Preserve distinct local tips even when names match. Write full OID lists, checksums and standalone bundles outside the checkout; restore to an empty repository. Stop on missing objects or unresolved publication rights.
-- [ ] T003 Record a sanitized per-source restore result in `migration/snapshots.json` and a package/public-interface baseline in `migration/packages.json` for all existing packages, including original repo association, effective grants, namespace, visibility, architectures, old digest and rollback settings. Verify recoverability without consulting the originals; keep private backup paths and material outside Git.
+- [x] T003 Record a sanitized per-source restore result in `migration/snapshots.json` and a package/public-interface baseline in `migration/packages.json` for all existing packages, including original repo association, effective grants, namespace, visibility, architectures, old digest and rollback settings. Verify recoverability without consulting the originals; keep private backup paths and material outside Git.
 
 ## Phase 3 — US1: Retrieve original history (P1, MVP)
 
