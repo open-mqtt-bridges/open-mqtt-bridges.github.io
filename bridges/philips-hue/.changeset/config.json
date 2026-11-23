@@ -3,7 +3,7 @@
   "changelog": [
     "@changesets/changelog-github",
     {
-      "repo": "open-mqtt-bridges/philips-hue"
+      "repo": "open-mqtt-bridges/open-mqtt-bridges.github.io"
     }
   ],
   "commit": false,
