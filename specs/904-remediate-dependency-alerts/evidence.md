@@ -13,3 +13,7 @@ Dependabot PRs #19, #20, #22, and #23 are merged. Frozen Yarn Classic installs w
 ## Ping
 
 `cargo tree --locked -i rustls-webpki` shows only `0.103.17`. In the pinned Rust 1.100.0 environment, formatting, strict Clippy, 10 unit tests, and the separate Mosquitto integration test passed. A disposable TLS broker connected with a configured test CA and was rejected without it. The locked release container build and amd64 runtime smoke passed (non-root, denied socket, reachability, timeout, recovery, health, SIGTERM). Remote multi-platform CI will be checked on the PR.
+
+## Display
+
+`cargo tree --locked -i serde_yaml` shows only `0.9.34+deprecated`, the bridge's existing parser. Formatting, strict Clippy for the bridge, 10 tests, the locked release build, and the container build passed on the Rust 1.99 line. The new test checks bundled MCCS 2.0–3.0 input selection offline. The vendored dependency emits upstream `nom` future-compatibility warnings; no warning is suppressed. No physical monitor was tested.

@@ -23,7 +23,7 @@ RUN apt-get update \
 COPY Cargo.toml Cargo.lock* ./
 COPY src ./src
 COPY third_party ./third_party
-RUN cargo build --release
+RUN cargo build --release --locked
 
 # =============================================================================
 # Runtime stage
@@ -36,6 +36,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/*
 
 COPY --from=builder /src/target/release/displays-mqtt-bridge /usr/local/bin/displays-mqtt-bridge
+COPY third_party/mccs-db-0.1.3/COPYING /usr/share/doc/displays-mqtt-bridge/mccs-db-COPYING
 
 # -----------------------------------------------------------------------------
 # Container health and execution

@@ -9,7 +9,7 @@
 **Independent acceptance**: Each resolved Cargo graph excludes the flagged version and its existing bridge checks pass.
 
 - [x] T002 [US1] Remove the vulnerable `rustls-webpki` resolution from `bridges/ping/Cargo.lock`, retaining the configured TLS transport in `bridges/ping/Cargo.toml`; document and license any necessary upstream-derived patch. Verify the graph, TLS trust behavior, and Ping CI.
-- [ ] T003 [US1] Remove `serde_yaml 0.7.5` from `bridges/display/Cargo.lock`, addressing the `mccs-db` path in `bridges/display/Cargo.toml`; preserve the existing `nom` patch, verify bundled monitor data, and run Display CI.
+- [x] T003 [US1] Remove `serde_yaml 0.7.5` from `bridges/display/Cargo.lock`, addressing the `mccs-db` path in `bridges/display/Cargo.toml`; preserve the existing `nom` patch, verify bundled monitor data, and run Display CI.
 
 ## US2 — Archived IDM build
 
