@@ -15,7 +15,7 @@
 
 **Independent acceptance**: A clean, frozen Yarn Classic install and archive bundle pass without the flagged resolved versions.
 
-- [ ] T004 [US2] Remediate residual `glob`, `minimatch`, and `picomatch` findings as applicable through `archive/idm-energy/package.json` and `archive/idm-energy/yarn.lock`; verify bot-fixed `ws` and `brace-expansion` remain patched.
+- [x] T004 [US2] Remediate residual `glob`, `minimatch`, and `picomatch` findings as applicable through `archive/idm-energy/package.json` and `archive/idm-energy/yarn.lock`; verify bot-fixed `ws` and `brace-expansion` remain patched.
 
 ## Integration and delivery
 

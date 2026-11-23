@@ -17,3 +17,7 @@ Dependabot PRs #19, #20, #22, and #23 are merged. Frozen Yarn Classic installs w
 ## Display
 
 `cargo tree --locked -i serde_yaml` shows only `0.9.34+deprecated`, the bridge's existing parser. Formatting, strict Clippy for the bridge, 10 tests, the locked release build, and the container build passed on the Rust 1.99 line. The new test checks bundled MCCS 2.0–3.0 input selection offline. The vendored dependency emits upstream `nom` future-compatibility warnings; no warning is suppressed. No physical monitor was tested.
+
+## Archived IDM
+
+Yarn Classic 1.22.22 resolved `rimraf 6.1.4`, `glob 14.0.6`, `minimatch 3.1.5` and `11.0.9`, and `picomatch 2.3.2` without overrides. The already patched `ws 8.23.0` and `brace-expansion 1.1.22` remain resolved. A clean audit also found `diff 4.0.2` under `ts-node`; its existing range accepts patched `4.0.4`. A second clean frozen install, TypeScript build, bundle, and Yarn audit all passed; Yarn reported zero advisories.
