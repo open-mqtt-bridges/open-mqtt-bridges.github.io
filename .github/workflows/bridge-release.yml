@@ -1,0 +1,130 @@
+name: Bridge release
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Existing reviewed bridge tag, for example wled/v4.1.0
+        type: string
+        required: true
+      mode:
+        type: choice
+        description: Rehearse locally by default; registry writes require a separate operator handoff
+        options: [dry-run, handoff-test, release]
+        default: dry-run
+permissions: { contents: read }
+concurrency:
+  group: bridge-release
+  cancel-in-progress: false
+jobs:
+  prepare:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      commit: ${{ steps.select.outputs.commit }}
+      slug: ${{ steps.select.outputs.slug }}
+      image: ${{ steps.select.outputs.image }}
+      immutable: ${{ steps.select.outputs.immutable }}
+      tags: ${{ steps.select.outputs.tags }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0, persist-credentials: false }
+      - id: select
+        env:
+          TAG: ${{ inputs.tag }}
+          MODE: ${{ inputs.mode }}
+        run: |
+          [[ "$TAG" =~ ^[a-z0-9-]+/v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+          commit=$(git rev-parse --verify "refs/tags/$TAG^{commit}")
+          git merge-base --is-ancestor "$commit" "$GITHUB_SHA"
+          git checkout --quiet --detach "$commit"
+          release=$(node scripts/select-release.mjs "$TAG")
+          slug=$(jq -r .slug <<< "$release"); image=$(jq -r .image <<< "$release"); immutable=$(jq -r .immutable <<< "$release")
+          if [ "$MODE" = handoff-test ]; then
+            tags="$image:handoff-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
+          else
+            tags=$(jq -r '([.immutable] + .aliases) as $t | [.image + ":" + $t[]] | join(",")' <<< "$release")
+            if [ "$slug" = modbus ]; then tags="$tags,$image:sha-${commit:0:7}"; fi
+          fi
+          printf 'commit=%s\nslug=%s\nimage=%s\nimmutable=%s\ntags=%s\n' "$commit" "$slug" "$image" "$immutable" "$tags" >> "$GITHUB_OUTPUT"
+          if [ "$MODE" != handoff-test ]; then
+            mkdir -p "$RUNNER_TEMP/release"
+            node scripts/bridge-release-notes.mjs "$TAG" > "$RUNNER_TEMP/release/notes.md"
+          fi
+      - uses: docker/setup-buildx-action@v4
+      - uses: docker/build-push-action@v7
+        with:
+          context: bridges/${{ steps.select.outputs.slug }}
+          platforms: linux/amd64
+          load: true
+          tags: bridge-release-candidate:local
+          labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+      - name: Preserve the exact tested image for publication
+        if: inputs.mode != 'dry-run'
+        run: docker save bridge-release-candidate:local | gzip > "$RUNNER_TEMP/image.tar.gz"
+      - if: inputs.mode != 'dry-run'
+        uses: actions/upload-artifact@v7
+        with: { name: image, path: '${{ runner.temp }}/image.tar.gz', retention-days: 1 }
+      - name: Package the static Modbus binary
+        if: steps.select.outputs.slug == 'modbus' && inputs.mode != 'handoff-test'
+        env: { TAG: '${{ inputs.tag }}' }
+        run: |
+          set -eu
+          name="modbus-mqtt-bridge-${TAG#*/v}"; dist="$RUNNER_TEMP/release"; staging="$RUNNER_TEMP/$name"
+          mkdir "$staging"; container=$(docker create bridge-release-candidate:local)
+          trap 'docker rm "$container" >/dev/null' EXIT
+          docker cp "$container:/modbus-mqtt-bridge" "$staging/modbus-mqtt-bridge"
+          cp bridges/modbus/{LICENSE,README.md} "$staging/"
+          archive="$name-linux-musl-x86_64.tar.gz"; tar -C "$RUNNER_TEMP" -czf "$dist/$archive" "$name"
+          (cd "$dist" && sha256sum "$archive" > "$archive.sha256")
+      - if: inputs.mode != 'handoff-test'
+        uses: actions/upload-artifact@v7
+        with: { name: release, path: '${{ runner.temp }}/release/', retention-days: 1 }
+  publish:
+    needs: prepare
+    if: inputs.mode != 'dry-run' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    environment: bridge-release
+    permissions: { contents: write, packages: write }
+    env:
+      GH_TOKEN: ${{ github.token }}
+      SLUG: ${{ needs.prepare.outputs.slug }}
+      MODE: ${{ inputs.mode }}
+      TAG: ${{ inputs.tag }}
+      IMAGE: ${{ needs.prepare.outputs.image }}
+      IMMUTABLE: ${{ needs.prepare.outputs.immutable }}
+      TAGS: ${{ needs.prepare.outputs.tags }}
+      ALLOWED: ${{ vars.BRIDGE_RELEASE_PACKAGES }}
+    steps:
+      - uses: actions/checkout@v7
+        with: { fetch-depth: 0, persist-credentials: false }
+      - name: Require approved package, same tag revision, and unused immutable version
+        env: { EXPECTED: '${{ needs.prepare.outputs.commit }}' }
+        run: |
+          test -n "$ALLOWED"
+          jq -e --arg slug "$SLUG" 'type=="array" and index($slug)!=null' <<< "$ALLOWED"
+          test "$(git rev-parse --verify "refs/tags/$TAG^{commit}")" = "$EXPECTED"
+          gh api --paginate --slurp "/orgs/$GITHUB_REPOSITORY_OWNER/packages/container/$SLUG/versions?per_page=100" > "$RUNNER_TEMP/versions.json"
+          if [ "$MODE" = release ]; then
+            jq -e --arg version "$IMMUTABLE" 'length>0 and all(.[][]; (.metadata.container.tags|index($version))==null)' "$RUNNER_TEMP/versions.json"
+          fi
+      - uses: actions/download-artifact@v8
+        with: { name: image, path: '${{ runner.temp }}/candidate' }
+      - uses: docker/login-action@v4
+        with: { registry: ghcr.io, username: '${{ github.actor }}', password: '${{ github.token }}' }
+      - name: Publish only the selected bridge
+        run: |
+          docker load -i "$RUNNER_TEMP/candidate/image.tar.gz"
+          IFS=',' read -ra refs <<< "$TAGS"
+          for ref in "${refs[@]}"; do
+            [[ "$ref" == "$IMAGE:"* ]]
+            docker tag bridge-release-candidate:local "$ref"; docker push "$ref"
+          done
+      - if: inputs.mode == 'release'
+        uses: actions/download-artifact@v8
+        with: { name: release, path: '${{ runner.temp }}/release' }
+      - if: inputs.mode == 'release'
+        name: Create the bridge-specific GitHub release
+        run: |
+          shopt -s nullglob
+          assets=("$RUNNER_TEMP"/release/*.tar.gz "$RUNNER_TEMP"/release/*.sha256)
+          gh release create "$TAG" "${assets[@]}" --verify-tag --title "$SLUG ${TAG#*/}" --notes-file "$RUNNER_TEMP/release/notes.md"

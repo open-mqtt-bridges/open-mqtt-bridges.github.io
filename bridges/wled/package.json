@@ -1,0 +1,68 @@
+{
+  "name": "wled-mqtt-bridge",
+  "version": "4.0.4",
+  "private": true,
+  "description": "WLED MQTT Bridge connects device APIs to MQTT.",
+  "packageManager": "pnpm@11.28.9",
+  "engines": {
+    "node": ">=26.13.0 <27"
+  },
+  "scripts": {
+    "build": "ncc build src/main.ts -o dist --source-map --minify",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/main.ts",
+    "lint": "eslint . --max-warnings=0",
+    "typecheck": "tsc6 --noEmit",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.ts --runInBand",
+    "test:availability": "tsx test/availability.integration.ts",
+    "docs:dev": "pnpm --dir docs dev",
+    "docs:build": "pnpm --dir docs build",
+    "changeset": "changeset"
+  },
+  "dependencies": {
+    "@nestjs/common": "^12.5.0",
+    "@nestjs/core": "^12.5.0",
+    "@nestjs/platform-express": "^12.5.0",
+    "axios": "^1.21.1",
+    "dotenv": "^18.0.10",
+    "envalid": "^9.0.0",
+    "js-yaml": "^5.5.0",
+    "mqtt": "^5.16.1",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "ws": "^8.23.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "^1.0.1",
+    "@changesets/cli": "^3.0.3",
+    "@eslint/js": "^10.0.1",
+    "@nestjs/testing": "^12.5.0",
+    "@types/jest": "^30.0.0",
+    "@types/node": "^26.6.6",
+    "@types/ws": "^8.18.2",
+    "@typescript-eslint/eslint-plugin": "^8.72.1",
+    "@typescript-eslint/parser": "^8.72.1",
+    "@typescript/native": "npm:typescript@^7.0.2",
+    "@vercel/ncc": "^0.45.0",
+    "eslint": "^10.15.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.7",
+    "jest": "^30.5.2",
+    "prettier": "^3.9.10",
+    "prettier-plugin-organize-imports": "^4.3.0",
+    "ts-jest": "^29.4.15",
+    "tsx": "^4.23.15",
+    "typescript": "npm:@typescript/typescript6@^6.0.2",
+    "typescript-eslint": "^8.72.1"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/open-mqtt-bridges/wled.git"
+  },
+  "homepage": "https://open-mqtt-bridges.github.io/wled/",
+  "bugs": {
+    "url": "https://github.com/open-mqtt-bridges/wled/issues"
+  }
+}

@@ -16,7 +16,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "node scripts/check.mjs",
-    "test": "node --test"
+    "test": "node --test \"test/**/*.test.mjs\""
   },
   "repository": {
     "type": "git",

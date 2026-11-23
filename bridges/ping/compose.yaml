@@ -1,0 +1,13 @@
+services:
+  ping:
+    build: .
+    read_only: true
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    sysctls:
+      net.ipv4.ping_group_range: "65532 65532"
+    volumes:
+      - ./bridge.toml:/etc/ping-mqtt-bridge/bridge.toml:ro,z
+    restart: unless-stopped

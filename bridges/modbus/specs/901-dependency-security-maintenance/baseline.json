@@ -1,0 +1,9 @@
+{
+  "base": "27894a7cdaf93b7a0b156b48416f7984d9a06a35",
+  "runtime": null,
+  "packageManager": null,
+  "manifests": {
+    "docs/package.json": "{\n  \"name\": \"modbus-mqtt-bridge-docs\",\n  \"private\": true,\n  \"version\": \"0.2.0\",\n  \"scripts\": {\n    \"dev\": \"vitepress dev .\",\n    \"build\": \"vitepress build .\",\n    \"preview\": \"vitepress preview .\"\n  },\n  \"dependencies\": {\n    \"vitepress\": \"^1.6.4\",\n    \"vitepress-plugin-mermaid\": \"^2.0.17\"\n  }\n}\n",
+    "Cargo.toml": "[package]\nname = \"modbus-mqtt-bridge\"\nversion = \"1.0.2\"\nedition = \"2024\"\nrepository = \"https://github.com/open-mqtt-bridges/modbus\"\nhomepage = \"https://open-mqtt-bridges.github.io/modbus/\"\nlicense = \"GPL-3.0-only\"\n\n[dependencies]\nanyhow = \"1\"\nclap = { version = \"4\", features = [\"derive\"] }\nfutures = \"0.3\"\nrumqttc = \"0.25\"\nserde = { version = \"1\", features = [\"derive\"] }\nserde_json = \"1\"\nserde_yaml = \"0.9\"\ntokio = { version = \"1\", features = [\"full\"] }\ntokio-modbus = \"0.13\"\ntracing = \"0.1\"\ntracing-subscriber = { version = \"0.3\", features = [\"env-filter\", \"fmt\", \"json\"] }\n"
+  }
+}
