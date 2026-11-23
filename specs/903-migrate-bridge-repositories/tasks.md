@@ -31,7 +31,7 @@
 - [x] T010 [US2] Import `bridges/homeconnect/`; compare the original tree and OIDs and run its pinned source CI commands from the new location.
 - [x] T011 [US2] Import `bridges/landroid/`; verify its history and run its own locked build, tests, and existing container checks.
 - [x] T012 [US2] Import `bridges/philips-hue/`; verify its history, locked build, tests, and supported runtime checks against the baseline.
-- [ ] T013 [US2] Import `bridges/roborock/`; verify its history and source CI including existing container checks, without using real user credentials.
+- [x] T013 [US2] Import `bridges/roborock/`; verify its history and source CI including existing container checks, without using real user credentials.
 - [ ] T014 [US2] Import `bridges/pocketbase/`; verify its history and run its own pinned pnpm, test and coverage checks independently of the website's package manager.
 - [ ] T015 [US2] Import `bridges/adguardhome/`; verify its history and reproduce its Yarn Classic installation and baseline checks without replacing the lockfile.
 - [ ] T016 [US2] Import `bridges/display/`; verify its history, including known documentation pins, and reproduce both Rust and Node checks.
