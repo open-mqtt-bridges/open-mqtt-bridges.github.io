@@ -37,7 +37,7 @@
 - [x] T016 [US2] Import `bridges/display/`; verify its history, including known documentation pins, and reproduce both Rust and Node checks.
 - [x] T017 [US2] Import `bridges/ping/`; verify its history, pinned Rust checks, Mosquitto integration test and amd64/arm64 container checks. Report unavailable runners separately.
 - [x] T018 [US2] Import `archive/idm-energy/` without reopening its source; verify its original history and tree and demonstrate it is excluded from active jobs.
-- [ ] T019 [US2] Complete all ten active CI profiles in `.github/workflows/bridge-ci.yml` against `migration/baseline.md`; run the complete CI selection matrix and eleven-source clean-clone check. Document only genuine baseline failures or hardware gaps in `migration/validation.md`.
+- [x] T019 [US2] Complete all ten active CI profiles in `.github/workflows/bridge-ci.yml` against `migration/baseline.md`; run the complete CI selection matrix and eleven-source clean-clone check. Document only genuine baseline failures or hardware gaps in `migration/validation.md`.
 
 ## Phase 5 — US3: Keep existing packages usable (P3)
 

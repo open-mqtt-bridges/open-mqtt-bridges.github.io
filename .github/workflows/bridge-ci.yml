@@ -63,7 +63,8 @@ jobs:
           docker run -d --name bridge-ci -e PORT=3000 "${extra[@]}" -p 127.0.0.1:3000:3000 \
             -v "$PWD/config/config.example.yml:/app/config/config.yml:ro" bridge-under-test:ci
           trap 'docker rm -f bridge-ci >/dev/null' EXIT
-          curl --retry 20 --retry-connrefused --retry-delay 1 -fsS http://127.0.0.1:3000/health > "$RUNNER_TEMP/health.json"
+          curl --retry 20 --retry-all-errors --retry-delay 1 --max-time 3 -fsS \
+            -o "$RUNNER_TEMP/health.json" http://127.0.0.1:3000/health || { docker logs bridge-ci; exit 1; }
           if [ "$BRIDGE" != pocketbase ]; then
             node -e 'const h=require(process.env.RUNNER_TEMP+"/health.json");process.exit(h.status==="ok" && h.version===require("./package.json").version ? 0 : 1)'
           fi
