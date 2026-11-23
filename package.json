@@ -30,7 +30,7 @@
   "packageManager": "pnpm@11.28.9",
   "dependencies": {
     "@iconify-json/lucide": "^1.2.152",
-    "@nuxt/ui": "4.12.0",
+    "@nuxt/ui": "4.13.0",
     "nuxt": "4.6.4",
     "tailwindcss": "^4.3.5"
   },
@@ -40,7 +40,7 @@
     "eslint": "^10.14.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.18.1",
-    "prettier": "^3.9.10",
+    "prettier": "^3.10.1",
     "typescript": "^6.0.3",
     "vue-tsc": "^3.3.14"
   }
