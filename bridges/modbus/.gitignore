@@ -1,0 +1,21 @@
+/target
+/.idea
+/.vscode
+/.DS_Store
+/.codex
+/node_modules
+/docs/node_modules
+/docs/.vitepress/dist
+/docs/.vitepress/.temp
+/docs/.vitepress/cache
+
+# Local runtime config and secrets
+/.env
+/.env.*
+/config/*.local.yml
+/config/*.local.yaml
+/config/*.local.json
+/config/config.yml
+
+# Logs
+/*.log
