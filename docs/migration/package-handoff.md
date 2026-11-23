@@ -15,6 +15,8 @@ Use one record per package in [the baseline](../../migration/packages.json). The
 
 **Rehearsal boundary:** Prove the procedure first with a disposable package and two distinct repository identities. A local build, a simulated role, or a successful test against a new package is not evidence of a completed production handoff. Publish nothing and change no live permissions without separate approval.
 
+The [disposable rehearsal](../../migration/package-rehearsal.md) verified GitHub's manual relink procedure: **Package settings → Repository source → Unlink**, then **Connect Repository** on the package landing page. Verify the registry package ID across both steps. Publishing a new source label does not replace this step. Inspect Actions grants and inheritance separately after each relink; both can differ from the intended final settings.
+
 ## Independent version and release review
 
 Keep Changesets entries and changelogs inside the six existing pnpm/Changesets bridge directories. Prepare a version PR from the owning directory, using its pinned `pnpm changeset version` command and reviewing the resulting package version, changelog and lockfile. Do not run it from the website root or combine unrelated version PRs. For Display and Modbus, review the Cargo package version, lockfile and the matching bracketed changelog entry together. For AdGuard Home, review its package version and changelog. Never auto-merge version PRs. Ping and IDM Energy have no package publisher.
