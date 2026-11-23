@@ -7,3 +7,6 @@ pnpm-lock.yaml
 assets
 public
 docs/screenshots
+bridges
+archive
+bridge-sources

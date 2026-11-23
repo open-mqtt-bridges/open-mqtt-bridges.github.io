@@ -1,0 +1,23 @@
+# Dependency and security maintenance
+
+Issue: https://github.com/open-mqtt-bridges/roborock/issues/51
+
+## User stories
+
+- US1 (P1): As an operator, receive compatible stable dependency updates, including supported major updates, with independently audited lockfiles.
+- US2 (P1): As a maintainer, receive verified Dependabot alerts, secret scanning/push protection and supported CodeQL analysis.
+- US3 (P2): As a reviewer, receive one tested PR with migration evidence, residual advisories and deferred updates.
+
+## Requirements and acceptance
+
+Preserve MQTT topics, payloads, retention, configuration keys and deployment/package identifiers. Use existing package-manager and runtime pins. No prereleases, forced peer/engine acceptance, relaxed security rules, unrelated formatting, releases or deployments. Keep archived idm-energy untouched. TypeScript 7 requires compatible parser/lint/test peer ranges. Roborock 3.40.3 requires official Node 26 engine support. Preserve old feature specifications and the website logo branch.
+
+All adopted updates require clean immutable installation, applicable local checks and current-head CI. Fix actionable advisories; explicitly record unavailable security features, unresolved advisories and deferred targets. Merge approval remains separate.
+
+## Authorized release verification correction
+
+The user authorizes merging PRs, fixing discovered bugs and deploying new versions. Published container smoke tests found that /health reports a stale fallback version because direct Node execution does not set npm_package_version. The container must report its owning package version without changing the health response shape, existing environment overrides, MQTT contracts or image identifiers.
+
+## Authorized Roborock engine-support exception
+
+The user explicitly approved homebridge-roborock-matter 3.40.3 while retaining Node 26 after reviewing successful isolated Node 26 installation, lint, typecheck, build and 30 tests. Upstream engines still declare Node 18/20/22/24; actual device compatibility is not proven. This explicit approval supersedes the earlier official-engine-support deferral. Do not force installation, disable engine/peer/security checks, lower Node or claim upstream Node 26 support.

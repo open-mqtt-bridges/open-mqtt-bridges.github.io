@@ -1,0 +1,13 @@
+services:
+  homeconnect-mqtt-bridge:
+    image: ghcr.io/tobiaswaelde/homeconnect-mqtt-bridge:${IMAGE_TAG:-latest}
+    restart: unless-stopped
+    user: '${UID:-1000}:${GID:-1000}'
+    environment:
+      CORS_ORIGIN: '${CORS_ORIGIN:-*}'
+      HOST: '${HOST:-0.0.0.0}'
+      PORT: '${PORT:-3003}'
+    volumes:
+      - ./config:/app/config
+    ports:
+      - '${PORT:-3003}:${PORT:-3003}'

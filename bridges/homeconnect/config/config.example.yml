@@ -1,0 +1,22 @@
+mqtt:
+  host: mqtt.example.net
+  clientId: '' # Leave empty to generate a UUID at startup.
+  username: mqtt-user
+  password: change-me
+instances:
+  - id: kitchen
+    topic: home/home-connect/kitchen
+    clientId: your-client-id
+    clientSecret: your-client-secret
+    # Register this exact public URL in the Home Connect Developer Portal.
+    redirectUri: https://bridge.example.net/home-connect/callback
+    authFile: kitchen.auth.json
+    apiBaseUrl: https://api.home-connect.com
+    eventReconnectInterval: 30000
+    # Reconcile appliance inventory every 10 minutes; status changes arrive through SSE.
+    updateInterval: 600000
+
+  # Prepared but disabled accounts do not need OAuth credentials yet.
+  - id: future-kitchen
+    enabled: false
+    topic: home/home-connect/future-kitchen

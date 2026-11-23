@@ -1,0 +1,138 @@
+{
+  "observedOn": "2026-11-23",
+  "status": "Pre-freeze rehearsal. All commit and tag objects in the 30 identified srv-ai bridge checkouts are present in the restored snapshots. The owner confirmed there are no additional unpublished commits outside srv-ai.",
+  "sources": [
+    {
+      "slug": "adguardhome",
+      "sourceTip": "f6c28ed4271bd427861354a922a0c4d46ba87bc6",
+      "commitCount": 28,
+      "commitListSha256": "6eddf2c135a74bee46e865011d2f7425bd7af1c2d23c03d79f81502dc75d8d87",
+      "refCount": 36,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "display",
+      "sourceTip": "06a22aa37469d050b44b359a9735083cb64293a5",
+      "commitCount": 79,
+      "commitListSha256": "60c04f3a021e9127266e6d5346acb9986b6053550071348e5e561cda5905a2ff",
+      "refCount": 89,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "homeconnect",
+      "sourceTip": "a04cbe2171c9e56a98e6a4dd532a07ec0b742980",
+      "commitCount": 126,
+      "commitListSha256": "b43ca32a38ac2959ec6564648de42bab8445bed9455ad74a4394da83f70a4550",
+      "refCount": 178,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "idm-energy",
+      "sourceTip": "93c6e9535629c4a4670e718421294673bfbbcf5a",
+      "commitCount": 21,
+      "commitListSha256": "f75b7ee35d79455b22f78dd2192a258cbdf71a3ff7b7bc2e352e2d5205946192",
+      "refCount": 8,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 0
+    },
+    {
+      "slug": "landroid",
+      "sourceTip": "602d07e792de3f86da4bba683d47feb4dda0afaa",
+      "commitCount": 123,
+      "commitListSha256": "a487405c2d72855ead5a3f71b15381b6b7c49457bd5152d8602e85adb6675362",
+      "refCount": 175,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "modbus",
+      "sourceTip": "1eabfe4d80b0236217e5f4819b1de10511331394",
+      "commitCount": 52,
+      "commitListSha256": "948845d017d9b57e08c85621249b127bfda3f8fd7785c000cea8efeb311318a1",
+      "refCount": 34,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 10,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "philips-hue",
+      "sourceTip": "355461e21e99545d0b7ec5a7885cc7a6b3ec4b44",
+      "commitCount": 114,
+      "commitListSha256": "3b7c46ef3660ce0b1d95a4f47be317a48751b54d1e5d6a42b864d9d823b23149",
+      "refCount": 167,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "ping",
+      "sourceTip": "06d14a9594469e81fcb1026778a8495d533a8232",
+      "commitCount": 18,
+      "commitListSha256": "42da30d52004121a1ebb8b00f8494f49be1960d70188076e42883296180c2a4e",
+      "refCount": 27,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "pocketbase",
+      "sourceTip": "d1c36da62fbfe3591b071e638488583c53191d7d",
+      "commitCount": 118,
+      "commitListSha256": "e3e70b5a3d4fc85284cb56074461cfb1429764b9551d1130f48e4a756f467169",
+      "refCount": 193,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "roborock",
+      "sourceTip": "ae5f2503bd45f759699b9a7e86c8ab71324bfb5f",
+      "commitCount": 147,
+      "commitListSha256": "4ccedb051efbc89a9e84641fa9552e140812e98408314da76db17b21e856f09e",
+      "refCount": 200,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
+    },
+    {
+      "slug": "wled",
+      "sourceTip": "54df219363a8058bff0786134c4b0644f043353c",
+      "commitCount": 265,
+      "commitListSha256": "1152b3efe0fb7bc350ba7220a1d50a848c6bf8a2effc7b0b592e649fdbb221ed",
+      "refCount": 260,
+      "gitRestoreVerified": true,
+      "externalGitlinksFound": 0,
+      "lfsPointersFound": 0,
+      "releaseAssetsVerified": 12,
+      "localCheckoutsCompared": 3
+    }
+  ]
+}

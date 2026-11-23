@@ -1,0 +1,412 @@
+import axios from 'axios';
+import { HttpMqttBridge } from '~/lib/http-mqtt-bridge';
+import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
+import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
+import { HomeConnectAuth } from './auth';
+import { HomeConnectClient } from './client';
+import {
+  applianceCategories,
+  applianceStateTopic,
+  applianceTopic,
+  bridgeTopic,
+  commandErrorTopic,
+  commandResultTopic,
+  parseProgramCommandTopic,
+  programCommandSchema,
+  programCommandTopics,
+  publishApplianceInfo,
+  publishCategory,
+  stopProgramCommandSchema,
+} from './mqtt-contract';
+import {
+  clearStateCategory,
+  createApplianceState,
+  timestampState,
+  updateStateConnection,
+  updateStateFromCategory,
+  updateStateFromEvent,
+  type ApplianceState,
+} from './state';
+import type { Appliance, HomeConnectCommand, HomeConnectCommandOperation } from './types';
+
+/** Bridges discovered Home Connect appliances, state categories, and validated program commands to MQTT. */
+export class HomeConnect extends HttpMqttBridge<ActiveHomeConnectConfig> {
+  private static readonly heartbeatInterval = 30_000;
+  private readonly activeEventStreams = new Set<string>();
+  private readonly applianceStates = new Map<string, ApplianceState>();
+  private readonly auth: HomeConnectAuth;
+  private readonly client: HomeConnectClient;
+  private connected = false;
+  private consecutiveFailures = 0;
+  private readonly discoveredApplianceIds = new Set<string>();
+  private destroyed = false;
+  private readonly eventReconnectTimers = new Map<string, NodeJS.Timeout>();
+
+  /**
+   * Creates the class instance.
+   * @param {ActiveHomeConnectConfig} cfg The active bridge configuration.
+   * @param {MqttBridgeClient} mqtt The shared MQTT client.
+   */
+  constructor(cfg: ActiveHomeConnectConfig, mqtt: MqttBridgeClient) {
+    super(cfg, mqtt, `HOME_CONNECT@${cfg.topic}`, cfg.apiBaseUrl);
+    this.client = new HomeConnectClient(cfg, (nextRetryAt) => this.publishNextRetryAt(nextRetryAt));
+    this.auth = new HomeConnectAuth(cfg, this.client, (message, error) => this.logError(message, error));
+  }
+
+  /** Returns the configured instance topic. */
+  get topic() {
+    return this.cfg.topic;
+  }
+
+  /** Returns the configured instance ID. */
+  get id() {
+    return this.cfg.id;
+  }
+
+  /** Sets up command routing and restores the persisted OAuth session before the first synchronization. */
+  setup() {
+    this.publishAvailability(false);
+    this.publishHeartbeat();
+    this.subscribeCommands();
+    this.poll('heartbeat', HomeConnect.heartbeatInterval, () => this.publishHeartbeat());
+    void this.initialize();
+  }
+
+  /** Stops requests, subscriptions, timers, OAuth refreshes, and event streams. */
+  override destroy() {
+    if (this.destroyed) return;
+    this.destroyed = true;
+    this.auth.destroy();
+    this.client.destroy();
+    for (const timer of this.eventReconnectTimers.values()) clearTimeout(timer);
+    this.eventReconnectTimers.clear();
+    this.publishAvailability(false);
+    this.mqtt.publish(bridgeTopic(this.cfg.topic, 'heartbeat-at'), null, { retain: true });
+    super.destroy();
+  }
+
+  /** Starts browser OAuth authorization and returns the unmodified Home Connect authorization URL. */
+  createAuthorizationUrl() {
+    return this.auth.createAuthorizationUrl();
+  }
+
+  /** Completes an OAuth callback, then performs the first complete appliance synchronization. */
+  async completeAuthorization(state: string, code: string) {
+    if (!(await this.auth.completeAuthorization(state, code))) {
+      this.recordDiscoveryFailure();
+      return false;
+    }
+    await this.refreshAppliances(true);
+    return true;
+  }
+
+  /** Checks whether this instance owns the given short-lived OAuth state. */
+  hasAuthorizationState(state: string) {
+    return this.auth.hasAuthorizationState(state);
+  }
+
+  private async initialize() {
+    await this.auth.load();
+    await this.refreshAppliances(true);
+    if (!this.destroyed) this.poll('appliances', this.cfg.updateInterval, () => this.refreshAppliances());
+  }
+
+  /**
+   * Reconciles appliance inventory and starts event streams after every boot.
+   * Full state is requested only for the initial synchronization and newly discovered appliances;
+   * Home Connect event streams provide subsequent state changes without exhausting API quotas.
+   * @param {boolean} includeKnownApplianceState Whether to reload state for already known appliances.
+   */
+  private async refreshAppliances(includeKnownApplianceState = false) {
+    const appliances = await this.getAppliances();
+    if (!appliances || this.destroyed) return;
+
+    const knownApplianceIds = new Set(this.discoveredApplianceIds);
+    this.discoveredApplianceIds.clear();
+    appliances.forEach((appliance) => this.discoveredApplianceIds.add(appliance.haId));
+    for (const applianceId of knownApplianceIds)
+      if (!this.discoveredApplianceIds.has(applianceId)) this.removeApplianceState(applianceId);
+    this.mqtt.publish(bridgeTopic(this.cfg.topic, 'appliances/json'), JSON.stringify(appliances), { retain: true });
+    appliances.forEach((appliance) => {
+      publishApplianceInfo(this.mqtt.publish.bind(this.mqtt), this.cfg.topic, appliance.haId, appliance);
+      updateStateConnection(this.stateFor(appliance.haId), appliance.connected);
+    });
+    this.recordSuccess();
+    const appliancesWithStateToLoad = includeKnownApplianceState
+      ? appliances
+      : appliances.filter((appliance) => !knownApplianceIds.has(appliance.haId));
+    const connectedAppliancesWithStateToLoad = appliancesWithStateToLoad.filter(isConnected);
+    await Promise.all(connectedAppliancesWithStateToLoad.map((appliance) => this.refreshAppliance(appliance.haId)));
+    const loadedApplianceIds = new Set(connectedAppliancesWithStateToLoad.map((appliance) => appliance.haId));
+    appliances.forEach((appliance) => {
+      if (!loadedApplianceIds.has(appliance.haId)) this.publishApplianceState(appliance.haId);
+      if (isConnected(appliance)) this.connectEvents(appliance.haId);
+      else this.disconnectEvents(appliance.haId);
+    });
+  }
+
+  private async getAppliances() {
+    const controller = this.startRequest('appliances');
+    try {
+      const accessToken = await this.accessToken();
+      if (!accessToken) {
+        this.recordDiscoveryFailure();
+        return;
+      }
+      return await this.client.getAppliances(accessToken, controller.signal);
+    } catch (error) {
+      if (!controller.signal.aborted) this.recordDiscoveryFailure();
+      this.logError('Failed to load Home Connect appliances.', error, controller.signal);
+      return;
+    } finally {
+      this.finishRequest('appliances', controller);
+    }
+  }
+
+  private async refreshAppliance(applianceId: string) {
+    // Home Connect can reject concurrent category requests for the same appliance with HTTP 409.
+    for (const category of applianceCategories) await this.getApplianceCategory(applianceId, category);
+    this.publishApplianceState(applianceId);
+  }
+
+  private async getApplianceCategory(applianceId: string, category: string) {
+    const key = `appliance:${applianceId}:${category}`;
+    const controller = this.startRequest(key);
+    try {
+      const accessToken = await this.accessToken();
+      if (!accessToken) return;
+      const data = await this.client.getCategory(applianceId, category, accessToken, controller.signal);
+      if (category === 'programs/available')
+        this.mqtt.publish(`${applianceTopic(this.cfg.topic, applianceId)}/${category}/json`, JSON.stringify(data), {
+          retain: true,
+        });
+      else publishCategory(this.mqtt.publish.bind(this.mqtt), this.cfg.topic, applianceId, category, data);
+      updateStateFromCategory(this.stateFor(applianceId), category, data);
+    } catch (error) {
+      if (isUnavailableProgramCategory(category, error)) {
+        clearStateCategory(this.stateFor(applianceId), category);
+        return;
+      }
+      this.logError(`Failed to load Home Connect ${category} for ${applianceId}.`, error, controller.signal);
+    } finally {
+      this.finishRequest(key, controller);
+    }
+  }
+
+  private connectEvents(applianceId: string) {
+    const key = `events:${applianceId}`;
+    if (this.destroyed || this.activeEventStreams.has(applianceId) || this.eventReconnectTimers.has(applianceId))
+      return;
+    this.activeEventStreams.add(applianceId);
+    const controller = this.startRequest(key);
+    void (async () => {
+      try {
+        const accessToken = await this.accessToken();
+        if (!accessToken) return;
+        await this.client.consumeEventStream(applianceId, accessToken, controller.signal, (payload) => {
+          this.publishEvent(applianceId, payload);
+        });
+      } catch (error) {
+        this.logError(`Home Connect event stream for ${applianceId} closed.`, error, controller.signal);
+      } finally {
+        this.activeEventStreams.delete(applianceId);
+        this.finishRequest(key, controller);
+        if (!this.destroyed && !controller.signal.aborted) this.scheduleEventReconnect(applianceId);
+      }
+    })();
+  }
+
+  private publishEvent(applianceId: string, payload: string) {
+    try {
+      const data = JSON.parse(payload);
+      publishCategory(this.mqtt.publish.bind(this.mqtt), this.cfg.topic, applianceId, 'events', data, payload);
+      updateStateFromEvent(this.stateFor(applianceId), data);
+      this.publishApplianceState(applianceId);
+    } catch {
+      this.mqtt.publish(`${applianceTopic(this.cfg.topic, applianceId)}/events/json`, payload);
+      this.logger.warn(`Received invalid Home Connect event JSON for ${applianceId}.`);
+    }
+  }
+
+  private scheduleEventReconnect(applianceId: string) {
+    const timer = setTimeout(() => {
+      this.eventReconnectTimers.delete(applianceId);
+      this.connectEvents(applianceId);
+    }, this.cfg.eventReconnectInterval);
+    this.eventReconnectTimers.set(applianceId, timer);
+  }
+
+  private disconnectEvents(applianceId: string) {
+    const timer = this.eventReconnectTimers.get(applianceId);
+    if (timer) clearTimeout(timer);
+    this.eventReconnectTimers.delete(applianceId);
+    this.cancelRequest(`events:${applianceId}`);
+  }
+
+  private removeApplianceState(applianceId: string) {
+    this.disconnectEvents(applianceId);
+    this.applianceStates.delete(applianceId);
+    this.mqtt.publish(applianceStateTopic(this.cfg.topic, applianceId), null, { retain: true });
+    this.mqtt.publish(`${applianceTopic(this.cfg.topic, applianceId)}/programs/available/json`, null, { retain: true });
+  }
+
+  private stateFor(applianceId: string) {
+    let state = this.applianceStates.get(applianceId);
+    if (!state) {
+      state = createApplianceState();
+      this.applianceStates.set(applianceId, state);
+    }
+    return state;
+  }
+
+  private publishApplianceState(applianceId: string) {
+    this.mqtt.publish(
+      applianceStateTopic(this.cfg.topic, applianceId),
+      JSON.stringify(timestampState(this.stateFor(applianceId))),
+      { retain: true },
+    );
+  }
+
+  private subscribeCommands() {
+    for (const topic of programCommandTopics(this.cfg.topic))
+      this.subscribe(topic, (commandTopic, payload) => this.handleCommand(commandTopic, payload));
+  }
+
+  private handleCommand(commandTopic: string, payload: string) {
+    const details = parseProgramCommandTopic(commandTopic, this.cfg.topic);
+    try {
+      if (!details) throw new Error('Command topic does not name an allowed Home Connect operation.');
+      if (!this.discoveredApplianceIds.has(details.applianceId))
+        throw new Error('Appliance is not currently discovered.');
+      const commandPayload = JSON.parse(payload);
+      if (details.operation === 'programs-active-stop') {
+        stopProgramCommandSchema.parse(commandPayload);
+        void this.executeCommand({
+          applianceId: details.applianceId,
+          method: details.method,
+          operation: details.operation,
+          path: details.path,
+        });
+        return;
+      }
+      const program = programCommandSchema.parse(commandPayload);
+      void this.executeCommand({
+        applianceId: details.applianceId,
+        body: { data: program },
+        method: details.method,
+        operation: details.operation,
+        path: details.path,
+      });
+    } catch (error) {
+      this.publishCommandError(details?.applianceId, details?.operation, error);
+    }
+  }
+
+  private async executeCommand(command: HomeConnectCommand) {
+    const key = `command:${command.applianceId}`;
+    const controller = this.startRequest(key);
+    try {
+      const accessToken = await this.accessToken();
+      if (!accessToken) {
+        this.publishCommandError(
+          command.applianceId,
+          command.operation,
+          new Error('Home Connect authentication is unavailable.'),
+        );
+        return;
+      }
+      await this.client.executeCommand(command, accessToken, controller.signal);
+      if (controller.signal.aborted) return;
+
+      await this.refreshAppliance(command.applianceId);
+      if (controller.signal.aborted) return;
+
+      this.mqtt.publish(
+        commandResultTopic(this.cfg.topic, command.applianceId, command.operation),
+        JSON.stringify({
+          applianceId: command.applianceId,
+          operation: command.operation,
+          status: 'success',
+          timestamp: new Date().toISOString(),
+        }),
+      );
+    } catch (error) {
+      if (controller.signal.aborted) return;
+
+      this.publishCommandError(command.applianceId, command.operation, error);
+      this.logError(`Failed to execute Home Connect command for ${command.applianceId}.`, error, controller.signal);
+    } finally {
+      this.finishRequest(key, controller);
+    }
+  }
+
+  private publishCommandError(
+    applianceId: string | undefined,
+    operation: HomeConnectCommandOperation | undefined,
+    error: unknown,
+  ) {
+    this.mqtt.publish(
+      commandErrorTopic(this.cfg.topic, applianceId, operation),
+      JSON.stringify({
+        applianceId: applianceId ?? null,
+        operation: operation ?? null,
+        reason: error instanceof Error ? error.message : String(error),
+        status: 'error',
+        timestamp: new Date().toISOString(),
+      }),
+    );
+  }
+
+  private async accessToken() {
+    if (await this.auth.ensureToken()) return this.auth.accessToken;
+    return undefined;
+  }
+
+  private recordSuccess() {
+    this.consecutiveFailures = 0;
+    this.publishAvailability(true);
+  }
+
+  private recordDiscoveryFailure() {
+    this.consecutiveFailures += 1;
+    if (this.consecutiveFailures >= 3) this.publishAvailability(false);
+  }
+
+  private publishAvailability(connected: boolean) {
+    if (this.connected === connected && this.connected) return;
+    this.connected = connected;
+    this.mqtt.publish(bridgeTopic(this.cfg.topic, 'connected'), connected, { retain: true });
+  }
+
+  private publishHeartbeat() {
+    this.mqtt.publish(bridgeTopic(this.cfg.topic, 'heartbeat-at'), new Date().toISOString(), { retain: true });
+  }
+
+  /** Publishes the next Home Connect API retry time, or clears it once requests may resume. */
+  private publishNextRetryAt(nextRetryAt?: number) {
+    this.mqtt.publish(
+      bridgeTopic(this.cfg.topic, 'next-retry-at'),
+      nextRetryAt ? new Date(nextRetryAt).toISOString() : null,
+    );
+  }
+
+  private logError(message: string, error: unknown, signal?: AbortSignal) {
+    if (signal?.aborted || this.destroyed) return;
+    this.logger.error(`${message} ${error instanceof Error ? error.message : String(error)}`);
+  }
+}
+
+function isConnected(appliance: Appliance) {
+  return appliance.connected !== false;
+}
+
+function isUnavailableProgramCategory(
+  category: string,
+  error: unknown,
+): category is 'programs/active' | 'programs/selected' {
+  return (
+    (category === 'programs/active' || category === 'programs/selected') &&
+    axios.isAxiosError(error) &&
+    error.response?.status === 404
+  );
+}

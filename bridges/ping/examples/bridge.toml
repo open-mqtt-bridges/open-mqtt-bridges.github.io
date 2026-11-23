@@ -1,0 +1,17 @@
+# Copy to bridge.toml and replace the synthetic inventory and broker settings.
+base_topic = "stats/ping"
+interval_secs = 30
+timeout_ms = 5000
+parallelism = 16
+health_bind = "127.0.0.1:8080"
+
+[broker]
+host = "mqtt.example.invalid"
+port = 8883
+client_id = "ping-bridge-example"
+tls = true
+# ca_file = "/run/secrets/mqtt_ca.pem"
+
+[devices]
+"Example Device A" = "192.0.2.10"
+"Example Device B" = "198.51.100.20"

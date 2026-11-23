@@ -1,0 +1,28 @@
+[package]
+name = "ping-mqtt-bridge"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.100.0"
+license = "MIT"
+description = "Publish Linux ICMP reachability and latency over MQTT"
+repository = "https://github.com/open-mqtt-bridges/ping"
+publish = false
+
+[dependencies]
+anyhow = "1"
+axum = { version = "0.8", default-features = false, features = ["http1", "tokio", "json"] }
+futures-util = "0.3"
+libc = "0.2"
+rumqttc = { version = "0.25.1", default-features = false, features = ["use-rustls-no-provider"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+rustls-pemfile = "2"
+serde = { version = "1", features = ["derive"] }
+socket2 = "0.6"
+tokio = { version = "1", features = ["macros", "net", "rt-multi-thread", "signal", "sync", "time"] }
+toml = "1.2"
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", default-features = false, features = ["ansi", "env-filter", "fmt"] }
+webpki-roots = "1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["test-util"] }

@@ -3,7 +3,17 @@ import prettier from 'eslint-config-prettier';
 
 export default withNuxt(
   {
-    ignores: ['.agents/**', '.specify/**', '.output/**', 'node_modules/**', 'public/**', 'assets/**'],
+    ignores: [
+      '.agents/**',
+      '.specify/**',
+      '.output/**',
+      'node_modules/**',
+      'public/**',
+      'assets/**',
+      'bridges/**',
+      'archive/**',
+      'bridge-sources/**',
+    ],
   },
   prettier,
   {

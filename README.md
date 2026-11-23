@@ -1,4 +1,8 @@
-# Open MQTT Bridges website
+# Open MQTT Bridges
+
+Bridge implementations live in [`bridges/`](bridges/); [`archive/idm-energy/`](archive/idm-energy/) preserves the inactive integration. Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version, changelog, and license. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
+
+See the [cutover runbook](docs/migration/cutover.md) and [production status](migration/cutover-status.md) for source ownership, package publishing, and rollback.
 
 Nuxt 4 and Nuxt UI source for [open-mqtt-bridges.github.io](https://open-mqtt-bridges.github.io/). GitHub Pages serves statically prerendered HTML; no application server is deployed.
 
@@ -47,4 +51,4 @@ The initial package version is 0.1.0. This change does not publish a release or 
 
 `/imprint` and `/privacy-policy` are prerendered and linked from every footer. The owner confirmed publisher/contact data from the existing Crateview imprint. The privacy text describes this GitHub Pages deployment and local UI behavior; it does not copy the reference sites’ different hosting setup. See [legal sources](docs/legal-sources.md).
 
-See [development and Spec Kit](docs/development.md), [organization contribution guidance](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md), and [brand assets](assets/README.md). Source and original branding are MIT licensed.
+See [development and Spec Kit](docs/development.md), [organization contribution guidance](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md), and [brand assets](assets/README.md). The website source and original branding are MIT licensed. Imported bridge and third-party code retains its original license notices.

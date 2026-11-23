@@ -1,0 +1,9 @@
+target
+.git
+.idea
+.vscode
+
+# Contributor tooling is not part of the runtime build context.
+.agents
+.specify
+specs
