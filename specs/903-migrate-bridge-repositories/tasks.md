@@ -19,7 +19,7 @@
 
 - [x] T004 [P] [US1] Implement manifest-driven independent verification in `scripts/migration/verify.mjs` with a positive and deliberately incomplete full-clone fixture in `test/migration-history.test.mjs`. Check exact ref OIDs, source-set difference, both parents, ancestry, prefix tree and unchanged paths outside it; reject empty input.
 - [x] T005 [P] [US1] Implement the two-parent import and durable standard-ref mapping in `scripts/migration/import.mjs` with fixtures in `test/migration-import.test.mjs`. Preserve original annotated tag objects across identical names. Repeating a verified import with the same snapshot is a no-op; conflicting target refs or prefixes must not be overwritten. Disable publication in rehearsals; never mirror-push or rewrite a source.
-- [ ] T006 [US1] Import WLED at `bridges/wled/` using the verified snapshot and T005; run T004 and the existing WLED checks at the pinned toolchain. Record the original tree and both parent OIDs externally.
+- [x] T006 [US1] Import WLED at `bridges/wled/` using the verified snapshot and T005; run T004 and the existing WLED checks at the pinned toolchain. Record the original tree and both parent OIDs externally.
 - [ ] T007 [US1] Import Modbus from its verified default branch at `bridges/modbus/`; repeat the full history check, Cargo checks and npm guide build using [quickstart.md](quickstart.md). Prove both pilots from a fresh target clone before expanding.
 
 ## Phase 4 — US2: Maintain and validate each bridge (P2)
