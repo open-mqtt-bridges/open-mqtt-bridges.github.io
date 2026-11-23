@@ -19,8 +19,8 @@
 
 ## Integration and delivery
 
-- [ ] T005 Record final lockfile, scanner, and current-head CI evidence and any blockers in `specs/904-remediate-dependency-alerts/evidence.md`; submit the scoped PR and reconcile the alert states after an approved merge.
+- [x] T005 Verify the final lockfiles and audit results, address compatible residual findings, and record local integration evidence in `specs/904-remediate-dependency-alerts/evidence.md`.
 
 ## Dependencies and delivery order
 
-T001 precedes every fix. T002, T003, and T004 have independent paths and checks; Ping and Display are the first delivery priority. Validate and commit each increment separately. T005 follows all completed increments; post-merge GitHub status is tracked only once merge is approved.
+T001 precedes every fix. T002, T003, and T004 have independent paths and checks; Ping and Display are the first delivery priority. Validate and commit each increment separately. T005 follows all completed increments. Hosted CI and post-merge alert status are tracked in the PR and issue; merging requires separate approval.

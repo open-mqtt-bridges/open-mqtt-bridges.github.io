@@ -21,3 +21,9 @@ Dependabot PRs #19, #20, #22, and #23 are merged. Frozen Yarn Classic installs w
 ## Archived IDM
 
 Yarn Classic 1.22.22 resolved `rimraf 6.1.4`, `glob 14.0.6`, `minimatch 3.1.5` and `11.0.9`, and `picomatch 2.3.2` without overrides. The already patched `ws 8.23.0` and `brace-expansion 1.1.22` remain resolved. A clean audit also found `diff 4.0.2` under `ts-node`; its existing range accepts patched `4.0.4`. A second clean frozen install, TypeScript build, bundle, and Yarn audit all passed; Yarn reported zero advisories.
+
+## Integration
+
+RustSec also identified `url 2.5.8` in Display. The scoped update to `2.5.9` also resolves the required `form_urlencoded 1.2.3`. Display's format, Clippy, 10 tests, locked release, and container build passed again. Cargo Audit reports zero vulnerabilities in both lockfiles. Its pre-existing unmaintained-package warnings for `rustls-pemfile` (Ping) and `unsafe-libyaml` (Display) remain.
+
+The website's clean frozen pnpm install, lint, type check, format check, static build, catalog smoke check, and 11 tests passed on the integrated feature branch. Hosted current-head and post-merge results are tracked in GitHub.
