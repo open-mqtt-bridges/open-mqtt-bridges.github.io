@@ -1,0 +1,6 @@
+[submodule "bridge-sources/display"]
+	path = bridge-sources/display
+	url = https://github.com/open-mqtt-bridges/display.git
+[submodule "bridge-sources/modbus"]
+	path = bridge-sources/modbus
+	url = https://github.com/open-mqtt-bridges/modbus.git

@@ -41,6 +41,8 @@ Synchronization edits only the delimited bridge-table regions in the sibling org
 
 The Pages workflow installs from the frozen lockfile, validates PRs and publishes `.output/public` only from `main`. The footer on every generated page displays `v<package version>+<first seven characters of GITHUB_SHA>`, linking to the exact build commit. Local builds use their Git revision or `+local` for source archives. `NUXT_PUBLIC_SITE_VERSION` can explicitly override the visible version for a tagged/release deployment. No live GitHub API call is needed to display the version.
 
+To reproduce the combined Pages artifact locally, run `git submodule update --init`, `pnpm build`, then `pnpm build:bridge-docs`. The latter uses each bridge's own lockfile and adds only its generated VitePress output. The standalone Nuxt build does not require submodules.
+
 The initial package version is 0.1.0. This change does not publish a release or merge a PR. Public deployment verification remains pending merge approval.
 
 ## Legal and project guidance

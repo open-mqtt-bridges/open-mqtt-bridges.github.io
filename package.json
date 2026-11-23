@@ -9,6 +9,7 @@
   "scripts": {
     "dev": "nuxt dev --host 127.0.0.1 --port 4173",
     "build": "nuxt generate",
+    "build:bridge-docs": "node scripts/build-bridge-docs.mjs",
     "preview": "python3 -m http.server 4173 --directory .output/public",
     "postinstall": "nuxt prepare",
     "lint": "eslint . --max-warnings=0",
@@ -16,7 +17,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "node scripts/check.mjs",
-    "test": "node --test"
+    "test": "node --test 'test/*.test.mjs'"
   },
   "repository": {
     "type": "git",

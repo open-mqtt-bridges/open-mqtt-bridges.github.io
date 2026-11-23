@@ -8,7 +8,7 @@
 
 ## Phase 2: Foundation
 
-- [ ] T002 Add pinned Display and Modbus source submodules in `.gitmodules`, assemble their existing docs through `scripts/` and `.github/workflows/pages.yml`, and test the combined artifact at `/display/` and `/modbus/` in an isolated preview. Check both lockfile owners, failure paths and artifact boundaries in `test/`; add no new public catalog links in this increment.
+- [x] T002 Add pinned Display and Modbus source submodules in `.gitmodules`, assemble their existing docs through `scripts/` and `.github/workflows/pages.yml`, and test the combined artifact at `/display/` and `/modbus/` in an isolated preview. Check both lockfile owners, failure paths and artifact boundaries in `test/`; add no new public catalog links in this increment.
 
 ## Phase 3: Find all guides on the website (US1)
 
