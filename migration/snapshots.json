@@ -1,6 +1,6 @@
 {
   "observedOn": "2026-11-23",
-  "status": "pre-freeze rehearsal, known inputs only",
+  "status": "Pre-freeze rehearsal. All commit and tag objects in the 30 identified srv-ai bridge checkouts are present in the restored snapshots. The owner confirmed there are no additional unpublished commits outside srv-ai.",
   "sources": [
     {
       "slug": "adguardhome",
@@ -11,7 +11,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "display",
@@ -22,7 +23,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "homeconnect",
@@ -33,7 +35,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "idm-energy",
@@ -44,7 +47,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 0
     },
     {
       "slug": "landroid",
@@ -55,7 +59,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "modbus",
@@ -66,7 +71,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 10
+      "releaseAssetsVerified": 10,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "philips-hue",
@@ -77,7 +83,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "ping",
@@ -88,7 +95,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "pocketbase",
@@ -99,7 +107,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "roborock",
@@ -110,7 +119,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 0
+      "releaseAssetsVerified": 0,
+      "localCheckoutsCompared": 3
     },
     {
       "slug": "wled",
@@ -121,7 +131,8 @@
       "gitRestoreVerified": true,
       "externalGitlinksFound": 0,
       "lfsPointersFound": 0,
-      "releaseAssetsVerified": 12
+      "releaseAssetsVerified": 12,
+      "localCheckoutsCompared": 3
     }
   ]
 }
