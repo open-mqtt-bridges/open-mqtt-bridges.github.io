@@ -51,7 +51,7 @@
 ## Phase 6 — Cross-cutting verification and operational handoff
 
 - [x] T024 Record the disposable GitHub target rehearsal in `migration/validation.md`: verify full history from a network clone, hosted branch rules, safe transfer of historical workflows/refs, supported build matrix, current Pages routes, and package rollback. No squash/rebase merge; halt if target settings cannot preserve ancestry.
-- [ ] T025 Prepare `docs/migration/cutover.md` and `migration/cutover-status.md`: name the operator, approvals and order for the final freeze, delta recapture, refreshed tests, exact-graph transfer, post-merge full-clone proof, package ownership handoff per existing package, stable live links, and restoration. Prepare source-link updates for `bridges.json` and `../.github/README.md` for when targets exist. Retain old issues, PRs, assets and repositories; defer archival until the observation period and explicit approval. Record live actions as pending until actually verified.
+- [x] T025 Prepare `docs/migration/cutover.md` and `migration/cutover-status.md`: name the operator, approvals and order for the final freeze, delta recapture, refreshed tests, exact-graph transfer, post-merge full-clone proof, package ownership handoff per existing package, stable live links, and restoration. Prepare source-link updates for `bridges.json` and `../.github/README.md` for when targets exist. Retain old issues, PRs, assets and repositories; defer archival until the observation period and explicit approval. Record live actions as pending until actually verified.
 
 ## Dependencies, parallel work, and release boundary
 
