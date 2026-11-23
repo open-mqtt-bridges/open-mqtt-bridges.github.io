@@ -20,7 +20,12 @@ tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 tokio = { version = "1.54.1", features = ["macros", "rt-multi-thread", "sync", "time"] }
 uuid = { version = "1.29.1", features = ["v4"] }
 
+[dev-dependencies]
+mccs = "0.1"
+mccs-db = "0.1"
+
 [patch.crates-io]
 # ddc-hi currently requires nom 3.x. This compatible local patch removes syntax
 # that newer Rust versions have made a future incompatibility warning.
 nom = { path = "third_party/nom-3.2.1" }
+mccs-db = { path = "third_party/mccs-db-0.1.3" }

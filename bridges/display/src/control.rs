@@ -301,6 +301,20 @@ mod tests {
     use super::{FEATURES, hex};
 
     #[test]
+    fn bundled_mccs_database_preserves_versioned_input_select() {
+        for (major, minor) in [(2, 0), (2, 1), (2, 2), (3, 0)] {
+            let database = mccs_db::Database::from_version(&mccs::Version::new(major, minor));
+            let input = database.get(0x60).expect("missing input select code");
+            assert_eq!(input.name.as_deref(), Some("Input Select"));
+            assert_eq!(input.access, mccs_db::Access::ReadWrite);
+            assert_eq!(
+                matches!(input.ty, mccs_db::ValueType::Table { .. }),
+                major == 3
+            );
+        }
+    }
+
+    #[test]
     fn hex_encodes_binary_edid_data() {
         assert_eq!(hex(&[0x00, 0xff, 0x10]), "00ff10");
     }

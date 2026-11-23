@@ -26,3 +26,6 @@ webpki-roots = "1"
 
 [dev-dependencies]
 tokio = { version = "1", features = ["test-util"] }
+
+[patch.crates-io]
+rumqttc = { path = "third_party/rumqttc-0.25.1" }

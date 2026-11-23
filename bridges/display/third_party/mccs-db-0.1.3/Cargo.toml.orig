@@ -1,0 +1,36 @@
+[package]
+name = "mccs-db"
+version = "0.1.3" # keep in sync with html_root_url
+authors = ["arcnmx"]
+
+description = "MCCS specification VCP database"
+keywords = ["ddc", "mccs", "vcp", "vesa"]
+categories = ["hardware-support"]
+
+documentation = "https://docs.rs/mccs-db"
+repository = "https://github.com/arcnmx/mccs-rs"
+readme = "README.md"
+license = "MIT"
+
+include = [
+	"/src/**/*.rs",
+	"/data/**",
+	"/README*",
+	"/COPYING*",
+]
+
+[badges]
+maintenance = { status = "passively-maintained" }
+
+[dependencies]
+mccs = { version = "0.1", path = "../" }
+serde = "1"
+serde_derive = "1"
+serde_yaml = "0.7"
+nom = "3"
+
+[dev-dependencies]
+mccs-caps = { version = "0.1", path = "../caps" }
+
+[features]
+test-nom-errors = ["nom/verbose-errors"]
