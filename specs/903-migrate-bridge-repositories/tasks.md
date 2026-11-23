@@ -34,7 +34,7 @@
 - [x] T013 [US2] Import `bridges/roborock/`; verify its history and source CI including existing container checks, without using real user credentials.
 - [x] T014 [US2] Import `bridges/pocketbase/`; verify its history and run its own pinned pnpm, test and coverage checks independently of the website's package manager.
 - [x] T015 [US2] Import `bridges/adguardhome/`; verify its history and reproduce its Yarn Classic installation and baseline checks without replacing the lockfile.
-- [ ] T016 [US2] Import `bridges/display/`; verify its history, including known documentation pins, and reproduce both Rust and Node checks.
+- [x] T016 [US2] Import `bridges/display/`; verify its history, including known documentation pins, and reproduce both Rust and Node checks.
 - [ ] T017 [US2] Import `bridges/ping/`; verify its history, pinned Rust checks, Mosquitto integration test and amd64/arm64 container checks. Report unavailable runners separately.
 - [ ] T018 [US2] Import `archive/idm-energy/` without reopening its source; verify its original history and tree and demonstrate it is excluded from active jobs.
 - [ ] T019 [US2] Complete all ten active CI profiles in `.github/workflows/bridge-ci.yml` against `migration/baseline.md`; run the complete CI selection matrix and eleven-source clean-clone check. Document only genuine baseline failures or hardware gaps in `migration/validation.md`.
