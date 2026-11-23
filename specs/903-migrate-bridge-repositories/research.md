@@ -1,0 +1,11 @@
+# Phase 0: Design decisions
+
+| Decision | Rationale | Alternative considered |
+|---|---|---|
+| Add each source tree under its prefix in a new merge commit whose second parent is the original source tip. | New paths start at import time; historical trees and parent relationships stay intact. | A path rewrite changes commit IDs. Squashing preserves only the content. A submodule depends on a separate repository. |
+| Use durable standard refs for commits not reachable from a default branch. | Merging the default branch alone misses side branches, PR-only commits, and some tags. | Merging all old branches would present unfinished work as integrated. Keeping only a backup would leave the monorepo incomplete. |
+| Point namespaced historical tag refs to the original objects. | Repositories reuse tag names such as `v1.0.0`. The old tag object and its signature remain verifiable. A signature attests to the original tag name, not its new alias. | Recreating an annotated tag would produce a different object; publishing all tags under their old names would cause collisions. |
+| Preserve independent versions, CI selection, and package managers. | The projects already use different pnpm versions, Yarn, npm, and Cargo. The immediate goal is to reproduce existing builds. | A shared lockfile, changeset stream, or release train would introduce unrelated dependency and release changes. |
+| Proceed independently of feature 902. Preserve current routes and source pins. | The live site provides a verifiable baseline today. | Waiting for a separate documentation change or testing against routes that never shipped. |
+
+Evidence reviewed: GitHub organization inventory, `bridges.json`, documentation specification 902 (especially FR-002, FR-003, and FR-007), the website constitution, local package and Cargo manifests, and the WLED, Display, Modbus, and Ping workflows. Reconcile the inventory with the live repositories and local work at the agreed cutoff. Historical completeness, package write access, and live cutover have not been verified; the implementation gates require that evidence.
