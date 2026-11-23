@@ -10,7 +10,7 @@ Eight repositories already build VitePress and use `/<bridge>/` as their base. V
 
 ## Source and archive exceptions
 
-AdGuard Home has developer notes but no published user guide. Ping has no `docs/` at the upstream default branch; the local checkout has existing uncommitted docs and is behind upstream. Treat those files as user work, not as clean migration inputs. IDM Energy remains archived and gets a website-owned archive page.
+AdGuard Home has developer notes but no published user guide. Ping had local uncommitted docs during planning; by implementation start the checkout was clean and `docs/` was present upstream. Build from the reviewed upstream sources. IDM Energy remains archived and gets a website-owned archive page.
 
 ## GitHub entry points
 

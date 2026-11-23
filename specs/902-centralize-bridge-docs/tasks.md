@@ -4,7 +4,7 @@
 
 ## Phase 1: Setup
 
-- [ ] T001 Record the current Pages paths, tracked anchors, repository Website URLs, publishing settings and rollback steps in `specs/902-centralize-bridge-docs/baseline.md`. Inspect local and remote branch state before selecting source checkouts; record Ping's unresolved local work without modifying it.
+- [x] T001 Record the current Pages paths, tracked anchors, repository Website URLs, publishing settings and rollback steps in `specs/902-centralize-bridge-docs/baseline.md`. Inspect local and remote branch state before selecting source checkouts; record Ping's prior local work without modifying it.
 
 ## Phase 2: Foundation
 
