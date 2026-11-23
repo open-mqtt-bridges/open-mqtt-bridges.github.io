@@ -29,7 +29,7 @@
 - [x] T008 [P] [US2] Implement affected-bridge selection and an always-running aggregate check in `.github/workflows/bridge-ci.yml` and `scripts/select-bridges.mjs`; cover single, shared, archive-only and docs-only changes in `test/select-bridges.test.mjs`. Use explicit working directories, Docker contexts and toolchain-specific cache keys; start with both pilots.
 - [x] T009 [P] [US2] Verify website-only scope in `eslint.config.mjs`, `.prettierignore`, `nuxt.config.ts`, and `.github/workflows/pages.yml`; adjust only where the import would lint, bundle or publish unrelated bridge content. Run all six website checks and compare current routes; leave feature 902 untouched.
 - [x] T010 [US2] Import `bridges/homeconnect/`; compare the original tree and OIDs and run its pinned source CI commands from the new location.
-- [ ] T011 [US2] Import `bridges/landroid/`; verify its history and run its own locked build, tests, and existing container checks.
+- [x] T011 [US2] Import `bridges/landroid/`; verify its history and run its own locked build, tests, and existing container checks.
 - [ ] T012 [US2] Import `bridges/philips-hue/`; verify its history, locked build, tests, and supported runtime checks against the baseline.
 - [ ] T013 [US2] Import `bridges/roborock/`; verify its history and source CI including existing container checks, without using real user credentials.
 - [ ] T014 [US2] Import `bridges/pocketbase/`; verify its history and run its own pinned pnpm, test and coverage checks independently of the website's package manager.
