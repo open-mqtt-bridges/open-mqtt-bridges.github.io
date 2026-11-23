@@ -1,0 +1,20 @@
+import { Controller, Get } from '@nestjs/common';
+
+/**
+ * Executes `HealthController`.
+ */
+@Controller('health')
+export class HealthController {
+  /**
+   * Executes `getHealth`.
+   * @returns {{ status: string; name: string; version: string; uptime: number; }} Result.
+   */
+  @Get() getHealth() {
+    return {
+      status: 'ok',
+      name: process.env.npm_package_name ?? 'homeconnect-mqtt-bridge',
+      version: process.env.npm_package_version ?? '0.0.0',
+      uptime: process.uptime(),
+    };
+  }
+}
