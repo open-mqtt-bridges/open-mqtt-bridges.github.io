@@ -1,5 +1,7 @@
 # AdGuard Home MQTT Bridge
 
-Publish DNS status and statistics and control protection through MQTT. See the [guide](../../docs/bridges/adguardhome/index.md) for configuration, deployment and commands.
+Publishes DNS statistics from AdGuard Home and accepts MQTT commands to switch protection on or off.
 
-See [CHANGELOG.md](CHANGELOG.md) and [LICENSE.txt](LICENSE.txt).
+[Bridge guide](../../docs/bridges/adguardhome/index.md) · [Published documentation](https://open-mqtt-bridges.github.io/adguardhome/)
+
+[Monorepo README](../../README.md) · [Changelog](CHANGELOG.md) · [License](LICENSE.txt)
