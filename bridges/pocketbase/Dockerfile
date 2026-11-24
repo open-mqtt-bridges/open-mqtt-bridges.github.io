@@ -1,4 +1,4 @@
-FROM node:26.13.0-bookworm-slim AS build
+FROM node:26.13.1-bookworm-slim AS build
 WORKDIR /app
 
 RUN npm install --global pnpm@12.16.1
@@ -11,7 +11,7 @@ RUN pnpm install --frozen-lockfile
 COPY . .
 RUN pnpm build && rm -f dist/*.map
 
-FROM node:26.13.0-bookworm-slim
+FROM node:26.13.1-bookworm-slim
 
 # Keep the package manager and its bundled dependencies out of the runtime.
 RUN rm -rf /usr/local/lib/node_modules/npm && rm -f /usr/local/bin/npm /usr/local/bin/npx

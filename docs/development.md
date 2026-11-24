@@ -2,7 +2,7 @@
 
 ## Toolchain and checks
 
-The manifest, owning lockfile and CI define the toolchain. Pages and Node bridge CI use Node.js 26.13.0. Use the pnpm version pinned by the owning package; bridge pins can differ from the root. Preserve the established tooling and do not edit generated or vendored code.
+The manifest, owning lockfile and CI define the toolchain. Pages and Node bridge CI use Node.js 26.13.1. Use the pnpm version pinned by the owning package; bridge pins can differ from the root. Preserve the established tooling and do not edit generated or vendored code.
 
 | Area                                                               | Run from               | Checks and scope                                                                                                                                                                                                                                                                                             |
 | ------------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |

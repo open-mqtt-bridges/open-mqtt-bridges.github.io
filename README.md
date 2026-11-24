@@ -8,7 +8,7 @@ The six NestJS bridges share [configuration and MQTT libraries](libs/README.md).
 
 ## Local development
 
-Use Node.js 26.13.0 and the pnpm version pinned in `package.json`.
+Use Node.js 26.13.1 and the pnpm version pinned in `package.json`.
 
 ```bash
 pnpm install --frozen-lockfile
