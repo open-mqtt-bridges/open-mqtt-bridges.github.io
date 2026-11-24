@@ -1,5 +1,14 @@
 # Dependency Inventory
 
+## Delivery decision (PR #70)
+
+The maintainer authorized consolidating compatible updates and closing all covered bot PRs. The sections below are the pre-update snapshot. The website and guide lockfiles, seven Node bridge owners, and three Cargo lockfiles have been refreshed; CI and container inputs now use the tested Node 26.13.1 patch and Rust 1.100 image lines. pnpm package-manager pins and existing image trust policy are preserved.
+
+- **Superseded when #70 lands**: #28–#34 and #36–#59. The consolidated updates include the same image or package targets, even where an obsolete lockfile or overlapping changes prevented the individual merge. Verify the merged base before closing any remaining bot PR.
+- **Closed as incompatible, not upgraded**: #35 (`mccs` 0.2, incompatible with the actual patched Display database used by `ddc-hi`) and #66 (website TypeScript 7, unsupported by the current parser and JS tooling). These are compatibility exceptions, not successful latest-version updates.
+- **Additional updates**: Compatible Cargo resolutions, the guide and website dependency graphs, PocketBase SDK and EventSource, Roborock client 3.42.0, and `ws` 8.23.0. Remove the unused direct native-compiler alias from five bridge manifests: it falsely satisfied the name of an optional experimental parser backend but not its version range. The actual bridge type check continues to use `tsc6`.
+- **Evidence**: `pnpm outdated` returned no direct candidates in the guide or seven Node bridges; the website reported only TypeScript. Root lint, format, type checks, tests, assembled build and output check passed, including links and assets on 89 guide pages; Chromium hydrated and filtered/reset the catalog on mobile. All six NestJS bridges passed their scoped checks, including PocketBase coverage and WLED availability. Roborock's permission test requires a runner umask that permits group reads; it passed with `022`. AdGuard Home's Docker build supplied OpenSSL and passed all five tests. Locked Cargo unit/integration tests passed in containers; the real Mosquitto and multi-architecture checks are CI gates. Two-pass Prettier checks matched on a representative file in each NestJS bridge.
+
 **Base**: `e36c321f029df0a3cea9510416cd542f3c3310d9` (2026-11-24). AdGuard Home and the guide site now own pnpm lockfiles. No dependency was changed.
 
 ## Direct pnpm candidates
