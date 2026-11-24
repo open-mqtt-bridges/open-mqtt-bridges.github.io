@@ -177,13 +177,17 @@ async fn drive_mqtt_event_loop(
         match event_loop.poll().await {
             Ok(Event::Incoming(Incoming::Publish(publish))) => {
                 // Forward valid `/set` payloads to the write worker.
-                if let Some(command) = decode_rpc_publish(config, publish)? {
-                    let rpc_tx = rpc_tx.clone();
-                    tokio::spawn(async move {
-                        if rpc_tx.send(command).await.is_err() {
-                            warn!("dropping rpc command because write queue is closed");
-                        }
-                    });
+                match decode_rpc_publish(config, publish) {
+                    Ok(Some(command)) => {
+                        let rpc_tx = rpc_tx.clone();
+                        tokio::spawn(async move {
+                            if rpc_tx.send(command).await.is_err() {
+                                warn!("dropping rpc command because write queue is closed");
+                            }
+                        });
+                    }
+                    Ok(None) => {}
+                    Err(error) => warn!(%error, "rejecting invalid rpc command"),
                 }
             }
             Ok(Event::Incoming(Incoming::ConnAck(_))) => {
