@@ -14,7 +14,7 @@ Follow the [plan](plan.md) and [layout contract](contracts/layout.md). Each task
 
 - [x] T003 [US2] Establish the shared root docs project and index under `docs/`; migrate Ping as a complete pilot into `docs/bridges/ping/`, update its `README.md`, `.github/workflows/bridge-ci.yml`, Dependabot configuration and path selectors. Build its guide with the owning frozen lockfile and verify its setup, links and assets in static output.
 - [x] T004 [US2] Move the remaining nine active guides into `docs/bridges/<slug>/`, using common topic navigation and retaining specialized pages. Migrate applicable guide text from package READMEs; update working references, CI, doc scripts, Docker inputs and docs dependency ownership. Compare all guide content with T002, run the shared static build and affected package/container checks.
-- [ ] T005 [US2] Assemble all guide output with the Nuxt Pages artifact in `.github/workflows/pages.yml` and the root build script. Update catalog destinations, `scripts/check.mjs`, `README.md` and `docs/development.md`; verify existing deep links, anchors, assets, deployment-version pages and edit links. Document the public project-site precedence check and rollback before any external handoff.
+- [x] T005 [US2] Assemble all guide output with the Nuxt Pages artifact in `.github/workflows/pages.yml` and the root build script. Update catalog destinations, `scripts/check.mjs`, `README.md` and `docs/development.md`; verify existing deep links, anchors, assets, deployment-version pages and edit links. Document the public project-site precedence check and rollback before any external handoff.
 
 ## Root-owned project metadata (US3)
 

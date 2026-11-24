@@ -20,10 +20,10 @@ test('public catalog rejects incorrect hosts, archived flags and README destinat
       items[3].archived = false;
     },
     (items) => {
-      items[0].documentation = 'https://open-mqtt-bridges.github.io/adguardhome/';
+      items[0].documentation = 'https://github.com/open-mqtt-bridges/adguardhome#readme';
     },
     (items) => {
-      items[0].documentationType = 'site';
+      items[0].documentationType = 'readme';
     },
   ]) {
     const invalid = structuredClone(catalog);

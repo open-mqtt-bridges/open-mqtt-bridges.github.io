@@ -7,8 +7,8 @@
     "tag": "DNS",
     "initials": "AG",
     "repository": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/bridges/adguardhome",
-    "documentation": "https://github.com/open-mqtt-bridges/adguardhome#readme",
-    "documentationType": "readme",
+    "documentation": "https://open-mqtt-bridges.github.io/adguardhome/",
+    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/adguardhome.svg"
   },

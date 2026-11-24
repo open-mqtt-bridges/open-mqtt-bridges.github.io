@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "nuxt dev --host 127.0.0.1 --port 4173",
-    "build": "nuxt generate",
+    "build": "nuxt generate && npm --prefix docs run build && node scripts/assemble-guides.mjs",
     "preview": "python3 -m http.server 4173 --directory .output/public",
     "postinstall": "nuxt prepare",
     "lint": "eslint . --max-warnings=0",

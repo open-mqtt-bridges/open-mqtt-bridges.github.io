@@ -23,7 +23,7 @@ jobs:
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm format:check
-      - run: npm ci --prefix docs && npm --prefix docs run build
+      - run: npm ci --prefix docs
       - run: pnpm build
       - run: node --run check
       - run: node --run test

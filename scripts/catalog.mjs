@@ -24,7 +24,7 @@ export function validateCatalog(catalog) {
     if (bridge.archived !== archived.has(bridge.slug)) throw new Error(`Incorrect archive status: ${bridge.slug}`);
     const originalRepository = `https://github.com/open-mqtt-bridges/${bridge.slug}`;
     const repository = `https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/${bridge.archived ? 'archive' : 'bridges'}/${bridge.slug}`;
-    const readme = ['adguardhome', 'idm-energy'].includes(bridge.slug);
+    const readme = bridge.archived;
     if (
       bridge.repository !== repository ||
       bridge.documentation !==

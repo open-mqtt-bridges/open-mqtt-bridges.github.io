@@ -5,6 +5,7 @@
 The manifest, owning lockfile and existing CI define the toolchain. Use Node.js 26.13.0; use the pnpm version pinned in `package.json`. Preserve the established formatter/linter configuration; do not edit generated or vendored code. Run these commands from the repository root:
 
 - `pnpm install --frozen-lockfile`
+- `npm ci --prefix docs` (shared guide tooling)
 - `pnpm lint`
 - `pnpm typecheck`
 - `pnpm format:check`
@@ -18,7 +19,7 @@ Document changed public behavior and declaration contracts at their owning bound
 
 This repository includes Spec Kit 1.3.2 templates, Bash helpers and `.agents/skills/speckit-*` Codex skills. Install the matching CLI with `uv tool install specify-cli==1.3.2`; do not silently upgrade it. Run `specify check`, then invoke `$speckit-specify`, `$speckit-plan`, `$speckit-tasks` and `$speckit-analyze` in Codex as needed. Read `.specify/memory/constitution.md` first. Native events are disabled and no automatic Git/release extensions are installed.
 
-For this work select the feature explicitly:
+Select the feature you are working on explicitly, for example:
 
 ```bash
 export SPECIFY_FEATURE_DIRECTORY=specs/900-organization-readiness

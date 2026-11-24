@@ -12,6 +12,7 @@ Use Node.js 26.13.0 and the pnpm version pinned in `package.json`.
 
 ```bash
 pnpm install --frozen-lockfile
+npm ci --prefix docs
 pnpm dev
 ```
 
@@ -45,7 +46,7 @@ Synchronization edits only the delimited bridge-table regions in the sibling org
 
 The Pages workflow installs from the frozen lockfile, validates PRs and publishes `.output/public` only from `main`. The footer on every generated page displays `v<package version>+<first seven characters of GITHUB_SHA>`, linking to the exact build commit. Local builds use their Git revision or `+local` for source archives. `NUXT_PUBLIC_SITE_VERSION` can explicitly override the visible version for a tagged/release deployment. No live GitHub API call is needed to display the version.
 
-The initial package version is 0.1.0. This change does not publish a release or merge a PR. Public deployment verification remains pending merge approval.
+`pnpm build` assembles the catalog and all active [bridge guides](docs/README.md) into one Pages artifact. See the [guide hosting handoff](docs/migration/guide-hosting.md) before switching an existing project site.
 
 ## Legal and project guidance
 
