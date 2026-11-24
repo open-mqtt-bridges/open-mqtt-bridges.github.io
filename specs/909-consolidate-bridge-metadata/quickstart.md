@@ -1,0 +1,6 @@
+# Validation guide
+
+1. In a disposable Git fixture, install the original ignore files, create representative file and directory paths for each rule, and record `git check-ignore --no-index` decisions. Repeat with the consolidated file. Include `.env.example`, `*.env`, nested auth and map paths, config files, `target`, `bridge.toml`, `secrets`, `*.local.yaml`, editor directories, logs, and matching paths outside their original scopes. Expect identical decisions.
+2. Before removing files, use `cmp` to compare each of the six notices with `LICENSE`. Follow the post-change README and guide links and compare bytes. Review Docker `COPY` and release archive inputs for all preserved notices.
+3. In `bridges/adguardhome/`, run `pnpm install --frozen-lockfile`, `pnpm test`, `pnpm bundle`, and `docker build -t adguardhome:pnpm-check .`. Inspect `pnpm list --depth Infinity` against the lock migration and check every carried security override.
+4. In `docs/`, run `pnpm install --frozen-lockfile` and `pnpm build ping`. From the root run `pnpm install --frozen-lockfile`, `pnpm lint`, `pnpm typecheck`, `pnpm format:check`, `pnpm test`, `pnpm build`, and `pnpm check`. Expect ten assembled guides and valid links, fragments, and assets. Check tracked lockfile inventory with `git ls-files` after staging and verify no incompatible active manager commands remain.

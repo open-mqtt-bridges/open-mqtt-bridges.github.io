@@ -1,0 +1,6 @@
+# Research decisions
+
+- **Git ignores:** A blanket `/bridges/*/secrets/` or `*.auth.json` would change other bridges. Use shared rules only where pre-change behavior matches; retain rooted vs. recursive differences. AdGuard's `.env.example` negation is intentional.
+- **Licenses:** Display, Home Connect, Landroid, Philips Hue, PocketBase, and Roborock match the root MIT file byte for byte. Ping's Dockerfile copies both its own and a vendor notice; Modbus ships GPL-3.0-only; AdGuard Home and WLED have different MIT notices. Do not deduplicate those or the vendored and library notices.
+- **Package manager boundaries:** AdGuard's Yarn resolutions include a parent-specific minimatch rule and two exact pins. The documentation's four npm overrides include an esbuild range incompatible with the root override. Separate pnpm workspaces and lockfiles retain independent resolution and Dependabot discovery; one root overrides table for all projects is inappropriate.
+- **Transition:** Use pnpm's import operation with the old lock present, review graph drift, then remove the obsolete lock. Where importer support differs, prefer explicit constraints for proven differences rather than broad dependency upgrades. Reverting an increment restores the prior install path without touching user data.
