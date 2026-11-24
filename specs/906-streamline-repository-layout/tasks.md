@@ -7,7 +7,7 @@
 ## Bridge automation
 
 - [x] T002 [US2] Decouple `scripts/select-bridges.mjs` and `scripts/select-release.mjs` from `migration/`; verify current CI routing and all nine GHCR mappings, including aliases and negative cases, using their owning tests.
-- [ ] T003 [US2] Remove `migration/`, `scripts/migration/`, import-only tests and obsolete `docs/migration/` material. Retain current release and hosting instructions under `docs/`; update live references. Validate the surviving tests and the documented script inventory.
+- [x] T003 [US2] Remove `migration/`, `scripts/migration/`, import-only tests and obsolete `docs/migration/` material. Retain current release and hosting instructions under `docs/`; update live references. Validate the surviving tests and the documented script inventory.
 
 ## Site ownership
 

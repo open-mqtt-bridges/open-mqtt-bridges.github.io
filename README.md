@@ -2,7 +2,7 @@
 
 Bridge implementations live in [`bridges/`](bridges/). Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version, changelog, and license. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
 
-See the [cutover runbook](docs/migration/cutover.md) and [production status](migration/cutover-status.md) for source ownership, package publishing, and rollback.
+See [bridge releases](docs/operations/releases.md) for package ownership, versioning, and publishing.
 
 Nuxt 4 and Nuxt UI source for [open-mqtt-bridges.github.io](https://open-mqtt-bridges.github.io/). GitHub Pages serves statically prerendered HTML; no application server is deployed.
 
@@ -46,7 +46,7 @@ Synchronization edits only the delimited bridge-table regions in the sibling org
 
 The Pages workflow installs from the frozen lockfile, validates PRs and publishes `.output/public` only from `main`. The footer on every generated page displays `v<package version>+<first seven characters of GITHUB_SHA>`, linking to the exact build commit. Local builds use their Git revision or `+local` for source archives. `NUXT_PUBLIC_SITE_VERSION` can explicitly override the visible version for a tagged/release deployment. No live GitHub API call is needed to display the version.
 
-`pnpm build` assembles the catalog and all active [bridge guides](docs/README.md) into one Pages artifact. See the [guide hosting handoff](docs/migration/guide-hosting.md) before switching an existing project site.
+`pnpm build` assembles the catalog and all active [bridge guides](docs/README.md) into one Pages artifact. See the [guide hosting handoff](docs/operations/guide-hosting.md) before switching an existing project site.
 
 ## Legal and project guidance
 
