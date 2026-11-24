@@ -25,6 +25,8 @@ jobs:
       image: ${{ steps.select.outputs.image }}
       immutable: ${{ steps.select.outputs.immutable }}
       tags: ${{ steps.select.outputs.tags }}
+      image_id: ${{ steps.smoke.outputs.image_id }}
+      image_sha256: ${{ steps.package.outputs.image_sha256 }}
     steps:
       - uses: actions/checkout@v7
         with: { fetch-depth: 0, persist-credentials: false }
@@ -36,32 +38,54 @@ jobs:
           [[ "$TAG" =~ ^[a-z0-9-]+/v[0-9]+\.[0-9]+\.[0-9]+$ ]]
           commit=$(git rev-parse --verify "refs/tags/$TAG^{commit}")
           git merge-base --is-ancestor "$commit" "$GITHUB_SHA"
-          git checkout --quiet --detach "$commit"
-          release=$(node scripts/select-release.mjs "$TAG")
+          source="$RUNNER_TEMP/bridge-source"
+          git worktree add --quiet --detach "$source" "$commit"
+          release=$(cd "$source" && node scripts/select-release.mjs "$TAG")
           slug=$(jq -r .slug <<< "$release"); image=$(jq -r .image <<< "$release"); immutable=$(jq -r .immutable <<< "$release")
+          version=$(jq -r .version <<< "$release")
           if [ "$MODE" = handoff-test ]; then
             tags="$image:handoff-$GITHUB_RUN_ID-$GITHUB_RUN_ATTEMPT"
           else
             tags=$(jq -r '([.immutable] + .aliases) as $t | [.image + ":" + $t[]] | join(",")' <<< "$release")
             if [ "$slug" = modbus ]; then tags="$tags,$image:sha-${commit:0:7}"; fi
           fi
-          printf 'commit=%s\nslug=%s\nimage=%s\nimmutable=%s\ntags=%s\n' "$commit" "$slug" "$image" "$immutable" "$tags" >> "$GITHUB_OUTPUT"
+          printf 'commit=%s\nslug=%s\nimage=%s\nimmutable=%s\ntags=%s\nversion=%s\n' "$commit" "$slug" "$image" "$immutable" "$tags" "$version" >> "$GITHUB_OUTPUT"
+          if [ -f "$source/libs/config/package.json" ]; then printf 'libs=bridge-libs=%s/libs\n' "$source" >> "$GITHUB_OUTPUT"; fi
           if [ "$MODE" != handoff-test ]; then
             mkdir -p "$RUNNER_TEMP/release"
-            node scripts/bridge-release-notes.mjs "$TAG" > "$RUNNER_TEMP/release/notes.md"
+            (cd "$source" && node scripts/bridge-release-notes.mjs "$TAG") > "$RUNNER_TEMP/release/notes.md"
           fi
       - uses: docker/setup-buildx-action@v4
       - uses: docker/build-push-action@v7
         with:
-          context: bridges/${{ steps.select.outputs.slug }}
-          build-contexts: ${{ hashFiles('libs/config/package.json') != '' && 'bridge-libs=libs' || '' }}
+          context: ${{ runner.temp }}/bridge-source/bridges/${{ steps.select.outputs.slug }}
+          build-contexts: ${{ steps.select.outputs.libs }}
           platforms: linux/amd64
           load: true
           tags: bridge-release-candidate:local
-          labels: org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.version=${{ steps.select.outputs.version }}
+            org.opencontainers.image.revision=${{ steps.select.outputs.commit }}
+      - name: Smoke-test the exact candidate
+        id: smoke
+        env:
+          SLUG: ${{ steps.select.outputs.slug }}
+          VERSION: ${{ steps.select.outputs.version }}
+          REVISION: ${{ steps.select.outputs.commit }}
+        run: |
+          id=$(node scripts/smoke-release-image.mjs "$SLUG" "$RUNNER_TEMP/bridge-source" bridge-release-candidate:local "$VERSION" "$REVISION")
+          printf 'image_id=%s\n' "$id" >> "$GITHUB_OUTPUT"
       - name: Preserve the exact tested image for publication
+        id: package
         if: inputs.mode != 'dry-run'
-        run: docker save bridge-release-candidate:local | gzip > "$RUNNER_TEMP/image.tar.gz"
+        shell: bash
+        env: { TESTED_IMAGE: '${{ steps.smoke.outputs.image_id }}' }
+        run: |
+          test "$(docker image inspect -f '{{.Id}}' bridge-release-candidate:local)" = "$TESTED_IMAGE"
+          docker save bridge-release-candidate:local | gzip > "$RUNNER_TEMP/image.tar.gz"
+          checksum=$(sha256sum "$RUNNER_TEMP/image.tar.gz")
+          printf 'image_sha256=%s\n' "${checksum%% *}" >> "$GITHUB_OUTPUT"
       - if: inputs.mode != 'dry-run'
         uses: actions/upload-artifact@v7
         with: { name: image, path: '${{ runner.temp }}/image.tar.gz', retention-days: 1 }
@@ -74,7 +98,7 @@ jobs:
           mkdir "$staging"; container=$(docker create bridge-release-candidate:local)
           trap 'docker rm "$container" >/dev/null' EXIT
           docker cp "$container:/modbus-mqtt-bridge" "$staging/modbus-mqtt-bridge"
-          cp bridges/modbus/{LICENSE,README.md} "$staging/"
+          cp "$RUNNER_TEMP"/bridge-source/bridges/modbus/{LICENSE,README.md} "$staging/"
           archive="$name-linux-musl-x86_64.tar.gz"; tar -C "$RUNNER_TEMP" -czf "$dist/$archive" "$name"
           (cd "$dist" && sha256sum "$archive" > "$archive.sha256")
       - if: inputs.mode != 'handoff-test'
@@ -94,6 +118,8 @@ jobs:
       IMAGE: ${{ needs.prepare.outputs.image }}
       IMMUTABLE: ${{ needs.prepare.outputs.immutable }}
       TAGS: ${{ needs.prepare.outputs.tags }}
+      TESTED_IMAGE: ${{ needs.prepare.outputs.image_id }}
+      IMAGE_SHA256: ${{ needs.prepare.outputs.image_sha256 }}
       ALLOWED: ${{ vars.BRIDGE_RELEASE_PACKAGES }}
     steps:
       - uses: actions/checkout@v7
@@ -110,7 +136,10 @@ jobs:
         with: { registry: ghcr.io, username: '${{ github.actor }}', password: '${{ github.token }}' }
       - name: Publish only the selected bridge
         run: |
+          [[ "$TESTED_IMAGE" =~ ^sha256:[0-9a-f]{64}$ && "$IMAGE_SHA256" =~ ^[0-9a-f]{64}$ ]]
+          printf '%s  %s\n' "$IMAGE_SHA256" "$RUNNER_TEMP/candidate/image.tar.gz" | sha256sum -c -
           docker load -i "$RUNNER_TEMP/candidate/image.tar.gz"
+          test "$(docker image inspect -f '{{.Id}}' bridge-release-candidate:local)" = "$TESTED_IMAGE"
           IFS=',' read -ra refs <<< "$TAGS"
           for ref in "${refs[@]}"; do [[ "$ref" == "$IMAGE:"* ]]; done
           gh api --paginate --slurp "/orgs/$GITHUB_REPOSITORY_OWNER/packages/container/$SLUG/versions?per_page=100" > "$RUNNER_TEMP/versions.json"
