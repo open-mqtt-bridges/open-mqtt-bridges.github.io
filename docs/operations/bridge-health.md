@@ -16,7 +16,7 @@ Display, Modbus, and AdGuard Home expose a loopback-only readiness probe inside 
 
 - Display: `docker exec <container> displays-mqtt-bridge --readycheck`.
 - Modbus: `docker exec <container> /modbus-mqtt-bridge --readycheck`. The older `--healthcheck` still validates configuration and broker TCP reachability; it is not session readiness.
-- AdGuard Home: `docker exec <container> node tools/readycheck.cjs`.
+- AdGuard Home: `docker exec <container> node /app/readycheck.cjs`.
 - Ping: keep using its existing `/livez` and `/readyz`; monitored targets being unreachable do not make Ping unready.
 
 For a direct run outside Docker, set `BRIDGE_READY_PORT` to a free nonzero local port for both the running process and its probe command. The container defaults are `38081` (Display), `38082` (Modbus), and `38083` (AdGuard Home). The checks do not probe device credentials, external accounts, or the physical devices themselves. Keep readiness separate from container liveness so that a temporary broker outage does not trigger a bridge restart.

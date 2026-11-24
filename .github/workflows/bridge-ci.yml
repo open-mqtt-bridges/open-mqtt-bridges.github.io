@@ -100,7 +100,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: docker build --tag adguard-mqtt-bridge:ci bridges/adguardhome
-      - run: bash scripts/check-native-readiness.sh adguardhome adguard-mqtt-bridge:ci
+      - run: bash bridges/adguardhome/test/container-smoke.sh adguard-mqtt-bridge:ci
   display:
     needs: select
     if: contains(fromJSON(needs.select.outputs.jobs).display, 'display')

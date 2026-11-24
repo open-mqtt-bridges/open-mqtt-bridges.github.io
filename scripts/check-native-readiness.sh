@@ -43,10 +43,17 @@ EOF
     probe=(/modbus-mqtt-bridge --readycheck)
     ;;
   adguardhome)
-    touch "$tmp/bridge.yml"
-    runtime=(-e MQTT_HOST=broker -e MQTT_USERNAME=fixture -e MQTT_PASSWORD=fixture -e ADGUARD_HOST=http://127.0.0.1:9
-      -e ADGUARD_USERNAME=fixture -e ADGUARD_PASSWORD=fixture -e ADGUARD_POLL_INTERVAL=0)
-    probe=(node tools/readycheck.cjs)
+    cat > "$tmp/bridge.yml" <<'EOF'
+MQTT_HOST=broker
+MQTT_USERNAME=fixture
+MQTT_PASSWORD=fixture
+ADGUARD_HOST=http://127.0.0.1:9
+ADGUARD_USERNAME=fixture
+ADGUARD_PASSWORD=fixture
+ADGUARD_POLL_INTERVAL=0
+EOF
+    runtime=(--read-only -v "$tmp/bridge.yml:/app/.env:ro")
+    probe=(node readycheck.cjs)
     ;;
   *) echo "No native readiness fixture for $slug" >&2; exit 2 ;;
 esac
