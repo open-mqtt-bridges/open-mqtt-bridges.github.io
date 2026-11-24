@@ -12,7 +12,7 @@ Use Node.js 26.13.0 and the pnpm version pinned in `package.json`.
 
 ```bash
 pnpm install --frozen-lockfile
-npm ci --prefix docs
+pnpm --dir docs install --frozen-lockfile
 pnpm dev
 ```
 

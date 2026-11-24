@@ -7,7 +7,7 @@ const guides = readdirSync('bridges', { withFileTypes: true })
   .map((d) => d.name)
   .sort();
 if (!['build', 'dev', 'preview'].includes(command) || (selected ? !guides.includes(selected) : command !== 'build')) {
-  throw new Error('Usage: npm run build [-- <slug>] or npm run dev/preview -- <slug>');
+  throw new Error('Usage: pnpm build [<slug>], pnpm dev <slug>, or pnpm preview <slug>');
 }
 for (const slug of selected ? [selected] : guides) {
   const result = spawnSync('vitepress', [command, '.'], { stdio: 'inherit', env: { ...process.env, GUIDE: slug } });

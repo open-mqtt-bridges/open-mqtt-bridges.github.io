@@ -19,11 +19,14 @@ jobs:
         with:
           node-version: 26.13.0
           cache: pnpm
+          cache-dependency-path: |
+            pnpm-lock.yaml
+            docs/pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
       - run: pnpm typecheck
       - run: pnpm format:check
-      - run: npm ci --prefix docs
+      - run: pnpm --dir docs install --frozen-lockfile
       - run: pnpm build
       - run: node --run check
       - run: node --run test

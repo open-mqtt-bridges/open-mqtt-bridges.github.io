@@ -11,7 +11,7 @@
 - [Roborock](bridges/roborock/index.md)
 - [WLED](bridges/wled/index.md)
 
-Install guide tooling with `npm ci --prefix docs`. Preview a guide with `npm --prefix docs run dev -- ping`; build every guide with `npm --prefix docs run build`. Guide sources live under `docs/bridges/<slug>/`; public guide addresses use `/<slug>/`.
+Install guide tooling with `pnpm --dir docs install --frozen-lockfile`. Preview a guide with `pnpm --dir docs dev ping`; build every guide with `pnpm --dir docs build`. Guide sources live under `docs/bridges/<slug>/`; public guide addresses use `/<slug>/`.
 
 See [development](development.md) for contributor tooling.
 

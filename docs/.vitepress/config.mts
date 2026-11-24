@@ -4,7 +4,7 @@ import { withMermaid } from 'vitepress-plugin-mermaid';
 import catalog from '../../bridges.json';
 
 const bridge = catalog.find(({ slug, archived }) => slug === process.env.GUIDE && !archived);
-if (!bridge) throw new Error('Select an active bridge with npm --prefix docs run dev -- <slug>.');
+if (!bridge) throw new Error('Select an active bridge with pnpm --dir docs dev <slug>.');
 const { slug, name, repository } = bridge;
 const folder = `bridges/${slug}`;
 const pages = readdirSync(folder).filter((file) => file.endsWith('.md'));

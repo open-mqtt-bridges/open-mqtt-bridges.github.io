@@ -2,6 +2,7 @@
   "name": "open-mqtt-bridges-guides",
   "private": true,
   "version": "0.2.0",
+  "packageManager": "pnpm@11.28.9",
   "scripts": {
     "dev": "node guides.mjs dev",
     "build": "node guides.mjs build",
@@ -10,11 +11,5 @@
   "dependencies": {
     "vitepress": "^1.6.4",
     "vitepress-plugin-mermaid": "^2.0.17"
-  },
-  "overrides": {
-    "vite": "6.4.5",
-    "esbuild": "~0.25.12",
-    "katex": "0.18.4",
-    "rollup": "4.68.0"
   }
 }
