@@ -25,7 +25,7 @@ jest.mock('~/config/config', () => ({
 }));
 
 import { Logger } from '@nestjs/common';
-import { resolveMqttClientId } from './client-id';
+import { resolveMqttClientId } from '@open-mqtt-bridges/mqtt';
 import { MqttService } from './mqtt.service';
 
 describe('MqttService', () => {

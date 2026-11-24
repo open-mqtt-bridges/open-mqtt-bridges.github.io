@@ -1,6 +1,4 @@
-import { load } from 'js-yaml';
-import { existsSync, readFileSync } from 'node:fs';
-import path from 'node:path';
+import { loadConfig as loadYamlConfig } from '@open-mqtt-bridges/config';
 import { z } from 'zod';
 
 export const collectionSchema = z
@@ -65,13 +63,6 @@ export const configSchema = z
 export type CollectionConfig = z.infer<typeof collectionSchema>;
 export type BridgeConfig = z.infer<typeof configSchema>;
 
-export function configFilePath() {
-  const index = process.argv.indexOf('--config');
-  return path.resolve(process.env.CONFIG_FILE ?? (index >= 0 ? process.argv[index + 1] : 'config/config.yml'));
-}
-
 export function loadConfig(): BridgeConfig {
-  const file = configFilePath();
-  if (!existsSync(file)) throw new Error(`Configuration file not found: ${file}`);
-  return configSchema.parse(load(readFileSync(file, 'utf8')));
+  return loadYamlConfig(configSchema);
 }

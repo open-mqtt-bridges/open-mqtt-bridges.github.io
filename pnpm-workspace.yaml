@@ -1,5 +1,6 @@
 packages:
   - apps/website
+  - libs/*
 allowBuilds:
   '@parcel/watcher': true
   esbuild: true

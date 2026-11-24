@@ -2,7 +2,7 @@
 
 Bridge implementations live in [`bridges/`](bridges/). Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version, changelog, and license. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
 
-See [bridge releases](docs/operations/releases.md) for package ownership, versioning, and publishing.
+The six NestJS bridges share [configuration and MQTT libraries](libs/README.md). See [bridge releases](docs/operations/releases.md) for package ownership, versioning, and publishing.
 
 [`apps/website/`](apps/website/) contains the Nuxt 4 and Nuxt UI source for [open-mqtt-bridges.github.io](https://open-mqtt-bridges.github.io/). GitHub Pages serves statically prerendered HTML; no application server is deployed.
 

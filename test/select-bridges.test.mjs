@@ -9,3 +9,13 @@ test('selects the owning bridge for source or guide changes, all for shared CI, 
   assert.deepEqual(selectBridges(['.github/workflows/bridge-ci.yml'], active), ['modbus', 'wled']);
   assert.deepEqual(selectBridges(['archive/idm-energy/config.yml', 'docs/development.md'], active), []);
 });
+
+test('shared runtime changes select their consumers plus any directly changed bridge', () => {
+  const consumers = ['homeconnect', 'landroid', 'philips-hue', 'pocketbase', 'roborock', 'wled'];
+  const active = [...consumers, 'adguardhome', 'display', 'modbus', 'ping'];
+  assert.deepEqual(selectBridges(['libs/mqtt/index.js'], active), consumers);
+  assert.deepEqual(
+    selectBridges(['libs/config/package.json', 'bridges/ping/src/main.rs'], active),
+    [...consumers, 'ping'].sort(),
+  );
+});

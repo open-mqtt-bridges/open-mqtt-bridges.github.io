@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
-import { connect, type IClientOptions, type MqttClient } from 'mqtt';
+import { connectMqtt } from '@open-mqtt-bridges/mqtt';
+import type { MqttClient } from 'mqtt';
 import { CONFIG } from '~/config/config';
-import { resolveMqttClientId } from './client-id';
 
 export type MqttMessageHandler = (topic: string, payload: string) => void;
 
@@ -23,19 +23,7 @@ export class MqttService implements MqttBridgeClient, OnModuleDestroy {
   private readonly subscriptions = new Map<string, Set<MqttMessageHandler>>();
   /** Opens the shared MQTT connection using the validated configuration. */
   constructor() {
-    const { mqtt } = CONFIG;
-    const clientId = resolveMqttClientId(mqtt.clientId);
-    const options: IClientOptions = {
-      protocol: mqtt.protocol,
-      host: mqtt.host,
-      port: mqtt.port,
-      clientId,
-      username: mqtt.username,
-      password: mqtt.password,
-      keepalive: mqtt.keepAliveSeconds,
-      reconnectPeriod: mqtt.reconnectDelayMs,
-    };
-    this.client = connect(options);
+    this.client = connectMqtt(CONFIG.mqtt);
     this.client.on('error', (error) => this.logger.error('MQTT connection failed', error));
     this.client.on('message', (topic, payload) => this.dispatch(topic, payload.toString()));
   }

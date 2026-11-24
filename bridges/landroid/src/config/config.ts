@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { commonSchema, instanceSchema, loadConfig } from './runtime';
+import { commonSchema, instanceSchema, loadConfig } from '@open-mqtt-bridges/config';
 
 const inputInstance = instanceSchema
   .extend({

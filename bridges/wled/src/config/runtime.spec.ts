@@ -1,7 +1,7 @@
+import { commonSchema, configDirectory, configFilePath, instanceSchema, loadConfig } from '@open-mqtt-bridges/config';
 import { load } from 'js-yaml';
 import { readFileSync } from 'node:fs';
 import path from 'node:path';
-import { commonSchema, configDirectory, configFilePath, instanceSchema, loadConfig } from './runtime';
 
 describe('configuration contract', () => {
   const originalArgv = [...process.argv];

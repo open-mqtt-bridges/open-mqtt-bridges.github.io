@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -9,9 +9,15 @@ export function selectBridges(paths, active) {
   const shared =
     /^(?:\.github\/(?:actions\/|workflows\/bridge-|bridge-publishers\.json$)|scripts\/select-bridges\.mjs$)/;
   if (paths.some((path) => shared.test(path))) return all;
-  return all.filter((slug) =>
-    paths.some((path) => path.startsWith(`bridges/${slug}/`) || path.startsWith(`docs/bridges/${slug}/`)),
-  );
+  const libs = new Set(paths.filter((path) => path.startsWith('libs/')).map((path) => path.split('/')[1]));
+  return all.filter((slug) => {
+    if (paths.some((path) => path.startsWith(`bridges/${slug}/`) || path.startsWith(`docs/bridges/${slug}/`)))
+      return true;
+    const manifest = `bridges/${slug}/package.json`;
+    if (!libs.size || !existsSync(manifest)) return false;
+    const { dependencies = {} } = JSON.parse(readFileSync(manifest, 'utf8'));
+    return [...libs].some((lib) => dependencies[`@open-mqtt-bridges/${lib}`] === `file:../../libs/${lib}`);
+  });
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

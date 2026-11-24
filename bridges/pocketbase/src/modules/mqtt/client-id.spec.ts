@@ -1,4 +1,4 @@
-import { resolveMqttClientId } from './client-id';
+import { resolveMqttClientId } from '@open-mqtt-bridges/mqtt';
 
 describe('resolveMqttClientId', () => {
   it('preserves configured client IDs', () => {

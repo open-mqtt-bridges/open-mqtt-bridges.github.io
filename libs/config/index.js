@@ -1,9 +1,10 @@
-import { load } from 'js-yaml';
-import { existsSync, readFileSync } from 'node:fs';
-import path from 'node:path';
-import { z } from 'zod';
+'use strict';
+const { existsSync, readFileSync } = require('node:fs');
+const path = require('node:path');
+const { load } = require('js-yaml');
+const { z } = require('zod');
 
-export const instanceSchema = z.object({
+const instanceSchema = z.object({
   id: z
     .string()
     .min(1)
@@ -12,7 +13,7 @@ export const instanceSchema = z.object({
   topic: z.string().min(1),
 });
 
-export const commonSchema = z.object({
+const commonSchema = z.object({
   mqtt: z.object({
     protocol: z.enum(['mqtt', 'mqtts']).default('mqtt'),
     host: z.string().min(1),
@@ -25,30 +26,21 @@ export const commonSchema = z.object({
   }),
 });
 
-/**
- * Executes `configFilePath`.
- * @returns {string} Resolved configuration file path.
- */
-export function configFilePath() {
+/** Resolve CONFIG_FILE, --config, or the default path relative to the working directory. */
+function configFilePath() {
   const index = process.argv.indexOf('--config');
   return path.resolve(process.env.CONFIG_FILE ?? (index >= 0 ? process.argv[index + 1] : 'config/config.yml'));
 }
 
-/**
- * Executes `configDirectory`.
- * @returns {string} Configuration directory path.
- */
-export function configDirectory() {
+function configDirectory() {
   return path.dirname(configFilePath());
 }
 
-/**
- * Executes `loadConfig`.
- * @param {T} schema Zod schema used to validate the file.
- * @returns {z.infer<T>} Parsed configuration.
- */
-export function loadConfig<T extends z.ZodType>(schema: T): z.infer<T> {
+/** Read YAML and apply the consumer's schema. Parsing errors propagate to the caller. */
+function loadConfig(schema) {
   const file = configFilePath();
   if (!existsSync(file)) throw new Error(`Configuration file not found: ${file}`);
   return schema.parse(load(readFileSync(file, 'utf8')));
 }
+
+module.exports = { commonSchema, instanceSchema, configFilePath, configDirectory, loadConfig };

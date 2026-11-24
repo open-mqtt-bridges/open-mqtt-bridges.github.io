@@ -3,6 +3,8 @@ WORKDIR /app
 
 RUN npm install --global pnpm@12.16.1
 
+COPY --from=bridge-libs /config/package.json /config/index.* /config/LICENSE /libs/config/
+COPY --from=bridge-libs /mqtt/package.json /mqtt/index.* /mqtt/LICENSE /libs/mqtt/
 COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm install --frozen-lockfile
 

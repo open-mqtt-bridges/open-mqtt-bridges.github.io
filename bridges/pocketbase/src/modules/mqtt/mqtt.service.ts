@@ -1,7 +1,7 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
-import { connect, type IClientOptions, type IPublishPacket, type MqttClient } from 'mqtt';
+import { connectMqtt } from '@open-mqtt-bridges/mqtt';
+import type { IPublishPacket, MqttClient } from 'mqtt';
 import { ENV } from '~/config/env';
-import { resolveMqttClientId } from './client-id';
 
 export interface MqttPublishOptions {
   retain?: boolean;
@@ -21,17 +21,16 @@ export class MqttService implements MqttBridgeClient, OnModuleDestroy {
   private readonly subscriptions = new Map<string, Set<MqttMessageHandler>>();
 
   constructor() {
-    const options: IClientOptions = {
-      clientId: resolveMqttClientId(ENV.MQTT_CLIENT_ID),
+    this.client = connectMqtt({
+      clientId: ENV.MQTT_CLIENT_ID,
       host: ENV.MQTT_HOST,
-      keepalive: 30,
+      keepAliveSeconds: 30,
       password: ENV.MQTT_PASSWORD,
       port: ENV.MQTT_PORT,
       protocol: ENV.MQTT_PROTOCOL,
-      reconnectPeriod: 5000,
+      reconnectDelayMs: 5000,
       username: ENV.MQTT_USERNAME,
-    };
-    this.client = connect(options);
+    });
     this.client.on('error', (error) => this.logger.error('MQTT connection failed', error));
     this.client.on('message', (topic, payload, packet) => this.dispatch(topic, payload.toString(), packet));
   }
