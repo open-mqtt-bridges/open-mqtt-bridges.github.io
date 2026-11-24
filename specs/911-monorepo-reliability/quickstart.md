@@ -1,14 +1,14 @@
 # Validation Guide: Monorepo Reliability and Delivery
 
-This is a validation plan, not a report that the feature has been implemented. Use the owning lockfiles and CI tool versions in [development](../../docs/development.md). Broker and device fixtures must be isolated and synthetic. Do not perform live settings changes or registry writes as part of these checks.
+Use the owning lockfiles and CI tool versions in [development](../../docs/development.md). Broker and device fixtures must be isolated and synthetic. Do not perform live settings changes or registry writes as part of these checks. See [verification.md](verification.md) for recorded evidence.
 
 ## 1. Bridge runtime gates
 
 - In `bridges/modbus/`, run `cargo fmt --all --check`, `cargo clippy --locked --all-targets --all-features -- -D warnings`, and `cargo test --locked --all-targets --all-features`. With `mosquitto` installed, run `cargo test --locked --test mqtt_command_recovery -- --ignored`. The broker fixture must show rejection without a device write, followed by a valid command and expected synthetic write without restarting.
 - In `bridges/display/`, install the existing `libudev` build prerequisite; run `cargo fmt --check`, `cargo clippy --locked --all-targets -- -D warnings`, and `cargo test --locked`. With `mosquitto` installed, run `cargo test --locked --test mqtt_reconnect -- --ignored`. The test must lose and restore the session, then observe command handling after reconnect without physical hardware.
-- For each bridge's readiness check, exercise starting without a broker, healthy connection, disconnect, and recovery. Expected: existing liveness remains valid; readiness reflects the actual broker/session state. Include Ping's existing broker/container tests as compatibility evidence.
+- For each bridge's readiness check, exercise starting without a broker, healthy connection, disconnect, and recovery. Expected: existing liveness remains valid; readiness reflects the actual broker/session state. From the repository root, use `bash scripts/check-native-readiness.sh <slug> <local-image>` for Display, Modbus, or AdGuard Home. Run WLED's `pnpm test:availability` in its owning directory for HTTP and connection transitions. Include Ping's existing broker/container tests as compatibility evidence.
 - In `bridges/roborock/`, run `pnpm test --runTestsByPath src/lib/roborock/map.spec.ts`. The revised suite must exercise both `0022` and `0077` in isolated processes and verify new and replaced files, then pass `pnpm test` as a whole.
-- In `bridges/adguardhome/`, run `docker build -t adguard-mqtt-bridge:verify .` to exercise the TLS tests with OpenSSL. Run the new container smoke check against that image using representative config and writable mounts. Expect successful non-root startup and unchanged TLS behavior.
+- In `bridges/adguardhome/`, run `docker build -t adguard-mqtt-bridge:verify .` to exercise the TLS tests with OpenSSL. Run `bash test/container-smoke.sh adguard-mqtt-bridge:verify` for non-root startup with a read-only filesystem and mounted `.env` fixture.
 
 ## 2. CI, release, and distribution gates
 
@@ -30,4 +30,4 @@ pnpm build
 pnpm check
 ```
 
-Run the website's new browser target once added. Use the generated `.output/public/` artifact and a pinned Chromium. Expect no 320 px horizontal overflow, a valid search hit, empty results, keyboard-accessible reset with focus returned to search, and a script-free context with all cards and native links visible but search hidden. Record current CI, local proof, and any operator steps separately.
+Run `pnpm --dir apps/website exec playwright install chromium` once, then `pnpm --dir apps/website test:browser`. The tests use the generated `.output/public/` artifact and pinned Chromium. Expect no 320 px horizontal overflow, a valid search hit, empty results, keyboard-accessible reset with focus returned to search, and a script-free context with all cards and native links visible but search hidden. Record current CI, local proof, and any operator steps separately.

@@ -45,7 +45,7 @@ Use the existing root test runner, Buildx and Mosquitto fixtures, owning package
 
 ## Final Phase: Cross-Cutting Verification
 
-- [ ] T013 Run documented repository, owning package, MQTT/health contract, browser, and release-fixture checks in `specs/911-monorepo-reliability/quickstart.md`. Record HEAD-specific evidence, environment limits, deferred administrator operations, and only actual release metadata required by owning bridge policy; do not run version, publish, or deploy commands.
+- [x] T013 Run documented repository, owning package, MQTT/health contract, browser, and release-fixture checks in `specs/911-monorepo-reliability/quickstart.md`. Record HEAD-specific evidence, environment limits, deferred administrator operations, and only actual release metadata required by owning bridge policy; do not run version, publish, or deploy commands.
 
 ## Dependencies & Execution Order
 
