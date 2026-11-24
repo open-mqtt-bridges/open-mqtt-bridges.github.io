@@ -181,7 +181,7 @@ version = "0.2.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ba69f2c53e320fc4abad17cb02bbbf04d1a36f18e9907f347589ec5991b3c6c5"
 dependencies = [
- "mccs",
+ "mccs 0.1.3",
 ]
 
 [[package]]
@@ -195,7 +195,7 @@ dependencies = [
  "ddc-i2c",
  "edid",
  "log",
- "mccs",
+ "mccs 0.1.3",
  "mccs-caps",
  "mccs-db",
 ]
@@ -230,7 +230,7 @@ dependencies = [
  "anyhow",
  "clap",
  "ddc-hi",
- "mccs",
+ "mccs 0.2.0",
  "mccs-db",
  "rumqttc",
  "serde",
@@ -612,12 +612,18 @@ dependencies = [
 ]
 
 [[package]]
+name = "mccs"
+version = "0.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "2a63ab5297c9a7d5f8298a076b5f858c3c51ce84bf2f57a302d1d67ff9323360"
+
+[[package]]
 name = "mccs-caps"
 version = "0.1.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "8eb961d01a3bb07969cfa276be2ab88c31d0fefa77a872696832732d6e9ec094"
 dependencies = [
- "mccs",
+ "mccs 0.1.3",
  "nom",
 ]
 
@@ -625,7 +631,7 @@ dependencies = [
 name = "mccs-db"
 version = "0.1.3"
 dependencies = [
- "mccs",
+ "mccs 0.1.3",
  "nom",
  "serde",
  "serde_derive",
