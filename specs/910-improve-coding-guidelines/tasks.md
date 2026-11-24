@@ -18,17 +18,17 @@ As part of T001, recheck the implementation base, especially the package manager
 
 **Independent test**: Follow the README for the website, shared libraries, a pnpm bridge, AdGuard Home, a Rust bridge, and the guide site. For each, identify the working directory, applicable commands, and mutating versus read-only behavior.
 
-- [ ] T001 [US1] Document the verified check and fix matrix in `docs/development.md`, preserving the existing contributor links and Spec Kit guidance. Verify scope and exclusions against `package.json`, `.prettierignore`, representative effective ESLint configs, and `.github/workflows/{pages,bridge-ci}.yml`, including the root/package distinction and coverage gaps. Walk all six README routes, verify local links, and run the applicable read-only checks from `specs/910-improve-coding-guidelines/quickstart.md` before committing.
+- [x] T001 [US1] Document the verified check and fix matrix in `docs/development.md`, preserving the existing contributor links and Spec Kit guidance. Verify scope and exclusions against `package.json`, `.prettierignore`, representative effective ESLint configs, and `.github/workflows/{pages,bridge-ci}.yml`, including the root/package distinction and coverage gaps. Walk all six README routes, verify local links, and run the applicable read-only checks from `specs/910-improve-coding-guidelines/quickstart.md` before committing.
 
 ## Phase 4: User Story 2 - Review against actual project policy (P2)
 
 **Independent test**: A reviewer can classify Vue ordering, formatter-owned layout, changed public contract documentation, and private helper documentation according to the actual policy.
 
-- [ ] T002 [US2] Document applicable JS/TS, Vue, and Rust conventions and exceptions in `docs/development.md`, distinguishing lint/formatter enforcement, manual review, and baseline rules not adopted. Verify the Vue and documentation examples and effective package differences against `eslint.config.mjs`, `bridges/homeconnect/eslint.config.mjs`, `bridges/pocketbase/eslint.config.mjs`, and the representative source listed in the plan. Run relevant checks from `specs/910-improve-coding-guidelines/quickstart.md` before committing.
+- [x] T002 [US2] Document applicable JS/TS, Vue, and Rust conventions and exceptions in `docs/development.md`, distinguishing lint/formatter enforcement, manual review, and baseline rules not adopted. Verify the Vue and documentation examples and effective package differences against `eslint.config.mjs`, `bridges/homeconnect/eslint.config.mjs`, `bridges/pocketbase/eslint.config.mjs`, and the representative source listed in the plan. Run relevant checks from `specs/910-improve-coding-guidelines/quickstart.md` before committing.
 
 ## Guidelines Track Verification
 
-- [ ] T003 Validate the combined result using `specs/910-improve-coding-guidelines/quickstart.md`; confirm that `docs/development.md` and any scoped link corrections are the only delivery changes besides planning artifacts. Record actual checks and gaps in the issue. Do not create an empty verification commit.
+- [x] T003 Validate the combined result using `specs/910-improve-coding-guidelines/quickstart.md`; confirm that `docs/development.md` and any scoped link corrections are the only delivery changes besides planning artifacts. Record actual checks and gaps in the issue. Do not create an empty verification commit.
 
 ## Phase 5: User Story 3 - Bring dependencies up to date (P1)
 
