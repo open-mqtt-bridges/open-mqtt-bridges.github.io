@@ -14,6 +14,7 @@
 - Configure both `mqtt.username` and `mqtt.password`, or omit both.
 - For `mqtts`/`ssl`, ensure the broker certificate is trusted by the container or runtime.
 - Use `RUST_LOG=debug` and inspect `docker compose logs -f` for connection errors.
+- The bridge restores its command subscription when a broker restart or reconnect creates a new session. A full outbound queue may skip a status update with a warning rather than block the MQTT connection.
 
 ## A command has no expected effect
 

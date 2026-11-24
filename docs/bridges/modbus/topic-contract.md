@@ -26,3 +26,6 @@ true
 ```json
 {"value": 18.0}
 ```
+
+The bridge logs and discards rejected commands without writing to the device.
+An invalid command does not stop the bridge from processing later commands.

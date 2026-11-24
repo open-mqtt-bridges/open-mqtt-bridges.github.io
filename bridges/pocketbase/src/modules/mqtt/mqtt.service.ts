@@ -1,5 +1,5 @@
 import { Injectable, Logger, OnModuleDestroy } from '@nestjs/common';
-import { connectMqtt } from '@open-mqtt-bridges/mqtt';
+import { connectMqtt, isMqttReady } from '@open-mqtt-bridges/mqtt';
 import type { IPublishPacket, MqttClient } from 'mqtt';
 import { ENV } from '~/config/env';
 
@@ -16,6 +16,11 @@ export interface MqttBridgeClient {
 
 @Injectable()
 export class MqttService implements MqttBridgeClient, OnModuleDestroy {
+  /** Reports readiness for this connection and its registered command filters. */
+  isReady() {
+    return isMqttReady(this.client, this.subscriptions.keys());
+  }
+
   private readonly client: MqttClient;
   private readonly logger = new Logger(MqttService.name);
   private readonly subscriptions = new Map<string, Set<MqttMessageHandler>>();

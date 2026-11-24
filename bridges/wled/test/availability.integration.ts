@@ -20,12 +20,20 @@ function docker(...args: string[]) {
   return execFileSync('docker', args, { encoding: 'utf8', timeout: 60_000 }).trim();
 }
 
-async function waitFor(description: string, ready: () => boolean, timeout = 5_000) {
+async function waitFor(description: string, ready: () => boolean | Promise<boolean>, timeout = 5_000) {
   const deadline = performance.now() + timeout;
-  while (!ready()) {
+  while (!(await ready())) {
     assert(performance.now() < deadline, `Timed out waiting for ${description}`);
     await delay(50);
   }
+}
+
+async function freePort() {
+  const probe = createTcpServer().listen(0, host);
+  await once(probe, 'listening');
+  const port = (probe.address() as AddressInfo).port;
+  await new Promise<void>((done) => probe.close(() => done()));
+  return port;
 }
 
 async function observe(url: string, filter: string) {
@@ -62,10 +70,7 @@ async function run() {
   const dir = await mkdtemp(join(tmpdir(), 'wled-availability-'));
   cleanup.push(() => rm(dir, { recursive: true, force: true }));
 
-  const portProbe = createTcpServer().listen(0, host);
-  await once(portProbe, 'listening');
-  const brokerPort = (portProbe.address() as AddressInfo).port;
-  await new Promise<void>((done) => portProbe.close(() => done()));
+  const brokerPort = await freePort();
   // Docker reassigns a dynamically published port on restart; pin the OS-selected port.
   const broker = docker(
     'run',
@@ -117,9 +122,17 @@ async function run() {
     }),
   );
 
+  const httpPort = await freePort();
   const bridge = spawn(process.execPath, [resolve('dist/index.js')], {
     cwd: dir,
-    env: { ...process.env, NODE_ENV: 'production', CONFIG_FILE: config, HOST: host, PORT: '0', NO_PROXY: host },
+    env: {
+      ...process.env,
+      NODE_ENV: 'production',
+      CONFIG_FILE: config,
+      HOST: host,
+      PORT: `${httpPort}`,
+      NO_PROXY: host,
+    },
     stdio: ['ignore', 'pipe', 'pipe'],
   });
   let output = '';
@@ -132,10 +145,24 @@ async function run() {
     await exited;
   });
 
+  async function expectReadiness(status: 200 | 503) {
+    const url = `http://${host}:${httpPort}`;
+    await waitFor(`HTTP readiness ${status}`, async () => {
+      const response = await fetch(`${url}/readyz`, { signal: AbortSignal.timeout(500) }).catch(() => null);
+      if (!response || response.status !== status) return false;
+      assert.deepEqual(await response.json(), { status: status === 200 ? 'ok' : 'not_ready' });
+      return true;
+    });
+    const live = await fetch(`${url}/health`, { signal: AbortSignal.timeout(500) });
+    assert.equal(live.status, 200);
+    assert.equal((await live.json()).status, 'ok');
+  }
+
   try {
     const bridgeSubscriptions = () => brokerLogs().split(`Sending SUBACK to ${bridgeId}`).length - 1;
     const brokerStarts = () => brokerLogs().split('mosquitto version 2.0.22 running').length - 1;
     await waitFor('bridge MQTT subscription', () => bridgeSubscriptions() === 1);
+    await expectReadiness(200);
     acceptDevice();
     await waitFor('early subscriber live true', () => early.messages.some(({ payload }) => payload === 'true'));
     assert.deepEqual(
@@ -173,12 +200,14 @@ async function run() {
       const starts = brokerStarts();
       docker('stop', '--time', '1', broker);
       await waitFor('observer disconnect', () => !watcher.connected);
+      await expectReadiness(503);
       await whileDown();
       docker('start', broker);
       await waitFor('broker restart', () => brokerStarts() > starts);
       assert.equal(docker('port', broker, '1883/tcp'), endpoint);
       const observer = await observe(`mqtt://${endpoint}`, `${topic}/connected`);
       await waitFor('bridge MQTT resubscription', () => bridgeSubscriptions() > subscriptions);
+      await expectReadiness(200);
       return observer;
     }
 

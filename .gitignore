@@ -63,3 +63,4 @@ docs/.vitepress/cache/
 /bridges/ping/target/
 /bridges/ping/bridge.toml
 /bridges/ping/secrets/
+/apps/website/test-results/

@@ -8,7 +8,7 @@ use tokio::{
 };
 use tracing_subscriber::{EnvFilter, fmt};
 
-use modbus_mqtt_bridge::{bridge, config::AppConfig};
+use modbus_mqtt_bridge::{bridge, config::AppConfig, readiness};
 
 // Bundled starter config written on first boot for easier local setup.
 const EXAMPLE_CONFIG: &str = include_str!("../config/config.example.yml");
@@ -22,12 +22,18 @@ struct Cli {
     // Used by container HEALTHCHECK to validate config parsing and MQTT reachability.
     #[arg(long)]
     healthcheck: bool,
+    /// Check the running bridge's MQTT readiness on its loopback probe.
+    #[arg(long, conflicts_with = "healthcheck")]
+    readycheck: bool,
 }
 
 #[tokio::main]
 async fn main() -> Result<()> {
     let cli = Cli::parse();
 
+    if cli.readycheck {
+        return readiness::check().await;
+    }
     if cli.healthcheck {
         return run_healthcheck(&cli.config).await;
     }

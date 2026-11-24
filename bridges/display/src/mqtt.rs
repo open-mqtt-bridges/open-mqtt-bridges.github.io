@@ -23,34 +23,31 @@ impl Publisher {
         format!("{}/cmd", self.topic)
     }
 
-    pub async fn subscribe_to_commands(&self) -> Result<()> {
-        let topic = self.command_topic();
+    pub fn try_subscribe_to_commands(&self, topic: &str) -> Result<()> {
         debug!(%topic, "subscribing to MQTT command topic");
         self.client
-            .subscribe(topic, QoS::AtLeastOnce)
-            .await
+            .try_subscribe(topic, QoS::AtLeastOnce)
             .context("could not subscribe to command topic")
     }
 
-    pub async fn publish_status(&self, status: &Status) -> Result<()> {
-        self.publish("status", status).await
+    pub fn publish_status(&self, status: &Status) -> Result<()> {
+        self.publish("status", status)
     }
 
-    pub async fn publish_details(&self, publications: Vec<Publication>) -> Result<()> {
+    pub fn publish_details(&self, publications: Vec<Publication>) -> Result<()> {
         for publication in publications {
-            self.publish(&publication.topic_suffix, &publication.payload)
-                .await?;
+            self.publish(&publication.topic_suffix, &publication.payload)?;
         }
         Ok(())
     }
 
-    async fn publish<T: Serialize>(&self, suffix: &str, value: &T) -> Result<()> {
+    fn publish<T: Serialize>(&self, suffix: &str, value: &T) -> Result<()> {
         let topic = format!("{}/{}", self.topic, suffix);
         let payload = serde_json::to_vec(value).context("could not serialize MQTT payload")?;
         trace!(%topic, bytes = payload.len(), "publishing retained MQTT payload");
+        // This caller also drives the event loop that drains the request queue.
         self.client
-            .publish(&topic, QoS::AtLeastOnce, true, payload)
-            .await
+            .try_publish(&topic, QoS::AtLeastOnce, true, payload)
             .with_context(|| format!("could not publish MQTT topic {topic}"))
     }
 }

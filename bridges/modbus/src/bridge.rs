@@ -1,7 +1,18 @@
-use std::{future::Future, net::SocketAddr, sync::Arc, time::Duration};
+use std::{
+    future::Future,
+    net::SocketAddr,
+    sync::{
+        Arc,
+        atomic::{AtomicBool, Ordering::Relaxed},
+    },
+    time::Duration,
+};
 
 use anyhow::{Context, Result, anyhow, bail};
-use rumqttc::{AsyncClient, ClientError, Event, EventLoop, Incoming, MqttOptions, Publish, QoS};
+use rumqttc::{
+    AsyncClient, ClientError, Event, EventLoop, Incoming, MqttOptions, Publish, QoS,
+    SubscribeReasonCode,
+};
 use serde_json::Value;
 use tokio::{net::TcpStream, sync::mpsc, time};
 use tokio_modbus::{client::tcp, prelude::*};
@@ -10,6 +21,7 @@ use tracing::{debug, error, info, warn};
 use crate::{
     config::{AppConfig, PointConfig, RegisterKind, SourceConfig},
     modbus_codec::{EncodedWrite, decode_point, encode_write_payload, register_count},
+    readiness,
 };
 
 /// Internal command payload for MQTT `/set` messages.
@@ -30,6 +42,7 @@ pub struct RpcCommand {
 /// - one polling task per configured Modbus source
 /// - one command-processing loop for incoming `/set` writes
 pub async fn run(config: AppConfig) -> Result<()> {
+    let ready = readiness::start().await?;
     // One MQTT client is shared by polling tasks and RPC write handling.
     let mqtt_options = mqtt_options(&config);
     let (mqtt_client, mut event_loop) = AsyncClient::new(mqtt_options, 100);
@@ -42,8 +55,10 @@ pub async fn run(config: AppConfig) -> Result<()> {
     tokio::spawn(async move {
         // This task must run continuously; rumqttc drives reconnect behavior via poll().
         if let Err(error) =
-            drive_mqtt_event_loop(event_client, &mut event_loop, rpc_tx, &event_config).await
+            drive_mqtt_event_loop(event_client, &mut event_loop, rpc_tx, &event_config, &ready)
+                .await
         {
+            ready.store(false, Relaxed);
             error!(error = ?error, "mqtt event loop stopped");
         }
     });
@@ -155,10 +170,12 @@ async fn drive_mqtt_event_loop(
     event_loop: &mut EventLoop,
     rpc_tx: mpsc::Sender<RpcCommand>,
     config: &AppConfig,
+    ready: &AtomicBool,
 ) -> Result<()> {
     let subscriptions = rpc_subscriptions(config);
     let mut subscriptions_pending = false;
     let mut next_subscription_index = 0usize;
+    let mut subscription_acks = 0;
 
     loop {
         if subscriptions_pending {
@@ -177,22 +194,40 @@ async fn drive_mqtt_event_loop(
         match event_loop.poll().await {
             Ok(Event::Incoming(Incoming::Publish(publish))) => {
                 // Forward valid `/set` payloads to the write worker.
-                if let Some(command) = decode_rpc_publish(config, publish)? {
-                    let rpc_tx = rpc_tx.clone();
-                    tokio::spawn(async move {
-                        if rpc_tx.send(command).await.is_err() {
-                            warn!("dropping rpc command because write queue is closed");
-                        }
-                    });
+                match decode_rpc_publish(config, publish) {
+                    Ok(Some(command)) => {
+                        let rpc_tx = rpc_tx.clone();
+                        tokio::spawn(async move {
+                            if rpc_tx.send(command).await.is_err() {
+                                warn!("dropping rpc command because write queue is closed");
+                            }
+                        });
+                    }
+                    Ok(None) => {}
+                    Err(error) => warn!(%error, "rejecting invalid rpc command"),
                 }
             }
             Ok(Event::Incoming(Incoming::ConnAck(_))) => {
                 info!("connected to mqtt broker");
                 subscriptions_pending = !subscriptions.is_empty();
                 next_subscription_index = 0;
+                subscription_acks = 0;
+                ready.store(subscriptions.is_empty(), Relaxed);
+            }
+            Ok(Event::Incoming(Incoming::SubAck(ack))) => {
+                if matches!(
+                    ack.return_codes.as_slice(),
+                    [SubscribeReasonCode::Success(_)]
+                ) {
+                    subscription_acks += 1;
+                    ready.store(subscription_acks == subscriptions.len(), Relaxed);
+                } else {
+                    warn!("broker rejected a write command subscription");
+                }
             }
             Ok(Event::Outgoing(_)) | Ok(Event::Incoming(_)) => {}
             Err(error) => {
+                ready.store(false, Relaxed);
                 // Small delay avoids a tight reconnect loop if broker is unavailable.
                 warn!(error = ?error, delay_secs = config.mqtt.reconnect_delay_secs, "mqtt loop error");
                 time::sleep(Duration::from_secs(config.mqtt.reconnect_delay_secs)).await;

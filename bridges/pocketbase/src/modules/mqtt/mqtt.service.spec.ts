@@ -37,6 +37,7 @@ describe('MqttService', () => {
 
   it('connects with the configured broker and publishes retained state', () => {
     const service = new MqttService();
+    expect(service.isReady()).toBe(false);
     service.publish('home/state', 'value', { retain: true });
     service.publish('home/state', null, { retain: true });
 

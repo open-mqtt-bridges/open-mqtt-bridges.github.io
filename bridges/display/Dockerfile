@@ -44,6 +44,7 @@ COPY third_party/mccs-db-0.1.3/COPYING /usr/share/doc/displays-mqtt-bridge/mccs-
 
 # The bridge owns PID 1; verify that its process entry is available while the container runs.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 CMD ["test", "-r", "/proc/1/cmdline"]
+ENV BRIDGE_READY_PORT=38081
 
 # DDC/CI access is supplied through explicitly mapped host adapters, not privileged mode.
 USER 65534:65534

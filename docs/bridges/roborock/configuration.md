@@ -16,6 +16,7 @@ instances:
 - `mqtt` configures the single shared broker connection.
 - `mqtt.clientId` may be empty; the bridge generates a UUID for the running process.
 - HTTP settings are environment variables: `HOST` defaults to `0.0.0.0`, `PORT` defaults to `3000`, and `CORS_ORIGIN` defaults to `*`. `MAP_STORAGE_PATH` selects the directory for rendered map PNGs and defaults to `maps`. Dotenv loads `.env` from the working directory; Docker Compose environment values take precedence.
+- Map PNGs request mode `0640`, subject to the process `umask`. A `0077` mask keeps maps private (`0600`); the bridge does not widen those permissions. For group access, configure the correct group ownership, use a mask that permits group read, and allow the group to traverse the map directory and its parent directories.
 - Every `instances[].id` and `instances[].topic` must be unique.
 
 ## Roborock MQTT Bridge example

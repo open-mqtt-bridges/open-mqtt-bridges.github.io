@@ -1,7 +1,7 @@
-use std::time::Duration;
+use std::{sync::atomic::Ordering::Relaxed, time::Duration};
 
-use anyhow::Result;
-use rumqttc::{AsyncClient, Event, Packet};
+use anyhow::{Result, ensure};
+use rumqttc::{AsyncClient, Event, Packet, SubscribeReasonCode, valid_filter};
 use tokio::{
     sync::mpsc::{UnboundedSender, unbounded_channel},
     time::MissedTickBehavior,
@@ -13,6 +13,7 @@ use crate::{
     control::{ScanResult, ScreenController},
     mqtt::Publisher,
     protocol::{Command, CommandResult, DisplayStatus, Status},
+    readiness,
 };
 
 pub async fn run(config: Config) -> Result<()> {
@@ -21,7 +22,10 @@ pub async fn run(config: Config) -> Result<()> {
     let (broker_host, broker_port) = options.broker_address();
     let (client, mut eventloop) = AsyncClient::new(options, 4096);
     let publisher = Publisher::new(client, &config.topic);
-    publisher.subscribe_to_commands().await?;
+    let command_topic = publisher.command_topic();
+    ensure!(valid_filter(&command_topic), "invalid MQTT command topic");
+    let ready = readiness::start().await?;
+    let mut subscription_pending = false;
 
     info!(%broker_host, broker_port, topic = %config.topic, update_interval_secs = config.update_interval_secs, "starting MQTT screen controller");
     let (scan_sender, mut scan_receiver) = unbounded_channel();
@@ -33,26 +37,40 @@ pub async fn run(config: Config) -> Result<()> {
     update_timer.set_missed_tick_behavior(MissedTickBehavior::Skip);
 
     loop {
+        if subscription_pending {
+            subscription_pending = publisher.try_subscribe_to_commands(&command_topic).is_err();
+        }
         tokio::select! {
             event = eventloop.poll() => match event {
-                Ok(Event::Incoming(Packet::ConnAck(_))) => {
+                Ok(Event::Incoming(Packet::ConnAck(ack))) => {
                     info!("MQTT connection established");
+                    ready.store(ack.session_present, Relaxed);
+                    // Establish the subscription before publishing the first status of a new session.
+                    subscription_pending = !ack.session_present
+                        && publisher.try_subscribe_to_commands(&command_topic).is_err();
                     // Publish an immediate retained heartbeat while slow I2C probing happens in the worker.
-                    publish_status(&publisher, &last_displays, None).await;
+                    publish_status(&publisher, &last_displays, None);
                     if let Some(controller) = controller.take() {
                         start_scan(controller, true, None, scan_sender.clone());
                     } else {
                         debug!("DDC/CI scan is already running after MQTT reconnect");
                     }
                 }
-                Ok(Event::Incoming(Packet::Publish(message))) if message.topic == publisher.command_topic() => {
+                Ok(Event::Incoming(Packet::SubAck(ack))) => {
+                    let accepted = matches!(ack.return_codes.as_slice(), [SubscribeReasonCode::Success(_)]);
+                    ready.store(accepted, Relaxed);
+                    if !accepted {
+                        warn!(topic = %command_topic, "broker rejected MQTT command subscription");
+                    }
+                }
+                Ok(Event::Incoming(Packet::Publish(message))) if message.topic == command_topic => {
                     info!(topic = %message.topic, bytes = message.payload.len(), "received MQTT command");
                     let result = handle_command(&message.payload, controller.take());
                     controller = result.controller;
                     if let Some((next_controller, refresh, command)) = result.start_scan {
                         start_scan(next_controller, refresh, Some(command), scan_sender.clone());
                     } else if let Some(command) = result.immediate_response {
-                        publish_status(&publisher, &last_displays, Some(command)).await;
+                        publish_status(&publisher, &last_displays, Some(command));
                     }
                 }
                 Ok(Event::Incoming(Packet::Publish(message))) => {
@@ -60,6 +78,8 @@ pub async fn run(config: Config) -> Result<()> {
                 }
                 Ok(event) => debug!(?event, "processed MQTT event"),
                 Err(error) => {
+                    ready.store(false, Relaxed);
+                    subscription_pending = false;
                     error!(%error, "MQTT event loop failed; retrying in two seconds");
                     tokio::time::sleep(Duration::from_secs(2)).await;
                 }
@@ -67,8 +87,8 @@ pub async fn run(config: Config) -> Result<()> {
             Some(scan) = scan_receiver.recv() => {
                 last_displays = scan.displays.clone();
                 controller = Some(scan.controller);
-                publish_status(&publisher, &last_displays, scan.command).await;
-                if let Err(error) = publisher.publish_details(scan.publications).await {
+                publish_status(&publisher, &last_displays, scan.command);
+                if let Err(error) = publisher.publish_details(scan.publications) {
                     warn!(%error, "could not publish DDC/CI display details");
                 }
             },
@@ -154,7 +174,7 @@ fn start_scan(
     });
 }
 
-async fn publish_status(
+fn publish_status(
     publisher: &Publisher,
     displays: &[DisplayStatus],
     command: Option<CommandResult>,
@@ -163,7 +183,7 @@ async fn publish_status(
         displays: displays.to_vec(),
         command,
     };
-    if let Err(error) = publisher.publish_status(&status).await {
+    if let Err(error) = publisher.publish_status(&status) {
         warn!(%error, "could not publish aggregate status");
     }
 }

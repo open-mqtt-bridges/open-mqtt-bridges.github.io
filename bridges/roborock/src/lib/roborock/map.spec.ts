@@ -1,7 +1,26 @@
-import { mkdtemp, readdir, readFile, rm, stat } from 'node:fs/promises';
+import { execFileSync } from 'node:child_process';
+import { mkdtemp, rm } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { renderMapImage, storeMapImage } from './map';
+import { renderMapImage } from './map';
+
+const checkStorage = `
+  import assert from 'node:assert/strict';
+  import { readdir, readFile, stat } from 'node:fs/promises';
+  import path from 'node:path';
+  import { storeMapImage } from './src/lib/roborock/map.ts';
+  const [directory, mask, mode, rawMap] = process.argv.slice(1);
+  process.umask(Number(mask));
+  const map = JSON.parse(rawMap);
+  const expected = path.join(directory, 'robot-1', '42.png');
+  for (let write = 0; write < 2; write++) {
+    const file = await storeMapImage(directory, 'robot-1', 42, map);
+    assert.equal(file, expected);
+    assert.equal((await stat(file)).mode & 0o777, Number(mode));
+  }
+  assert.deepEqual(await readdir(path.dirname(expected)), ['42.png']);
+  assert.deepEqual((await readFile(expected)).subarray(0, 8), Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+`;
 
 describe('Roborock map storage', () => {
   const map = {
@@ -16,17 +35,17 @@ describe('Roborock map storage', () => {
     expect(renderMapImage(map).subarray(0, 8)).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
   });
 
-  it('stores PNG maps under stable device and map IDs with group-readable permissions', async () => {
+  it.each([
+    ['0o022', '0o640'],
+    ['0o077', '0o600'],
+  ])('creates and replaces stable PNG maps with umask %s (expected mode %s)', async (mask, mode) => {
     const directory = await mkdtemp(path.join(tmpdir(), 'mqtt-bridges-roborock-maps-'));
     try {
-      const file = await storeMapImage(directory, 'robot-1', 42, map);
-      const replacement = await storeMapImage(directory, 'robot-1', 42, map);
-
-      expect(file).toBe(path.join(directory, 'robot-1', '42.png'));
-      expect(replacement).toBe(file);
-      await expect(readdir(path.dirname(file))).resolves.toEqual(['42.png']);
-      expect((await stat(file)).mode & 0o777).toBe(0o640);
-      expect((await readFile(file)).subarray(0, 8)).toEqual(Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]));
+      execFileSync(
+        process.execPath,
+        ['--input-type=module', '--eval', checkStorage, directory, mask, mode, JSON.stringify(map)],
+        { stdio: 'pipe', timeout: 5000 },
+      );
     } finally {
       await rm(directory, { force: true, recursive: true });
     }

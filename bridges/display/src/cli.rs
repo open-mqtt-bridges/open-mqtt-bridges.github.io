@@ -7,4 +7,7 @@ use clap::Parser;
 pub struct Args {
     #[arg(short, long, default_value = "/app/config/config.yml")]
     pub config: PathBuf,
+    /// Check the active process's MQTT readiness on its configured loopback probe.
+    #[arg(long)]
+    pub readycheck: bool,
 }

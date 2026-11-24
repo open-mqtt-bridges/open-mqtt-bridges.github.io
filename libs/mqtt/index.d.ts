@@ -12,3 +12,5 @@ export interface BrokerSettings {
 }
 export function resolveMqttClientId(clientId: string): string;
 export function connectMqtt(settings: BrokerSettings): MqttClient;
+/** True only when connected and every required filter is acknowledged in the current session. */
+export function isMqttReady(client: MqttClient, filters: Iterable<string>): boolean;
