@@ -1,0 +1,6 @@
+# Research decisions
+
+- **Delete the Roborock helper only.** Searching Roborock for `objectToMap` returns only its declaration; the application bundles from `src/main.ts`. Landroid and WLED still call their own helpers. A shared replacement would add work without serving a Roborock consumer.
+- **Import types from their owner.** The five forwarding files contain only `export type`. The destination modules also initialize `CONFIG`, so plain value imports are inappropriate, including for WLED's current `WledConfig` import. Keeping forwarding files for compatibility was considered; the paths are internal aliases in private bridge packages, and all repository consumers are accounted for.
+- **Remove Display's Node tooling as a unit.** Its manifest has no scripts or dependencies, and the lockfile has an empty importer. The Display CI job and Dockerfile build Rust, and `scripts/select-release.mjs` reads `Cargo.toml` for Display. Keeping an empty manifest would continue to advertise a nonexistent installation requirement.
+- **Update live instructions, retain historical evidence.** The current Display development guide prescribes an install; the dated verification report records a previous documentation build. Only the former needs correction. Centralizing formatter configurations is a separate change because the bridge configurations enable import organization.

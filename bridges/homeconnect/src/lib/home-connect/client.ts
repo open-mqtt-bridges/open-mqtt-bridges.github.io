@@ -1,5 +1,5 @@
 import axios from 'axios';
-import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
+import type { ActiveHomeConnectConfig } from '~/config/config';
 import type { HomeAppliancesResponse, HomeConnectCommand, OAuthToken } from './types';
 
 const fallbackRetryDelay = 10 * 60_000;

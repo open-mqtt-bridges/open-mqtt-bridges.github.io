@@ -2,13 +2,12 @@
 
 ## Toolchain and checks
 
-The manifest, owning lockfile and existing CI define the toolchain. Use `pnpm@11.28.9` where applicable. Preserve the established formatter/linter configuration; do not edit generated or vendored code. Run these commands from `bridges/display/`:
+Build the bridge with Rust and Cargo. On Debian, install `libssl-dev`, `libudev-dev`, and `pkg-config`. Run these commands from `bridges/display/`:
 
 - `cargo fmt --all --check`
-- `cargo clippy --all-targets --all-features -- -D warnings`
-- `cargo test --all-targets --all-features`
-- `cargo build --release`
-- `pnpm install --frozen-lockfile`
+- `cargo clippy --locked --all-targets --all-features -- -D warnings`
+- `cargo test --locked --all-targets --all-features`
+- `cargo build --locked --release`
 
 Document changed public behavior and declaration contracts at their owning boundary, including inputs, outputs, errors and side effects where they are not obvious. Existing lint/type checks do not prove documentation coverage. Keep imports, comments and intentional formatting conventions intact; scope fixes to the task.
 

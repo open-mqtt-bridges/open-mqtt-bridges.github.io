@@ -1,5 +1,5 @@
+import type { ActiveHomeConnectConfig } from '~/config/config';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
 import { HomeConnect } from './index';
 
 describe('HomeConnect', () => {

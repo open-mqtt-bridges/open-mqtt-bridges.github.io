@@ -1,8 +1,8 @@
 import { Agent } from 'node:http';
 import type { RawData } from 'ws';
+import type { WledConfig } from '~/config/config';
 import { HttpMqttBridge } from '~/lib/http-mqtt-bridge';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import { WledConfig } from '~/types/config/wled';
 import { objectToMap } from '~/util/object';
 import { WledConnection } from './connection';
 import { parseWledCommand, toMqttPayload, type WledSnapshot } from './protocol';

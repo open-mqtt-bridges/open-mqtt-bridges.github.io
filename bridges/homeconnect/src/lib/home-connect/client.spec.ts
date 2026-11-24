@@ -1,4 +1,4 @@
-import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
+import type { ActiveHomeConnectConfig } from '~/config/config';
 import { consumeSseBuffer, HomeConnectClient } from './client';
 
 describe('Home Connect SSE parser', () => {

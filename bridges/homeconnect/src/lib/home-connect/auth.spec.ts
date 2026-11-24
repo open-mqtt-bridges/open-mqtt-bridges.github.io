@@ -1,7 +1,7 @@
 import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
+import type { ActiveHomeConnectConfig } from '~/config/config';
 import { HomeConnectAuth } from './auth';
 import type { HomeConnectClient } from './client';
 

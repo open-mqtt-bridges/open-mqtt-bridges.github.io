@@ -1,7 +1,7 @@
+import type { HueConfig } from '~/config/config';
 import { HttpMqttBridge } from '~/lib/http-mqtt-bridge';
 import { hueLightCommandSchema, type HueLight } from '~/lib/hue/types';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { HueConfig } from '~/types/config/hue';
 
 /** Synchronizes every light exposed by one Philips Hue Bridge with MQTT. */
 export class Hue extends HttpMqttBridge<HueConfig> {
