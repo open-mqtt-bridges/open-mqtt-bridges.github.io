@@ -25,6 +25,12 @@ importers:
       '@nestjs/platform-express':
         specifier: ^12.5.0
         version: 12.5.0(@nestjs/common@12.5.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@12.5.0)(rxjs@7.8.2)(supports-color@8.1.1)
+      '@open-mqtt-bridges/config':
+        specifier: file:../../libs/config
+        version: file:../../libs/config(js-yaml@5.5.0)(zod@4.6.7)
+      '@open-mqtt-bridges/mqtt':
+        specifier: file:../../libs/mqtt
+        version: file:../../libs/mqtt(mqtt@5.16.1(supports-color@8.1.1))
       axios:
         specifier: ^1.21.1
         version: 1.21.1(debug@4.4.3(supports-color@8.1.1))(supports-color@8.1.1)
@@ -815,6 +821,17 @@ packages:
         optional: true
       '@nestjs/platform-express':
         optional: true
+
+  '@open-mqtt-bridges/config@file:../../libs/config':
+    resolution: {directory: ../../libs/config, type: directory}
+    peerDependencies:
+      js-yaml: ^5.5.0
+      zod: ^4.6.7
+
+  '@open-mqtt-bridges/mqtt@file:../../libs/mqtt':
+    resolution: {directory: ../../libs/mqtt, type: directory}
+    peerDependencies:
+      mqtt: ^5.16.1
 
   '@parcel/watcher-android-arm64@2.6.0':
     resolution: {integrity: sha512-trgpLSCKRC/huFjXX/Smh+0sWe4+YtKfktIToiMl59ghz7z+qkH6kMvNnUbLyRs9N11t8l4svSCs1+5B3rOAhA==}
@@ -3689,6 +3706,15 @@ snapshots:
       tslib: 2.9.1
     optionalDependencies:
       '@nestjs/platform-express': 12.5.0(@nestjs/common@12.5.0(reflect-metadata@0.2.2)(rxjs@7.8.2)(supports-color@8.1.1))(@nestjs/core@12.5.0)(rxjs@7.8.2)(supports-color@8.1.1)
+
+  '@open-mqtt-bridges/config@file:../../libs/config(js-yaml@5.5.0)(zod@4.6.7)':
+    dependencies:
+      js-yaml: 5.5.0
+      zod: 4.6.7
+
+  '@open-mqtt-bridges/mqtt@file:../../libs/mqtt(mqtt@5.16.1(supports-color@8.1.1))':
+    dependencies:
+      mqtt: 5.16.1(supports-color@8.1.1)
 
   '@parcel/watcher-android-arm64@2.6.0':
     optional: true

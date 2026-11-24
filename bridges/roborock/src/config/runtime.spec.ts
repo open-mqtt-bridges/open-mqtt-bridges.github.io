@@ -1,7 +1,7 @@
+import { commonSchema, instanceSchema } from '@open-mqtt-bridges/config';
 import { load } from 'js-yaml';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { commonSchema, instanceSchema } from './runtime';
 
 describe('configuration contract', () => {
   it('applies common defaults', () => {

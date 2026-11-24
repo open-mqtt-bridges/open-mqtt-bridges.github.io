@@ -1,5 +1,5 @@
+import { commonSchema, instanceSchema, loadConfig } from '@open-mqtt-bridges/config';
 import { z } from 'zod';
-import { commonSchema, instanceSchema, loadConfig } from './runtime';
 
 export const configSchema = commonSchema
   .extend({

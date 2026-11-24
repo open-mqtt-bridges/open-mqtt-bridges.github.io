@@ -1,7 +1,7 @@
+import { configDirectory } from '@open-mqtt-bridges/config';
 import * as dotenv from 'dotenv';
 import { cleanEnv, num, str } from 'envalid';
 import path from 'node:path';
-import { configDirectory } from './runtime';
 
 dotenv.config({ path: path.resolve(process.cwd(), '.env'), quiet: true });
 
