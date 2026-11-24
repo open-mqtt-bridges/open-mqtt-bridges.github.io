@@ -1,0 +1,12 @@
+[
+  ["adguardhome", "adguardhome"],
+  ["display", "display"],
+  ["homeconnect", "node"],
+  ["landroid", "node"],
+  ["modbus", "modbus"],
+  ["philips-hue", "node"],
+  ["ping", "ping"],
+  ["pocketbase", "node"],
+  ["roborock", "node"],
+  ["wled", "node"]
+]

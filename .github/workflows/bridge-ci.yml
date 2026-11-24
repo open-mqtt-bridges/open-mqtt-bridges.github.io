@@ -10,8 +10,7 @@ jobs:
   select:
     runs-on: ubuntu-latest
     outputs:
-      bridges: ${{ steps.changed.outputs.bridges }}
-      node: ${{ steps.changed.outputs.node }}
+      jobs: ${{ steps.changed.outputs.jobs }}
     steps:
       - uses: actions/checkout@v7
         with: { fetch-depth: 0, persist-credentials: false }
@@ -21,16 +20,15 @@ jobs:
           HEAD: ${{ github.event.pull_request.head.sha || github.sha }}
         run: |
           if [ "$GITHUB_EVENT_NAME" = pull_request ]; then BASE="$(git merge-base "$BASE" "$HEAD")"; fi
-          selected="$(node scripts/select-bridges.mjs "$BASE" "$HEAD")"
-          echo "bridges=$selected" >> "$GITHUB_OUTPUT"
-          echo "node=$(jq -c '[.[] | select(IN("homeconnect","landroid","philips-hue","pocketbase","roborock","wled"))]' <<< "$selected")" >> "$GITHUB_OUTPUT"
+          selected="$(node scripts/select-bridges.mjs "$BASE" "$HEAD" --jobs)"
+          echo "jobs=$selected" >> "$GITHUB_OUTPUT"
   node:
     needs: select
-    if: needs.select.outputs.node != '[]'
+    if: toJSON(fromJSON(needs.select.outputs.jobs).node) != '[]'
     strategy:
       fail-fast: false
       matrix:
-        bridge: ${{ fromJSON(needs.select.outputs.node) }}
+        bridge: ${{ fromJSON(needs.select.outputs.jobs).node }}
     runs-on: ubuntu-latest
     defaults:
       run: { working-directory: 'bridges/${{ matrix.bridge }}' }
@@ -77,7 +75,7 @@ jobs:
           fi
   modbus:
     needs: select
-    if: contains(fromJSON(needs.select.outputs.bridges), 'modbus')
+    if: contains(fromJSON(needs.select.outputs.jobs).modbus, 'modbus')
     runs-on: ubuntu-latest
     defaults:
       run: { working-directory: bridges/modbus }
@@ -97,7 +95,7 @@ jobs:
       - run: docker build --tag modbus-mqtt-bridge:ci . && bash ../../scripts/check-native-readiness.sh modbus modbus-mqtt-bridge:ci
   adguardhome:
     needs: select
-    if: contains(fromJSON(needs.select.outputs.bridges), 'adguardhome')
+    if: contains(fromJSON(needs.select.outputs.jobs).adguardhome, 'adguardhome')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -105,7 +103,7 @@ jobs:
       - run: bash scripts/check-native-readiness.sh adguardhome adguard-mqtt-bridge:ci
   display:
     needs: select
-    if: contains(fromJSON(needs.select.outputs.bridges), 'display')
+    if: contains(fromJSON(needs.select.outputs.jobs).display, 'display')
     runs-on: ubuntu-latest
     defaults:
       run: { working-directory: bridges/display }
@@ -122,7 +120,7 @@ jobs:
       - run: bash ../../scripts/check-native-readiness.sh display displays-mqtt-bridge:ci
   ping:
     needs: select
-    if: contains(fromJSON(needs.select.outputs.bridges), 'ping')
+    if: contains(fromJSON(needs.select.outputs.jobs).ping, 'ping')
     runs-on: ubuntu-24.04
     defaults:
       run: { working-directory: bridges/ping }
@@ -132,7 +130,7 @@ jobs:
       - run: cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && cargo test --locked && cargo test --locked --test mqtt_broker -- --ignored
   ping-container:
     needs: select
-    if: contains(fromJSON(needs.select.outputs.bridges), 'ping')
+    if: contains(fromJSON(needs.select.outputs.jobs)['ping-container'], 'ping')
     strategy:
       matrix:
         include:

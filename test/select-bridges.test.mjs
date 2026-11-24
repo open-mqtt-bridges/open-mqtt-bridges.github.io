@@ -1,6 +1,28 @@
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { test } from 'node:test';
-import { selectBridges } from '../scripts/select-bridges.mjs';
+import { loadCatalog } from '../scripts/catalog.mjs';
+import { selectBridges, selectJobs } from '../scripts/select-bridges.mjs';
+
+test('validates coverage even when nothing is affected and routes Ping to both jobs', async () => {
+  const active = (await loadCatalog()).filter((bridge) => !bridge.archived).map(({ slug }) => slug);
+  const inventory = JSON.parse(readFileSync('.github/bridge-checks.json', 'utf8'));
+  const all = selectJobs(inventory, active, active);
+  assert.deepEqual(
+    Object.values(all)
+      .flat()
+      .filter((slug) => slug !== 'ping')
+      .sort(),
+    active.filter((slug) => slug !== 'ping'),
+  );
+  assert.deepEqual(all.ping, ['ping']);
+  assert.deepEqual(all['ping-container'], ['ping']);
+  assert.deepEqual(Object.values(selectJobs(inventory, active, [])).flat(), []);
+  assert.throws(() => selectJobs(inventory.slice(1), active, []), /missing check assignment/i);
+  assert.throws(() => selectJobs([...inventory, inventory[0]], active, []), /duplicate bridge/i);
+  assert.throws(() => selectJobs([...inventory, ['unknown', 'node']], active, []), /unknown bridge/i);
+  assert.throws(() => selectJobs([['ping', 'node']], ['ping'], []), /unsupported check profile/i);
+});
 
 test('selects the owning bridge for source or guide changes, all for shared CI, none for website or archive work', () => {
   const active = ['wled', 'modbus'];
