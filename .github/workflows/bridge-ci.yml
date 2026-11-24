@@ -106,12 +106,13 @@ jobs:
       run: { working-directory: bridges/display }
     steps:
       - uses: actions/checkout@v7
-      - run: sudo apt-get update && sudo apt-get install -y libudev-dev pkg-config
+      - run: sudo apt-get update && sudo apt-get install -y libudev-dev pkg-config mosquitto
       - uses: dtolnay/rust-toolchain@stable
         with: { components: 'clippy,rustfmt' }
       - uses: Swatinem/rust-cache@v2
         with: { workspaces: bridges/display }
       - run: cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && cargo test --locked && cargo build --locked --release
+      - run: cargo test --locked --test mqtt_reconnect -- --ignored
       - run: docker build --tag displays-mqtt-bridge:ci .
   ping:
     needs: select
