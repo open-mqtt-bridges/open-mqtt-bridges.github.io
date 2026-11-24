@@ -1,0 +1,6 @@
+# Evidence and boundaries
+
+- Home Connect and Philips Hue have identical `src/config/runtime.ts`; Landroid differs only in imports and documentation. WLED and Roborock also use YAML with an external Zod schema. All six Nest services resolve `CONFIG_FILE` before `--config` and then `config/config.yml`; PocketBase keeps its collection schema and gets broker configuration from environment variables.
+- Five MQTT constructors map the same eight options before calling `connect`. PocketBase sets the same keepalive and reconnect defaults in its service. UUID generation is evaluated per connection when the configured ID is empty; never cache a generated ID at library import time.
+- AdGuard Home uses Yarn, `.env` and envalid, with a different client-ID default; adding YAML would change the operator interface. Display and Modbus parse YAML in Rust; Ping uses TOML and a patched rumqttc. The crates use different TLS features. A shared Rust crate needs a separate demonstrated overlap that preserves transport behavior.
+- Pinned bridge installs, Jest, ncc, Docker Compose, CI and release contexts are all consumers of the packaging decision. The existing root pnpm workspace contains the website only. `scripts/select-bridges.mjs` does not currently select consumers for a `libs/` change.
