@@ -6,6 +6,8 @@
 
 Both packages are private. Bridges use local file dependencies and their own locked peer versions. Their CommonJS entry points and TypeScript declarations work with the existing Jest and ncc toolchains without a separate library build or registry.
 
+Consumers: Home Connect, Landroid, Philips Hue, PocketBase, Roborock and WLED. PocketBase loads its collection rules from YAML and passes validated broker settings from its environment. To add another Node consumer, declare `file:../../libs/config` or `file:../../libs/mqtt`, install its peers in the bridge and update that bridge's lockfile. CI selects consumers by these manifest dependencies. Tests for file precedence, validation and MQTT option mapping run with `pnpm test` at the repository root.
+
 For a local image build, use the bridge as the primary context and provide the libraries separately. For example, from the repository root:
 
 ```bash

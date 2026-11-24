@@ -11,11 +11,11 @@ test('selects the owning bridge for source or guide changes, all for shared CI, 
 });
 
 test('shared runtime changes select their consumers plus any directly changed bridge', () => {
-  const active = ['modbus', 'philips-hue', 'homeconnect', 'ping'];
-  assert.deepEqual(selectBridges(['libs/mqtt/index.js'], active), ['homeconnect', 'philips-hue']);
-  assert.deepEqual(selectBridges(['libs/config/package.json', 'bridges/ping/src/main.rs'], active), [
-    'homeconnect',
-    'philips-hue',
-    'ping',
-  ]);
+  const consumers = ['homeconnect', 'landroid', 'philips-hue', 'pocketbase', 'roborock', 'wled'];
+  const active = [...consumers, 'adguardhome', 'display', 'modbus', 'ping'];
+  assert.deepEqual(selectBridges(['libs/mqtt/index.js'], active), consumers);
+  assert.deepEqual(
+    selectBridges(['libs/config/package.json', 'bridges/ping/src/main.rs'], active),
+    [...consumers, 'ping'].sort(),
+  );
 });
