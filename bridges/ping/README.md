@@ -5,7 +5,7 @@ devices with ICMP echo and publishes reachability and latency over MQTT 3.1.1.
 It preserves the legacy Ping topics and payloads. It does not discover devices,
 probe IPv6 addresses, or receive MQTT commands.
 
-See the [documentation](docs/index.md) for setup, configuration, the MQTT
+See the [documentation](../../docs/bridges/ping/index.md) for setup, configuration, the MQTT
 contract, and troubleshooting.
 
 ## Run with Docker Compose

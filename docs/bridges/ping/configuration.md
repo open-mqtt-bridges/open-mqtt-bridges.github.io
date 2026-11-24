@@ -5,7 +5,7 @@ at `/etc/ping-mqtt-bridge/bridge.toml`. Outside the container, pass the path
 as the first argument or omit it to use `bridge.toml` in the current directory.
 Restart the bridge to apply changes.
 
-<<< ../examples/bridge.toml
+<<< ../../../bridges/ping/examples/bridge.toml
 
 | Setting | Default | Details |
 | --- | --- | --- |
