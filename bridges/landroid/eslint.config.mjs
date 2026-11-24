@@ -4,14 +4,7 @@ import tseslint from 'typescript-eslint';
 
 export default [
   {
-    ignores: [
-      '**/.agents/**',
-      '**/.specify/**',
-      '**/node_modules/**',
-      '**/dist/**',
-      '**/coverage/**',
-      '**/docs/.vitepress/**',
-    ],
+    ignores: ['**/.agents/**', '**/.specify/**', '**/node_modules/**', '**/dist/**', '**/coverage/**'],
   },
   ...tseslint.configs.recommended,
   {

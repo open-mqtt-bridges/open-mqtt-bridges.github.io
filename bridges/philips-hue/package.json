@@ -14,8 +14,6 @@
     "lint": "eslint . --max-warnings=0",
     "typecheck": "tsc6 --noEmit",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.ts --runInBand",
-    "docs:dev": "pnpm --dir docs dev",
-    "docs:build": "pnpm --dir docs build",
     "changeset": "changeset"
   },
   "dependencies": {

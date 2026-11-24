@@ -15,7 +15,6 @@ RUN npm install --global pnpm@11.28.9
 
 # Copy manifests first so dependency installation remains cacheable.
 COPY package.json pnpm-lock.yaml* pnpm-workspace.yaml ./
-COPY docs/package.json docs/package.json
 RUN pnpm install --frozen-lockfile=false
 
 # -----------------------------------------------------------------------------

@@ -7,6 +7,8 @@ pnpm-lock.yaml
 assets
 public
 docs/screenshots
+docs/package-lock.json
+docs/.vitepress/cache
 bridges
 archive
 bridge-sources

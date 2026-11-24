@@ -8,3 +8,30 @@ updates:
     directory: /
     schedule:
       interval: weekly
+  - package-ecosystem: npm
+    directory: /docs
+    schedule:
+      interval: weekly
+  - package-ecosystem: npm
+    directories:
+      - /bridges/adguardhome
+      - /bridges/display
+      - /bridges/homeconnect
+      - /bridges/landroid
+      - /bridges/philips-hue
+      - /bridges/pocketbase
+      - /bridges/roborock
+      - /bridges/wled
+    schedule:
+      interval: weekly
+    groups:
+      nestjs:
+        patterns: ['@nestjs/*']
+  - package-ecosystem: cargo
+    directories: [/bridges/display, /bridges/modbus, /bridges/ping]
+    schedule:
+      interval: weekly
+  - package-ecosystem: docker
+    directories: ['/bridges/*']
+    schedule:
+      interval: weekly

@@ -7,8 +7,8 @@
     "tag": "DNS",
     "initials": "AG",
     "repository": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/bridges/adguardhome",
-    "documentation": "https://github.com/open-mqtt-bridges/adguardhome#readme",
-    "documentationType": "readme",
+    "documentation": "https://open-mqtt-bridges.github.io/adguardhome/",
+    "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/adguardhome.svg"
   },
@@ -89,6 +89,19 @@
     "documentationType": "site",
     "archived": false,
     "logo": "/assets/bridges/philips-hue.svg"
+  },
+  {
+    "slug": "ping",
+    "name": "Ping",
+    "description": "Monitor IPv4 device reachability and publish latency over MQTT.",
+    "category": "Network",
+    "tag": "ICMP",
+    "initials": "PI",
+    "repository": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/bridges/ping",
+    "documentation": "https://open-mqtt-bridges.github.io/ping/",
+    "documentationType": "site",
+    "archived": false,
+    "logo": null
   },
   {
     "slug": "pocketbase",

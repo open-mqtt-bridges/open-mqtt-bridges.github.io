@@ -59,4 +59,8 @@ Use Node.js 26.13.0 LTS and the package manager pinned in `package.json`. Node-b
 
 ## Contributing
 
-See the [development guide](docs/development.md) for the pinned toolchain, checks and Spec Kit usage, and the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) for pull requests.
+See the [development guide](../../docs/bridges/roborock/development.md) for the pinned toolchain, checks and Spec Kit usage, and the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) for pull requests.
+
+[Guide source](../../docs/bridges/roborock/index.md) · [Published guide](https://open-mqtt-bridges.github.io/roborock/)
+
+[Security policy](../../docs/maintainers/roborock/security.md)

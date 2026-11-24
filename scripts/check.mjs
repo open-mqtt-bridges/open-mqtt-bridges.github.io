@@ -38,9 +38,6 @@ for (const route of ['', 'imprint/', 'privacy-policy/']) {
   for (const match of page.matchAll(/(?:href|src)="([^"#]+)"/g)) {
     const url = new URL(match[1], `https://open-mqtt-bridges.github.io/${route}`);
     if (url.origin !== 'https://open-mqtt-bridges.github.io' || !['http:', 'https:'].includes(url.protocol)) continue;
-    // Bridge docs share the origin but are deployed by their own repositories.
-    if (catalog.some((bridge) => bridge.documentationType === 'site' && url.pathname.startsWith(`/${bridge.slug}/`)))
-      continue;
     const path = new URL(url.pathname.slice(1), output);
     const candidates = [
       path,
@@ -75,4 +72,5 @@ if (profileIndex !== -1) {
     assert.equal(text.match(/<!-- bridges:start -->\n([\s\S]*?)\n<!-- bridges:end -->/)?.[1], profileTable(catalog));
   }
 }
+execFileSync('python3', ['scripts/check-guides.py'], { stdio: 'inherit' });
 console.log(`Nuxt SSR catalog, legal routes, assets and deployment version ${version} passed.`);

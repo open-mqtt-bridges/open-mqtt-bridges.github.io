@@ -9,7 +9,9 @@ export function selectBridges(paths, active) {
   const shared =
     /^(?:\.github\/(?:actions\/|workflows\/bridge-)|scripts\/(?:migration\/|select-bridges\.mjs$)|migration\/sources\.json$)/;
   if (paths.some((path) => shared.test(path))) return all;
-  return all.filter((slug) => paths.some((path) => path.startsWith(`bridges/${slug}/`)));
+  return all.filter((slug) =>
+    paths.some((path) => path.startsWith(`bridges/${slug}/`) || path.startsWith(`docs/bridges/${slug}/`)),
+  );
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

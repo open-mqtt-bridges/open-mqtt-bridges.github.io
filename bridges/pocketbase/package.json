@@ -15,8 +15,6 @@
     "typecheck": "tsc6 --noEmit",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.ts --runInBand --passWithNoTests",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.ts --runInBand --coverage",
-    "docs:dev": "pnpm --dir docs dev",
-    "docs:build": "pnpm --dir docs build",
     "changeset": "changeset"
   },
   "dependencies": {
@@ -49,7 +47,6 @@
     "tsx": "^4.23.15",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
     "typescript-eslint": "^8.72.1",
-    "vitepress": "^1.6.4",
     "zod": "^4.6.7"
   },
   "license": "MIT",
