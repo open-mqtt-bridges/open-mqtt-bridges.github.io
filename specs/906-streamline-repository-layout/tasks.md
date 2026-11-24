@@ -15,6 +15,6 @@
 
 ## Acceptance
 
-- [ ] T005 [US3] Verify repository homepage and current Pages origin, protected publishing behavior, ten advertised bridges, static routes and all guide links. Record results in `specs/906-streamline-repository-layout/evidence.md`.
+- [x] T005 [US3] Verify repository homepage and current Pages origin, protected publishing behavior, ten advertised bridges, static routes and all guide links. Record results in `specs/906-streamline-repository-layout/evidence.md`.
 
 Deliver T001 → T002 → T003 → T004 → T005. T002's comparison fixtures and the website baseline may be inspected independently; no release, repository rename or external guide-host change is needed.
