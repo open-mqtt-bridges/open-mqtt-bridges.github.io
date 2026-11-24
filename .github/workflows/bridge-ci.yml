@@ -69,6 +69,9 @@ jobs:
           trap 'docker rm -f bridge-ci >/dev/null' EXIT
           curl --retry 20 --retry-all-errors --retry-delay 1 --max-time 3 -fsS \
             -o "$RUNNER_TEMP/health.json" http://127.0.0.1:3000/health || { docker logs bridge-ci; exit 1; }
+          status=$(curl -sS --max-time 3 -o "$RUNNER_TEMP/ready.json" -w '%{http_code}' http://127.0.0.1:3000/readyz)
+          test "$status" = 503
+          jq -e '. == {"status":"not_ready"}' "$RUNNER_TEMP/ready.json"
           if [ "$BRIDGE" != pocketbase ]; then
             node -e 'const h=require(process.env.RUNNER_TEMP+"/health.json");process.exit(h.status==="ok" && h.version===require("./package.json").version ? 0 : 1)'
           fi

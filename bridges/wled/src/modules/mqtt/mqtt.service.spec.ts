@@ -64,6 +64,7 @@ describe('MqttService', () => {
   it('skips availability without queuing it, but still submits generic publications', () => {
     const service = new MqttService();
     client.connected = false;
+    expect(service.isReady()).toBe(false);
     expect(service.publishAvailability('wled/test/connected', true)).toBe(false);
     expect(service.publishAvailability('wled/test/connected', false)).toBe(false);
     expect(client.publish).not.toHaveBeenCalled();

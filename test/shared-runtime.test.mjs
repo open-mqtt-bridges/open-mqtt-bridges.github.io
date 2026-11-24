@@ -39,6 +39,47 @@ test('load validated YAML with environment precedence over CLI and default', (t)
   });
 });
 
+test('readiness requires a current broker connection and acknowledgements of all active filters', () => {
+  const client = mqtt.connectMqtt({
+    protocol: 'mqtt',
+    host: '127.0.0.1',
+    port: 1,
+    clientId: 'test',
+    keepAliveSeconds: 30,
+    reconnectDelayMs: 0,
+  });
+  const filter = 'fixture/cmd';
+  const ready = () => mqtt.isMqttReady(client, [filter]);
+  const send = (messageId) =>
+    client.emit('packetsend', { cmd: 'subscribe', messageId, subscriptions: [{ topic: filter }] });
+  const ack = (messageId, code) => client.emit('packetreceive', { cmd: 'suback', messageId, granted: [code] });
+  try {
+    assert.equal(ready(), false);
+    client.connected = true;
+    send(1);
+    assert.equal(ready(), false);
+    ack(1, 128);
+    assert.equal(ready(), false);
+    send(2);
+    ack(2, 0);
+    assert.equal(ready(), true);
+    client.emit('close');
+    assert.equal(ready(), false);
+    client.connected = true;
+    send(3);
+    ack(3, 1);
+    assert.equal(ready(), true);
+    send(4);
+    client.emit('packetsend', { cmd: 'unsubscribe', unsubscriptions: [filter] });
+    ack(4, 0);
+    assert.equal(ready(), false);
+    assert.equal(mqtt.isMqttReady(client, []), true);
+  } finally {
+    client.connected = false;
+    client.end(true);
+  }
+});
+
 test('pass validated broker settings through to MQTT.js and scope generated IDs per connection', () => {
   const settings = {
     protocol: 'mqtt',
