@@ -17,9 +17,9 @@
     "changeset": "changeset"
   },
   "dependencies": {
-    "@nestjs/common": "^12.4.0",
-    "@nestjs/core": "^12.4.0",
-    "@nestjs/platform-express": "^12.4.0",
+    "@nestjs/common": "^12.6.0",
+    "@nestjs/core": "^12.6.0",
+    "@nestjs/platform-express": "^12.6.0",
     "@open-mqtt-bridges/config": "file:../../libs/config",
     "@open-mqtt-bridges/mqtt": "file:../../libs/mqtt",
     "aws-iot-device-sdk": "^2.2.16",
@@ -38,7 +38,7 @@
     "@changesets/changelog-github": "^1.0.1",
     "@changesets/cli": "^3.0.3",
     "@eslint/js": "^10.0.1",
-    "@nestjs/testing": "^12.4.0",
+    "@nestjs/testing": "^12.6.0",
     "@types/jest": "^30.0.0",
     "@types/node": "^26.6.6",
     "@types/ws": "^8.18.2",
