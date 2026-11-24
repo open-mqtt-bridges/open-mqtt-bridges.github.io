@@ -57,3 +57,5 @@ Use Node.js 26.13.0 LTS and the package manager pinned in `package.json`. Node-b
 See the [development guide](../../docs/bridges/philips-hue/development.md) for the pinned toolchain, checks and Spec Kit usage, and the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) for pull requests.
 
 [Guide source](../../docs/bridges/philips-hue/index.md) · [Published guide](https://open-mqtt-bridges.github.io/philips-hue/)
+
+[Security policy](../../docs/maintainers/philips-hue/security.md)

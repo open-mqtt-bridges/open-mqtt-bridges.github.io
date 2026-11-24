@@ -158,3 +158,5 @@ Documentation builds use Node.js 26.13.0 LTS and the pinned pnpm version. The Ru
 See the [development guide](../../docs/bridges/display/development.md) for the pinned toolchain, checks and Spec Kit usage, and the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) for pull requests.
 
 [Guide source](../../docs/bridges/display/index.md) · [Published guide](https://open-mqtt-bridges.github.io/display/)
+
+[Security policy](../../docs/maintainers/display/security.md)

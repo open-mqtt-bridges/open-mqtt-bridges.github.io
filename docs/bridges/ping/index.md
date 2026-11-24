@@ -16,7 +16,7 @@ hero:
       link: ./mqtt
     - theme: alt
       text: GitHub
-      link: https://github.com/open-mqtt-bridges/ping
+      link: https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/bridges/ping
 features:
   - icon: 📡
     title: ICMP echo probes

@@ -17,7 +17,7 @@ hero:
       link: /mqtt
     - theme: alt
       text: GitHub
-      link: https://github.com/open-mqtt-bridges/display
+      link: https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/bridges/display
 
 features:
   - icon: 🖥️

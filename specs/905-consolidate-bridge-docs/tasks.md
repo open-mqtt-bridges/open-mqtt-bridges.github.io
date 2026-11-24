@@ -23,7 +23,7 @@ Follow the [plan](plan.md) and [layout contract](contracts/layout.md). Each task
 
 ## Acceptance
 
-- [ ] T008 Record the [quickstart](quickstart.md) results in `specs/905-consolidate-bridge-docs/evidence.md`: root checks, guide crawl, catalog browser and no-JavaScript checks, frozen package builds for affected owners, and blob equality. Report external hosting verification separately from local evidence.
+- [x] T008 Record the [quickstart](quickstart.md) results in `specs/905-consolidate-bridge-docs/evidence.md`: root checks, guide crawl, catalog browser and no-JavaScript checks, frozen package builds for affected owners, and blob equality. Report external hosting verification separately from local evidence.
 
 ## Dependencies and delivery
 

@@ -3,7 +3,7 @@
 For a bug, open an issue with the expected behavior, actual behavior, version,
 and a minimal reproducible configuration. Replace broker details, credentials,
 and device inventories with synthetic values. For security issues, follow
-[SECURITY.md](SECURITY.md) instead.
+[SECURITY.md](security.md) instead.
 
 Use the Rust version pinned in `rust-toolchain.toml` and keep `Cargo.lock` in
 sync with `Cargo.toml`. Use native Rust conventions: `rustfmt`, `snake_case`
@@ -13,7 +13,7 @@ exercise the observable contract over tests coupled to implementation details.
 Do not change the existing MQTT topics, payload bytes, QoS, or retain behavior
 without documenting compatibility impact.
 
-Run on Linux before opening a pull request:
+Run from `bridges/ping/` on Linux before opening a pull request:
 
 ```bash
 cargo fmt --check
@@ -26,15 +26,4 @@ docker build -t ping-mqtt-bridge:ci .
 bash tests/container-smoke.sh ping-mqtt-bridge:ci
 ```
 
-The VitePress site is in `docs/`. With Node.js 24, run:
-
-```bash
-npm --prefix docs ci
-npm --prefix docs run build
-npm --prefix docs run dev
-```
-
-Open the URL printed by VitePress (including `/ping/`). The Docs workflow
-builds the site on documentation changes. To publish it, select **GitHub
-Actions** as the repository's Pages source and manually run the **Docs**
-workflow from `main` with **Deploy to GitHub Pages** enabled.
+See the [central guide instructions](../../README.md) for the VitePress preview and build.

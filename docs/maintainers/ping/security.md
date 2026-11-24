@@ -1,6 +1,6 @@
 # Security policy
 
-Please use [GitHub's private vulnerability reporting form](https://github.com/open-mqtt-bridges/ping/security/advisories/new).
+Please use [GitHub's private vulnerability reporting form](https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/security/advisories/new).
 Do not post suspected vulnerabilities or live credentials in public issues.
 If private reporting is unavailable, ask a maintainer for a private channel
 without disclosing the vulnerability in public.

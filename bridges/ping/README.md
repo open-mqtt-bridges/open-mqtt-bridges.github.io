@@ -92,10 +92,10 @@ endpoints on a private interface; Compose does not publish the port.
 Before replacing a running legacy deployment, compare the two publishers
 using different client IDs and a temporary base topic. Confirm timeout,
 recovery, and compatibility with your consumers before switching. See
-[cutover and rollback](PLAN.md#cutover-and-rollback).
+[cutover and rollback](../../.specify/bridges/ping/initial-design/PLAN.md#cutover-and-rollback).
 
 ## Development and license
 
 Use Linux and Rust **1.100.0**, pinned in [`rust-toolchain.toml`](rust-toolchain.toml).
-See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and [SECURITY.md](SECURITY.md)
+See [CONTRIBUTING.md](../../docs/maintainers/ping/contributing.md) for checks and [SECURITY.md](../../docs/maintainers/ping/security.md)
 for private reporting. Licensed under [MIT](LICENSE).

@@ -14,3 +14,5 @@
 Install guide tooling with `npm ci --prefix docs`. Preview a guide with `npm --prefix docs run dev -- ping`; build every guide with `npm --prefix docs run build`. Guide sources live under `docs/bridges/<slug>/`; public guide addresses use `/<slug>/`.
 
 See [development](development.md) for contributor tooling.
+
+[Maintainer notes](maintainers/) contain bridge-specific security and contributor guidance. [Imported specs and initial designs](../.specify/bridges/) are kept separately.
