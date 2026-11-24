@@ -4,7 +4,7 @@ Follow the [plan](plan.md) and [layout contract](contracts/layout.md). Each task
 
 ## Catalog (US1)
 
-- [ ] T001 [US1] Add Ping to `bridges.json`; reconcile active and archived membership in `scripts/catalog.mjs`, derive displayed counts in `app/pages/index.vue`, and update `README.md` and `test/catalog.test.mjs`. Verify that a missing bridge fails, Ping is searchable, and all entries render without JavaScript.
+- [x] T001 [US1] Add Ping to `bridges.json`; reconcile active and archived membership in `scripts/catalog.mjs`, derive displayed counts in `app/pages/index.vue`, and update `README.md` and `test/catalog.test.mjs`. Verify that a missing bridge fails, Ping is searchable, and all entries render without JavaScript.
 
 ## Migration baseline
 

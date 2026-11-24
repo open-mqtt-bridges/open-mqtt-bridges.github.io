@@ -1,22 +1,18 @@
+import { readdirSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
-const slugs = [
-  'adguardhome',
-  'display',
-  'homeconnect',
-  'idm-energy',
-  'landroid',
-  'modbus',
-  'philips-hue',
-  'pocketbase',
-  'roborock',
-  'wled',
-];
+function directories(folder) {
+  return readdirSync(new URL(`../${folder}/`, import.meta.url), { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
+}
 
 /** Enforce the public catalog contract, including archive and documentation destinations. */
 export function validateCatalog(catalog) {
+  const archived = new Set(directories('archive'));
+  const slugs = [...directories('bridges'), ...archived].sort();
   if (!Array.isArray(catalog) || JSON.stringify(catalog.map((bridge) => bridge.slug)) !== JSON.stringify(slugs)) {
-    throw new Error('Catalog must contain exactly the ten bridges in alphabetic repository order.');
+    throw new Error('Catalog must match the active and archived bridge directories in alphabetic order.');
   }
   for (const bridge of catalog) {
     for (const field of ['name', 'description', 'category', 'tag', 'initials']) {
@@ -25,7 +21,7 @@ export function validateCatalog(catalog) {
     }
     if (bridge.logo !== null && bridge.logo !== `/assets/bridges/${bridge.slug}.svg`)
       throw new Error(`Incorrect local logo path: ${bridge.slug}`);
-    if (bridge.archived !== (bridge.slug === 'idm-energy')) throw new Error(`Incorrect archive status: ${bridge.slug}`);
+    if (bridge.archived !== archived.has(bridge.slug)) throw new Error(`Incorrect archive status: ${bridge.slug}`);
     const originalRepository = `https://github.com/open-mqtt-bridges/${bridge.slug}`;
     const repository = `https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/${bridge.archived ? 'archive' : 'bridges'}/${bridge.slug}`;
     const readme = ['adguardhome', 'idm-energy'].includes(bridge.slug);
