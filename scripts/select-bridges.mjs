@@ -1,5 +1,5 @@
 import { execFileSync } from 'node:child_process';
-import { existsSync, readFileSync } from 'node:fs';
+import { readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -7,7 +7,7 @@ import { pathToFileURL } from 'node:url';
 export function selectBridges(paths, active) {
   const all = active.slice().sort();
   const shared =
-    /^(?:\.github\/(?:actions\/|workflows\/bridge-)|scripts\/(?:migration\/|select-bridges\.mjs$)|migration\/sources\.json$)/;
+    /^(?:\.github\/(?:actions\/|workflows\/bridge-|bridge-publishers\.json$)|scripts\/select-bridges\.mjs$)/;
   if (paths.some((path) => shared.test(path))) return all;
   return all.filter((slug) =>
     paths.some((path) => path.startsWith(`bridges/${slug}/`) || path.startsWith(`docs/bridges/${slug}/`)),
@@ -16,9 +16,9 @@ export function selectBridges(paths, active) {
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {
   const [base, head] = process.argv.slice(2);
-  const active = JSON.parse(readFileSync('migration/sources.json', 'utf8'))
-    .sources.filter((source) => !source.archived && existsSync(source.prefix))
-    .map((source) => source.slug);
+  const active = readdirSync('bridges', { withFileTypes: true })
+    .filter((entry) => entry.isDirectory())
+    .map((entry) => entry.name);
   if (!base || /^0+$/.test(base)) console.log(JSON.stringify(active.sort()));
   else {
     if (![base, head].every((s) => /^[0-9a-f]{40}$/.test(s))) throw new Error('Expected full Git revisions');
