@@ -39,19 +39,6 @@
     "logo": "/assets/bridges/homeconnect.svg"
   },
   {
-    "slug": "idm-energy",
-    "name": "IDM Energy",
-    "description": "A historical MQTT integration for IDM heat-pump systems.",
-    "category": "Energy",
-    "tag": "Archived",
-    "initials": "ID",
-    "repository": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/tree/main/archive/idm-energy",
-    "documentation": "https://github.com/open-mqtt-bridges/idm-energy#readme",
-    "documentationType": "readme",
-    "archived": true,
-    "logo": null
-  },
-  {
     "slug": "landroid",
     "name": "Landroid",
     "description": "Connect your robotic lawn mower to MQTT-based automations.",

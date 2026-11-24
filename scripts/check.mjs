@@ -16,7 +16,7 @@ for (const bridge of catalog) {
 }
 const form = html.match(/<form[^>]*data-search-form[^>]*>/)?.[0];
 assert.ok(form?.includes('display:none'), 'Search must remain hidden before hydration.');
-const pkg = JSON.parse(await readFile(new URL('../package.json', import.meta.url), 'utf8'));
+const pkg = JSON.parse(await readFile(new URL('../apps/website/package.json', import.meta.url), 'utf8'));
 let commit = process.env.GITHUB_SHA || '';
 if (!commit) {
   try {

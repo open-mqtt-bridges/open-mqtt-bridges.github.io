@@ -17,7 +17,7 @@ test('public catalog rejects incorrect hosts, archived flags and README destinat
       items[0].repository = 'https://example.org/adguardhome';
     },
     (items) => {
-      items[3].archived = false;
+      items[0].archived = true;
     },
     (items) => {
       items[0].documentation = 'https://github.com/open-mqtt-bridges/adguardhome#readme';
@@ -34,7 +34,7 @@ test('public catalog rejects incorrect hosts, archived flags and README destinat
 
 test('local search handles categories, case, whitespace, empty and unmatched input', async () => {
   const catalog = await loadCatalog();
-  const { filterBridges } = await import('../shared/bridges.ts');
+  const { filterBridges } = await import('../apps/website/shared/bridges.ts');
   assert.deepEqual(
     filterBridges(catalog, '  LIGHTING  ').map((bridge) => bridge.slug),
     ['philips-hue', 'wled'],
@@ -42,5 +42,5 @@ test('local search handles categories, case, whitespace, empty and unmatched inp
   assert.equal(filterBridges(catalog, '').length, catalog.length);
   assert.equal(filterBridges(catalog, 'ICMP')[0].slug, 'ping');
   assert.equal(filterBridges(catalog, 'does-not-exist').length, 0);
-  assert.equal(filterBridges(catalog, 'IDM')[0].archived, true);
+  assert.deepEqual(filterBridges(catalog, 'IDM'), []);
 });

@@ -13,6 +13,10 @@ The manifest, owning lockfile and existing CI define the toolchain. Use Node.js 
 - `pnpm build`
 - `pnpm check`
 
+`apps/website/` owns the Nuxt catalog, legal pages, public assets and site version. The root pnpm workspace covers that app; individual bridges still use their own lockfiles. Guide sources and the VitePress build live in `docs/`. The root build assembles both sites in `.output/public/`, the directory uploaded by the Pages workflow.
+
+`scripts/` contains the bridge CI and release selectors, release notes, catalog and profile synchronization, deployment version, guide assembly, output checks and local preview. `test/` covers bridge layout, catalog/search, CI selection, release selection, release notes and deployment version. The output checks run against a built site rather than as unit tests.
+
 Document changed public behavior and declaration contracts at their owning boundary, including inputs, outputs, errors and side effects where they are not obvious. Existing lint/type checks do not prove documentation coverage. Keep imports, comments and intentional formatting conventions intact; scope fixes to the task.
 
 ## Spec Kit (Codex)

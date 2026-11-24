@@ -8,26 +8,23 @@ export function selectRelease(tag, root = '.') {
   if (!match || match[0] !== tag) throw new Error('Expected <bridge>/v<major>.<minor>.<patch>');
   const [, slug, version] = match;
   const read = (name) => readFileSync(join(root, name), 'utf8');
-  const source = JSON.parse(read('migration/sources.json')).sources.find(
-    (source) => source.slug === slug && !source.archived,
-  );
-  const image = JSON.parse(read('migration/packages.json')).packages.find(
-    (p) => p.package === source?.container,
-  )?.package;
-  if (!source || !image || source.prefix !== `bridges/${slug}`) throw new Error('Bridge has no active publisher');
+  const publishers = JSON.parse(read('.github/bridge-publishers.json'));
+  if (!Object.hasOwn(publishers, slug)) throw new Error('Bridge has no active publisher');
+  const image = publishers[slug];
+  const prefix = `bridges/${slug}`;
   let manifestVersion;
   if (slug === 'modbus' || slug === 'display') {
-    const section = read(`${source.prefix}/Cargo.toml`)
+    const section = read(`${prefix}/Cargo.toml`)
       .split(/^\[package\]\s*$/m)[1]
       ?.split(/^\[/m)[0];
     manifestVersion = /^version\s*=\s*"([^"]+)"\s*$/m.exec(section ?? '')?.[1];
-  } else manifestVersion = JSON.parse(read(`${source.prefix}/package.json`)).version;
+  } else manifestVersion = JSON.parse(read(`${prefix}/package.json`)).version;
   if (version !== manifestVersion) throw new Error('Release tag does not match the bridge manifest');
   const immutable = ['adguardhome', 'display'].includes(slug) ? version : `v${version}`;
   const aliases = ['latest'];
   if (slug === 'display') aliases.push(version.split('.').slice(0, 2).join('.'));
   if (slug === 'modbus') aliases.push('master'); // Preserve the original default-branch image alias.
-  return { slug, prefix: source.prefix, version, image, immutable, aliases };
+  return { slug, prefix, version, image, immutable, aliases };
 }
 
 if (process.argv[1] && pathToFileURL(resolve(process.argv[1])).href === import.meta.url) {

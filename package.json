@@ -1,5 +1,5 @@
 {
-  "name": "open-mqtt-bridges-website",
+  "name": "open-mqtt-bridges",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -7,12 +7,11 @@
     "node": ">=26.13.0 <27"
   },
   "scripts": {
-    "dev": "nuxt dev --host 127.0.0.1 --port 4173",
-    "build": "nuxt generate && npm --prefix docs run build && node scripts/assemble-guides.mjs",
+    "dev": "pnpm --dir apps/website dev",
+    "build": "pnpm --dir apps/website build && npm --prefix docs run build && node scripts/assemble-guides.mjs",
     "preview": "python3 scripts/preview.py",
-    "postinstall": "nuxt prepare",
     "lint": "eslint . --max-warnings=0",
-    "typecheck": "nuxt typecheck",
+    "typecheck": "pnpm --dir apps/website typecheck",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "check": "node scripts/check.mjs",
@@ -26,22 +25,11 @@
   "bugs": {
     "url": "https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io/issues"
   },
-  "version": "0.1.0",
   "packageManager": "pnpm@11.28.9",
-  "dependencies": {
-    "@iconify-json/lucide": "^1.2.157",
-    "@nuxt/ui": "4.13.0",
-    "nuxt": "4.6.4",
-    "tailwindcss": "^4.3.5"
-  },
   "devDependencies": {
-    "@nuxt/eslint": "1.17.0",
-    "@types/node": "^26.6.6",
     "eslint": "^10.15.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import-x": "^4.18.1",
-    "prettier": "^3.10.1",
-    "typescript": "^6.0.3",
-    "vue-tsc": "^3.3.14"
+    "prettier": "^3.10.1"
   }
 }

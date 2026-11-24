@@ -1,0 +1,11 @@
+{
+  "adguardhome": "ghcr.io/open-mqtt-bridges/adguardhome",
+  "display": "ghcr.io/open-mqtt-bridges/display",
+  "homeconnect": "ghcr.io/open-mqtt-bridges/homeconnect",
+  "landroid": "ghcr.io/open-mqtt-bridges/landroid",
+  "modbus": "ghcr.io/open-mqtt-bridges/modbus",
+  "philips-hue": "ghcr.io/open-mqtt-bridges/philips-hue",
+  "pocketbase": "ghcr.io/open-mqtt-bridges/pocketbase",
+  "roborock": "ghcr.io/open-mqtt-bridges/roborock",
+  "wled": "ghcr.io/open-mqtt-bridges/wled"
+}
