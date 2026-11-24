@@ -1,7 +1,8 @@
+import { configFilePath } from '@open-mqtt-bridges/config';
 import { mkdtempSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { configFilePath, configSchema, loadConfig } from './runtime';
+import { configSchema, loadConfig } from './runtime';
 
 describe('configSchema', () => {
   it('accepts independently configured collection publishing modes', () => {
