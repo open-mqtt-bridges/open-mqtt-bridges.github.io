@@ -18,7 +18,19 @@ Lint and format checks do not rewrite source files; builds and some tests produc
 
 `scripts/` contains the bridge CI and release selectors, release notes, catalog and profile synchronization, deployment version, guide assembly, output checks and local preview. `test/` covers bridge layout, catalog/search, CI selection, release selection, release notes and deployment version. The output checks run against a built site rather than as unit tests.
 
-Document changed public behavior and declaration contracts at their owning boundary, including inputs, outputs, errors and side effects where they are not obvious. Existing lint/type checks do not prove documentation coverage. Keep imports, comments and intentional formatting conventions intact; scope fixes to the task.
+## Coding conventions
+
+### JavaScript and TypeScript
+
+Use the [root Prettier configuration](../.prettierrc.json) or the owning bridge's configuration: two spaces, single quotes for strings, semicolons, trailing commas where supported, and a 120-column print width. Keep adjacent imports together and preserve side-effect imports. The six ESLint-managed Node bridges organize imports with their local Prettier integration and preserve existing line endings. Inspect import changes before committing.
+
+Prefer domain types or `unknown` with narrowing at untrusted boundaries. Website lint and PocketBase reject explicit `any`; the other five ESLint-managed bridge presets allow it. Treat that allowance as a package exception, not a recommendation. Use existing names and framework file conventions, including Nuxt's file-based page names, rather than renaming files solely for style.
+
+### Documentation and ownership
+
+Document changed public behavior and declaration contracts at their owning boundary, including non-obvious inputs, outputs, errors, and side effects. Use JSDoc-style comments in JavaScript and TypeScript and Rustdoc in Rust where appropriate. Review coverage and accuracy manually: lint and type checks do not prove coverage, and there is no blanket requirement to document every private helper or callback.
+
+Follow `rustfmt` and crate-local Clippy flags for Rust; do not apply JavaScript conventions to Rust crates. Preserve generated, vendored and archived code, and keep style fixes scoped to the task.
 
 ## Spec Kit (Codex)
 
@@ -41,6 +53,8 @@ Follow the [organization contribution guide](https://github.com/open-mqtt-bridge
 
 ## Vue and Nuxt standards
 
-Use the generated Nuxt ESLint integration and project-owned configuration; never edit `.nuxt` output. Vue blocks are template, script setup in TypeScript, then optional style. Attribute groups follow structural directives, identity, model, other directives, globals, static values, bindings, events and content. Preserve significant whitespace and binding precedence. Document public helpers and non-obvious lifecycle behavior. Prettier owns formatting; lint/type checks and browser acceptance cover different risks.
+Use the generated Nuxt ESLint integration and project-owned configuration; never edit `.nuxt` output. Write Vue blocks as template, TypeScript script setup, then optional style. ESLint enforces block order and attribute grouping: structural directives, identity, model, other directives, globals, static values, bindings, events, then content. Order within a group is not alphabetical. Use typed props and events when declaring new component contracts.
+
+Prettier owns template layout; the project does not require separate content lines or a dedicated delimiter line for every multiline tag. Preserve significant whitespace and binding precedence. Document public helpers and non-obvious lifecycle behavior. Lint, type checks, and browser acceptance cover different risks.
 
 Fonts are disabled in Nuxt UI; Lucide icons are bundled, not fetched at runtime. Legal pages must reflect the deployed host and actual client storage. Footer version metadata is generated at build time from the package version and deployment commit.
