@@ -2,18 +2,19 @@
 
 ## Toolchain and checks
 
-The manifest, owning lockfile and existing CI define the toolchain. Use Node.js 26.13.0; use the pnpm version pinned in `package.json`. Preserve the established formatter/linter configuration; do not edit generated or vendored code. Run these commands from the repository root:
+The manifest, owning lockfile and CI define the toolchain. Pages and Node bridge CI use Node.js 26.13.0. Use the pnpm version pinned by the owning package; bridge pins can differ from the root. Preserve the established tooling and do not edit generated or vendored code.
 
-- `pnpm install --frozen-lockfile`
-- `pnpm --dir docs install --frozen-lockfile` (shared guide tooling)
-- `pnpm lint`
-- `pnpm typecheck`
-- `pnpm format:check`
-- `pnpm test`
-- `pnpm build`
-- `pnpm check`
+| Area                                                               | Run from               | Checks and scope                                                                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Website, shared libraries and repository tooling                   | Repository root        | Install with `pnpm install --frozen-lockfile`. Run `pnpm lint`, `pnpm format:check`, `pnpm typecheck` (Nuxt website only), and `pnpm test` (root Node tests, including shared libraries and repository tooling).                                                                                             |
+| Guide site                                                         | `docs/`                | Install with `pnpm install --frozen-lockfile`; run `pnpm build` for the guide site. From the repository root, `pnpm build` assembles both sites in `.output/public/`, and `pnpm check` verifies the built output. Install both the root and guide dependencies first.                                        |
+| Home Connect, Landroid, Philips Hue, PocketBase, Roborock and WLED | `bridges/<slug>/`      | Run `pnpm install --frozen-lockfile`, `pnpm lint` (includes Prettier), `pnpm typecheck`, `pnpm test`, and `pnpm build`. Bridge CI runs `pnpm test:coverage` instead of `pnpm test` for PocketBase and adds `pnpm test:availability` for WLED. It also checks container health.                               |
+| AdGuard Home                                                       | `bridges/adguardhome/` | Run `pnpm install --frozen-lockfile`, `pnpm build`, and `pnpm test`; see the [development guide](bridges/adguardhome/development.md) for prerequisites and bundling. There is no dedicated lint or format script. Bridge CI builds its Docker image rather than invoking the package test target separately. |
+| Display, Modbus and Ping                                           | `bridges/<slug>/`      | Use `cargo fmt --check`, Clippy with warnings denied, and locked tests. Use the exact crate-specific flags and additional build or broker checks from [Bridge CI](../.github/workflows/bridge-ci.yml).                                                                                                       |
 
 `apps/website/` owns the Nuxt catalog, legal pages, public assets and site version. The root pnpm workspace covers that app and the private packages in [`libs/`](../libs/README.md). Individual bridges use their own lockfiles. Guide sources and the VitePress build live in `docs/`. The root build assembles both sites in `.output/public/`, the directory uploaded by the Pages workflow.
+
+Lint and format checks do not rewrite source files; builds and some tests produce artifacts. From the root, `pnpm format` is an explicit write command. Root Prettier skips `bridges/` via [`.prettierignore`](../.prettierignore). Root ESLint 10 can still discover the six nearer bridge configurations and check their files; AdGuard Home has no local ESLint configuration and remains excluded by the [root config](../eslint.config.mjs). Run the owning bridge checks rather than relying on root lint as a substitute. [Pages CI](../.github/workflows/pages.yml) and the affected-bridge jobs validate different scopes.
 
 `scripts/` contains the bridge CI and release selectors, release notes, catalog and profile synchronization, deployment version, guide assembly, output checks and local preview. `test/` covers bridge layout, catalog/search, CI selection, release selection, release notes and deployment version. The output checks run against a built site rather than as unit tests.
 
@@ -42,4 +43,4 @@ Follow the [organization contribution guide](https://github.com/open-mqtt-bridge
 
 Use the generated Nuxt ESLint integration and project-owned configuration; never edit `.nuxt` output. Vue blocks are template, script setup in TypeScript, then optional style. Attribute groups follow structural directives, identity, model, other directives, globals, static values, bindings, events and content. Preserve significant whitespace and binding precedence. Document public helpers and non-obvious lifecycle behavior. Prettier owns formatting; lint/type checks and browser acceptance cover different risks.
 
-Use `pnpm format` for explicit formatting fixes; `pnpm format:check` never rewrites files. Fonts are disabled in Nuxt UI; Lucide icons are bundled, not fetched at runtime. Legal pages must reflect the deployed host and actual client storage. Footer version metadata is generated at build time from the package version and deployment commit.
+Fonts are disabled in Nuxt UI; Lucide icons are bundled, not fetched at runtime. Legal pages must reflect the deployed host and actual client storage. Footer version metadata is generated at build time from the package version and deployment commit.
