@@ -34,7 +34,7 @@ test('public catalog rejects incorrect hosts, archived flags and README destinat
 
 test('local search handles categories, case, whitespace, empty and unmatched input', async () => {
   const catalog = await loadCatalog();
-  const { filterBridges } = await import('../shared/bridges.ts');
+  const { filterBridges } = await import('../apps/website/shared/bridges.ts');
   assert.deepEqual(
     filterBridges(catalog, '  LIGHTING  ').map((bridge) => bridge.slug),
     ['philips-hue', 'wled'],

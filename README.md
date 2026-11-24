@@ -4,7 +4,7 @@ Bridge implementations live in [`bridges/`](bridges/). Build and test each bridg
 
 See [bridge releases](docs/operations/releases.md) for package ownership, versioning, and publishing.
 
-Nuxt 4 and Nuxt UI source for [open-mqtt-bridges.github.io](https://open-mqtt-bridges.github.io/). GitHub Pages serves statically prerendered HTML; no application server is deployed.
+[`apps/website/`](apps/website/) contains the Nuxt 4 and Nuxt UI source for [open-mqtt-bridges.github.io](https://open-mqtt-bridges.github.io/). GitHub Pages serves statically prerendered HTML; no application server is deployed.
 
 ## Local development
 
@@ -32,7 +32,7 @@ Nuxt UI provides the header, footer, hero, cards, input, buttons and color-mode 
 
 ## Catalog and organization profile
 
-`bridges.json` is the authoritative bridge catalog. Optional `logo` paths refer to bundled SVG artwork; cards without artwork retain their initials. See [bridge artwork and licensing](public/assets/bridges/README.md). Keep entries alphabetic by repository slug and mark archived projects. README-only documentation is labeled explicitly. Synchronize both organization README tables and check them before review:
+`bridges.json` is the authoritative bridge catalog. Optional `logo` paths refer to bundled SVG artwork; cards without artwork retain their initials. See [bridge artwork and licensing](apps/website/public/assets/bridges/README.md). Keep entries alphabetic by repository slug and mark archived projects. README-only documentation is labeled explicitly. Synchronize both organization README tables and check them before review:
 
 ```bash
 node scripts/sync-profile.mjs ../.github

@@ -1,4 +1,4 @@
-import withNuxt from './.nuxt/eslint.config.mjs';
+import withNuxt from './apps/website/.nuxt/eslint.config.mjs';
 import prettier from 'eslint-config-prettier';
 
 export default withNuxt(
@@ -8,7 +8,8 @@ export default withNuxt(
       '.specify/**',
       '.output/**',
       'node_modules/**',
-      'public/**',
+      'apps/website/.nuxt/**',
+      'apps/website/public/**',
       'assets/**',
       'bridges/**',
       'archive/**',

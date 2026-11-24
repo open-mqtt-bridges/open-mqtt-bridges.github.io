@@ -1,6 +1,7 @@
 import { execFileSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
-import { deploymentVersion } from './scripts/deployment-version.mjs';
+import { fileURLToPath } from 'node:url';
+import { deploymentVersion } from '../../scripts/deployment-version.mjs';
 
 const { version } = JSON.parse(readFileSync(new URL('./package.json', import.meta.url), 'utf8'));
 let commit = process.env.GITHUB_SHA || '';
@@ -27,7 +28,10 @@ export default defineNuxtConfig({
       siteCommit: commit,
     },
   },
-  nitro: { prerender: { routes: ['/', '/imprint', '/privacy-policy'], crawlLinks: true, failOnError: true } },
+  nitro: {
+    output: { dir: fileURLToPath(new URL('../../.output', import.meta.url)) },
+    prerender: { routes: ['/', '/imprint', '/privacy-policy'], crawlLinks: true, failOnError: true },
+  },
   app: {
     head: {
       htmlAttrs: { lang: 'en' },
@@ -42,5 +46,5 @@ export default defineNuxtConfig({
     },
   },
   typescript: { strict: true },
-  eslint: { config: { stylistic: false } },
+  eslint: { config: { stylistic: false, typescript: true } },
 });

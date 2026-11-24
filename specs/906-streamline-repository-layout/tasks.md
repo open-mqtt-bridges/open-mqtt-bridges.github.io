@@ -11,7 +11,7 @@
 
 ## Site ownership
 
-- [ ] T004 [US1] Move the website to `apps/website/` and keep `bridges/` and `docs/bridges/` stable. Adapt root commands, build and lint paths, tests, CI and contributor guidance. Verify frozen install, lint, typecheck, format, tests, static generation and the output crawl from a clean build.
+- [x] T004 [US1] Move the website to `apps/website/` and keep `bridges/` and `docs/bridges/` stable. Adapt root commands, build and lint paths, tests, CI and contributor guidance. Verify frozen install, lint, typecheck, format, tests, static generation and the output crawl from a clean build.
 
 ## Acceptance
 

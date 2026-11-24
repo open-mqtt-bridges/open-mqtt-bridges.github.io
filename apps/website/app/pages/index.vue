@@ -216,7 +216,7 @@
 </template>
 
 <script setup lang="ts">
-import catalog from '../../bridges.json';
+import catalog from '../../../../bridges.json';
 import { filterBridges } from '#shared/bridges';
 
 const bridgeCount = catalog.length;
