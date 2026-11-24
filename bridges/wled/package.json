@@ -15,8 +15,6 @@
     "typecheck": "tsc6 --noEmit",
     "test": "NODE_OPTIONS=--experimental-vm-modules jest --config jest.config.ts --runInBand",
     "test:availability": "tsx test/availability.integration.ts",
-    "docs:dev": "pnpm --dir docs dev",
-    "docs:build": "pnpm --dir docs build",
     "changeset": "changeset"
   },
   "dependencies": {

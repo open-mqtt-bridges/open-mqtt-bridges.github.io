@@ -6,8 +6,8 @@ Have an MQTT 3.1.1 broker and at least one reachable IPv4 target ready.
 ## Start the bridge
 
 ```bash
-git clone https://github.com/open-mqtt-bridges/ping.git
-cd ping
+git clone https://github.com/open-mqtt-bridges/open-mqtt-bridges.github.io.git
+cd open-mqtt-bridges.github.io/bridges/ping
 cp examples/bridge.toml bridge.toml
 ```
 

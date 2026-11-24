@@ -1,5 +1,5 @@
 <div align="center">
-  <img src="docs/public/logo.svg" alt="Modbus MQTT Bridge" width="120" />
+  <img src="../../docs/bridges/modbus/public/logo.svg" alt="Modbus MQTT Bridge" width="120" />
 
   # Modbus MQTT Bridge
 
@@ -121,21 +121,13 @@ cargo run -- --config config/config.yml
 
 ## Documentation
 
-Docs are built with VitePress from `docs/` 📝.
-
-```bash
-cd docs
-npm install
-npm run dev
-```
-
-Production docs are published via GitHub Pages from `.github/workflows/pages.yml`.
+See the [guide](../../docs/bridges/modbus/index.md) and [preview instructions](../../docs/README.md).
 
 ## Project files
 
 - `src/` runtime and protocol logic
 - `config/config.example.yml` starter config template
-- `docs/` VitePress documentation source
+- `../../docs/bridges/modbus/` guide source
 - `Dockerfile` multi-stage build with `scratch` runtime
 - `compose.yml` local deployment template
 
@@ -150,4 +142,4 @@ See [LICENSE](LICENSE).
 
 ## Contributing
 
-See the [development guide](docs/development.md) for the pinned toolchain, checks and Spec Kit usage, and the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) for pull requests.
+See the [development guide](../../docs/bridges/modbus/development.md) for the pinned toolchain, checks and Spec Kit usage, and the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) for pull requests.
