@@ -5,3 +5,9 @@
 `@open-mqtt-bridges/mqtt` exposes `connectMqtt(settings)`. Pass validated settings, including keepalive in seconds and reconnect delay in milliseconds. An empty client ID generates a UUID. The caller owns the returned MQTT.js client, its handlers, availability messages and shutdown.
 
 Both packages are private. Bridges use local file dependencies and their own locked peer versions. Their CommonJS entry points and TypeScript declarations work with the existing Jest and ncc toolchains without a separate library build or registry.
+
+For a local image build, use the bridge as the primary context and provide the libraries separately. For example, from the repository root:
+
+```bash
+docker buildx build --load --build-context bridge-libs=libs -t homeconnect:local bridges/homeconnect
+```

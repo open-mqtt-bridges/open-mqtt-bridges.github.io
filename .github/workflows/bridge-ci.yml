@@ -51,7 +51,11 @@ jobs:
         run: pnpm test:availability
       - uses: docker/setup-buildx-action@v4
       - uses: docker/build-push-action@v7
-        with: { context: 'bridges/${{ matrix.bridge }}', load: true, tags: bridge-under-test:ci }
+        with:
+          context: bridges/${{ matrix.bridge }}
+          build-contexts: bridge-libs=libs
+          load: true
+          tags: bridge-under-test:ci
       - name: Verify container health and version
         env:
           BRIDGE: ${{ matrix.bridge }}

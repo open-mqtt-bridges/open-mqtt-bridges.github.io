@@ -1,5 +1,5 @@
+import { commonSchema, instanceSchema, loadConfig } from '@open-mqtt-bridges/config';
 import { z } from 'zod';
-import { commonSchema, instanceSchema, loadConfig } from './runtime';
 
 const homeConnectInstanceSchema = instanceSchema.extend({
   apiBaseUrl: z.url().default('https://api.home-connect.com'),

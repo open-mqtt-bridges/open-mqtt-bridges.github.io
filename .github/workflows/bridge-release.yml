@@ -54,6 +54,7 @@ jobs:
       - uses: docker/build-push-action@v7
         with:
           context: bridges/${{ steps.select.outputs.slug }}
+          build-contexts: ${{ hashFiles('libs/config/package.json') != '' && 'bridge-libs=libs' || '' }}
           platforms: linux/amd64
           load: true
           tags: bridge-release-candidate:local
