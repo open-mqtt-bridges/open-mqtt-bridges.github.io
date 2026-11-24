@@ -1,5 +1,0 @@
-node_modules
-dist
-coverage
-.env
-config/config.yml

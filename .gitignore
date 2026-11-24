@@ -6,3 +6,60 @@ dist
 docs/.vitepress/cache/
 .env
 .env.*
+
+# AdGuard Home
+/bridges/adguardhome/**/build/
+/bridges/adguardhome/**/.DS_Store
+/bridges/adguardhome/**/*.env
+!/bridges/adguardhome/**/.env.example
+/bridges/adguardhome/config/config.yml
+
+# Display
+/bridges/display/target/
+/bridges/display/config/config.yml
+
+# Node bridges: local build output, configuration, and sessions
+/bridges/homeconnect/**/node_modules
+/bridges/homeconnect/**/coverage
+/bridges/homeconnect/config/config.yml
+/bridges/homeconnect/config/*.auth.json
+/bridges/landroid/**/node_modules
+/bridges/landroid/**/coverage
+/bridges/landroid/config/config.yml
+/bridges/landroid/**/*.auth.json
+/bridges/philips-hue/**/node_modules
+/bridges/philips-hue/**/coverage
+/bridges/philips-hue/config/config.yml
+/bridges/philips-hue/config/*.auth.json
+/bridges/pocketbase/**/node_modules
+/bridges/pocketbase/**/coverage
+/bridges/pocketbase/config/config.yml
+/bridges/roborock/**/node_modules
+/bridges/roborock/**/coverage
+/bridges/roborock/**/maps
+/bridges/roborock/config/config.yml
+/bridges/roborock/config/*.auth.json
+/bridges/wled/**/node_modules
+/bridges/wled/**/coverage
+/bridges/wled/**/target
+/bridges/wled/config/config.yml
+/bridges/wled/config/*.auth.json
+
+# Modbus
+/bridges/modbus/target
+/bridges/modbus/.idea
+/bridges/modbus/.vscode
+/bridges/modbus/.DS_Store
+/bridges/modbus/.codex
+/bridges/modbus/node_modules
+/bridges/modbus/docs/node_modules
+/bridges/modbus/config/*.local.yml
+/bridges/modbus/config/*.local.yaml
+/bridges/modbus/config/*.local.json
+/bridges/modbus/config/config.yml
+/bridges/modbus/*.log
+
+# Ping
+/bridges/ping/target/
+/bridges/ping/bridge.toml
+/bridges/ping/secrets/
