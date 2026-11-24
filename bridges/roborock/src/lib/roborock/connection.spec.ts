@@ -1,7 +1,7 @@
 import { jest } from '@jest/globals';
 import { Roborock as RoborockClient } from 'homebridge-roborock-matter/roborockLib/roborockAPI';
+import type { RoborockConfig } from '~/config/config';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { RoborockConfig } from '~/types/config/roborock';
 import { Roborock } from './index';
 
 interface ConnectionInternals {

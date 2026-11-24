@@ -2,10 +2,10 @@ import { Roborock as RoborockClient, type RoborockState } from 'homebridge-robor
 import { createHash } from 'node:crypto';
 import { chmod, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import type { RoborockConfig, RoborockLogLevel } from '~/config/config';
 import { ENV } from '~/config/env';
 import { HttpMqttBridge } from '~/lib/http-mqtt-bridge';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { RoborockConfig, RoborockLogLevel } from '~/types/config/roborock';
 import { asRecord, redact } from './data';
 import { storeMapImage, type RoborockMapImage } from './map';
 import {

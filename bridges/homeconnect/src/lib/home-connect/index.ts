@@ -1,7 +1,7 @@
 import axios from 'axios';
+import type { ActiveHomeConnectConfig } from '~/config/config';
 import { HttpMqttBridge } from '~/lib/http-mqtt-bridge';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
 import { HomeConnectAuth } from './auth';
 import { HomeConnectClient } from './client';
 import {

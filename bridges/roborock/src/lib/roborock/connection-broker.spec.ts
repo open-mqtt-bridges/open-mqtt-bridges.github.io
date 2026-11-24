@@ -1,8 +1,8 @@
 import type { Roborock as RoborockClient } from 'homebridge-roborock-matter/roborockLib/roborockAPI';
 import { connectAsync, type MqttClient } from 'mqtt';
 import { randomUUID } from 'node:crypto';
+import type { RoborockConfig } from '~/config/config';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { RoborockConfig } from '~/types/config/roborock';
 import { Roborock } from './index';
 
 const brokerUrl = process.env.MQTT_TEST_URL;

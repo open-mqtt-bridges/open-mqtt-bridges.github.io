@@ -2,9 +2,9 @@ import { jest } from '@jest/globals';
 import { mkdtemp, readFile, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
+import type { RoborockConfig } from '~/config/config';
 import { ENV } from '~/config/env';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { RoborockConfig } from '~/types/config/roborock';
 import { Roborock } from './index';
 
 describe('Roborock', () => {

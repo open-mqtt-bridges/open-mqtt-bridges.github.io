@@ -1,8 +1,8 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { chmod, mkdir, readFile, rename, writeFile } from 'node:fs/promises';
 import path from 'node:path';
+import type { ActiveHomeConnectConfig } from '~/config/config';
 import { ENV } from '~/config/env';
-import type { ActiveHomeConnectConfig } from '~/types/config/home-connect';
 import { HomeConnectClient } from './client';
 import type { HomeConnectAuthentication, OAuthToken } from './types';
 

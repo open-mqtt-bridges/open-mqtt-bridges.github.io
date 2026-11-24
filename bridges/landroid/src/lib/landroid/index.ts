@@ -2,9 +2,9 @@ import awsIot from 'aws-iot-device-sdk';
 import { HttpsCookieAgent } from 'http-cookie-agent/http';
 import { CookieJar } from 'tough-cookie';
 
+import type { LandroidConfig } from '~/config/config';
 import { HttpMqttBridge } from '~/lib/http-mqtt-bridge';
 import type { MqttBridgeClient } from '~/modules/mqtt/mqtt.service';
-import type { LandroidConfig } from '~/types/config/landroid';
 
 import { authenticationFile, loadAuthentication, persistAuthentication } from './authentication';
 import {
