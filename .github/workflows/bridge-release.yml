@@ -98,16 +98,12 @@ jobs:
     steps:
       - uses: actions/checkout@v7
         with: { fetch-depth: 0, persist-credentials: false }
-      - name: Require approved package, same tag revision, and unused immutable version
+      - name: Require approved package and the same tag revision
         env: { EXPECTED: '${{ needs.prepare.outputs.commit }}' }
         run: |
           test -n "$ALLOWED"
           jq -e --arg slug "$SLUG" 'type=="array" and index($slug)!=null' <<< "$ALLOWED"
           test "$(git rev-parse --verify "refs/tags/$TAG^{commit}")" = "$EXPECTED"
-          gh api --paginate --slurp "/orgs/$GITHUB_REPOSITORY_OWNER/packages/container/$SLUG/versions?per_page=100" > "$RUNNER_TEMP/versions.json"
-          if [ "$MODE" = release ]; then
-            jq -e --arg version "$IMMUTABLE" 'length>0 and all(.[][]; (.metadata.container.tags|index($version))==null)' "$RUNNER_TEMP/versions.json"
-          fi
       - uses: actions/download-artifact@v8
         with: { name: image, path: '${{ runner.temp }}/candidate' }
       - uses: docker/login-action@v4
@@ -116,8 +112,12 @@ jobs:
         run: |
           docker load -i "$RUNNER_TEMP/candidate/image.tar.gz"
           IFS=',' read -ra refs <<< "$TAGS"
+          for ref in "${refs[@]}"; do [[ "$ref" == "$IMAGE:"* ]]; done
+          gh api --paginate --slurp "/orgs/$GITHUB_REPOSITORY_OWNER/packages/container/$SLUG/versions?per_page=100" > "$RUNNER_TEMP/versions.json"
+          if [ "$MODE" = release ]; then
+            node scripts/check-release-aliases.mjs "$RUNNER_TEMP/versions.json"
+          fi
           for ref in "${refs[@]}"; do
-            [[ "$ref" == "$IMAGE:"* ]]
             docker tag bridge-release-candidate:local "$ref"; docker push "$ref"
           done
       - if: inputs.mode == 'release'
