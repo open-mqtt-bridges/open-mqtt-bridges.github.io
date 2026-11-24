@@ -23,7 +23,7 @@
     "@open-mqtt-bridges/config": "file:../../libs/config",
     "@open-mqtt-bridges/mqtt": "file:../../libs/mqtt",
     "aws-iot-device-sdk": "^2.2.16",
-    "axios": "^1.21.0",
+    "axios": "^1.21.1",
     "dotenv": "^18.0.9",
     "envalid": "^9.0.0",
     "http-cookie-agent": "^8.0.0",
