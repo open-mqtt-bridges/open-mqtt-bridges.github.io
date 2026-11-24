@@ -1,0 +1,17 @@
+{
+  "name": "@open-mqtt-bridges/config",
+  "version": "0.0.0",
+  "private": true,
+  "license": "MIT",
+  "main": "./index.js",
+  "types": "./index.d.ts",
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "LICENSE"
+  ],
+  "peerDependencies": {
+    "js-yaml": "^5.5.0",
+    "zod": "^4.6.7"
+  }
+}
