@@ -1,0 +1,8 @@
+packages:
+  - .
+allowBuilds:
+  esbuild: true
+overrides:
+  nodemon>minimatch: ^11.0.5
+  ws: 8.22.1
+  follow-redirects: 1.16.2
