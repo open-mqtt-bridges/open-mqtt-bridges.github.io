@@ -8,7 +8,7 @@
   },
   "scripts": {
     "dev": "pnpm --dir apps/website dev",
-    "build": "pnpm --dir apps/website build && npm --prefix docs run build && node scripts/assemble-guides.mjs",
+    "build": "pnpm --dir apps/website build && pnpm --dir docs build && node scripts/assemble-guides.mjs",
     "preview": "python3 scripts/preview.py",
     "lint": "eslint . --max-warnings=0",
     "typecheck": "pnpm --dir apps/website typecheck",

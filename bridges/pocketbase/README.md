@@ -4,4 +4,4 @@ Publishes selected PocketBase collections as MQTT events, a retained latest reco
 
 [Bridge guide](../../docs/bridges/pocketbase/index.md) · [Published documentation](https://open-mqtt-bridges.github.io/pocketbase/)
 
-[Monorepo README](../../README.md) · [Changelog](CHANGELOG.md) · [License](LICENSE)
+[Monorepo README](../../README.md) · [Changelog](CHANGELOG.md) · [License](../../LICENSE)

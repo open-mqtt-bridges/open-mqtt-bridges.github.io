@@ -5,7 +5,7 @@
 The manifest, owning lockfile and existing CI define the toolchain. Use Node.js 26.13.0; use the pnpm version pinned in `package.json`. Preserve the established formatter/linter configuration; do not edit generated or vendored code. Run these commands from the repository root:
 
 - `pnpm install --frozen-lockfile`
-- `npm ci --prefix docs` (shared guide tooling)
+- `pnpm --dir docs install --frozen-lockfile` (shared guide tooling)
 - `pnpm lint`
 - `pnpm typecheck`
 - `pnpm format:check`

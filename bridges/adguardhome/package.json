@@ -16,11 +16,9 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --config \"./nodemon.json\"",
-    "prebuild": "rimraf build",
-    "build": "tsc",
-    "test": "yarn build && node --test test/*.test.cjs",
-    "prebundle": "yarn build && rimraf ./dist",
-    "bundle": "ncc build build/index.js -o dist -m",
+    "build": "rimraf build && tsc",
+    "test": "pnpm build && node --test test/*.test.cjs",
+    "bundle": "pnpm build && rimraf ./dist && ncc build build/index.js -o dist -m",
     "start": "node dist/index.js"
   },
   "devDependencies": {
@@ -47,10 +45,5 @@
   "bugs": {
     "url": "https://github.com/open-mqtt-bridges/adguardhome/issues"
   },
-  "packageManager": "yarn@1.22.22",
-  "resolutions": {
-    "nodemon/minimatch": "^11.0.5",
-    "**/ws": "8.22.1",
-    "**/follow-redirects": "1.16.2"
-  }
+  "packageManager": "pnpm@11.28.9"
 }

@@ -1,6 +1,6 @@
 # Open MQTT Bridges
 
-Bridge implementations live in [`bridges/`](bridges/). Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version, changelog, and license. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
+Bridge implementations live in [`bridges/`](bridges/). Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version and release history. Its README links to the applicable license: the [repository MIT license](LICENSE) for bridges with the same notice, or a bridge-specific notice. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
 
 The six NestJS bridges share [configuration and MQTT libraries](libs/README.md). See [bridge releases](docs/operations/releases.md) for package ownership, versioning, and publishing.
 
@@ -12,7 +12,7 @@ Use Node.js 26.13.0 and the pnpm version pinned in `package.json`.
 
 ```bash
 pnpm install --frozen-lockfile
-npm ci --prefix docs
+pnpm --dir docs install --frozen-lockfile
 pnpm dev
 ```
 
