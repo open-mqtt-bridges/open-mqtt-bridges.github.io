@@ -8,8 +8,8 @@ license = "MIT"
 description = "Control DDC/CI monitor brightness through MQTT"
 
 [dependencies]
-anyhow = "1.0.104"
-clap = { version = "4.6.7", features = ["derive"] }
+anyhow = "1.0.105"
+clap = { version = "4.6.9", features = ["derive"] }
 ddc-hi = { version = "0.4.1", default-features = false, features = ["ddc-i2c"] }
 rumqttc = { version = "0.25.1", default-features = false, features = ["url", "use-native-tls"] }
 serde = { version = "1.0.229", features = ["derive"] }
@@ -18,7 +18,7 @@ serde_yaml = "0.9.34"
 tracing = "0.1.44"
 tracing-subscriber = { version = "0.3.23", features = ["env-filter"] }
 tokio = { version = "1.54.1", features = ["macros", "rt-multi-thread", "sync", "time"] }
-uuid = { version = "1.29.1", features = ["v4"] }
+uuid = { version = "1.29.3", features = ["v4"] }
 
 [dev-dependencies]
 mccs = "0.1"

@@ -1,5 +1,5 @@
 # Build stage: compile a fully static binary to enable a tiny runtime image.
-FROM rust:1.99-alpine AS builder
+FROM rust:1.100-alpine AS builder
 WORKDIR /app
 
 # Install minimal native tooling needed for musl static builds.

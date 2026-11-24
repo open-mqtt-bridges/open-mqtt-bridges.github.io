@@ -1,0 +1,10 @@
+# Quickstart: Validate the Coding Guidelines
+
+Use the current implementation checkout, the toolchain pinned by the owning manifests, and the normal frozen dependency setup if not already installed. Do not run formatter fixes while collecting verification evidence.
+
+1. From the root, follow the README link to `docs/development.md`. Locate the rule and check instructions for the website, shared libraries, a pnpm bridge, AdGuard Home, a Rust bridge, and the guide site. Each route should reveal where checks run, which ones can write files, and what they cover.
+2. From the root, inspect `pnpm exec eslint --print-config apps/website/app/pages/index.vue` and `pnpm exec eslint --print-config bridges/homeconnect/src/main.ts`. Compare with PocketBase and the effective ignore results for AdGuard Home and bridge build output. Cross-check `.prettierignore` and package-local Prettier integration against the matrix. Verify bridge and guide commands against manifests, lockfiles, and CI at the implementation revision.
+3. From the root, run `pnpm lint`, `pnpm format:check`, and `git diff --check`. Verify the changed local Markdown links and compare every check example with its owning source. If link or guide navigation changes affect published docs, also run the existing guide build and output verification steps in Pages CI.
+4. Review a Vue ordering example, an existing multiline layout example, and the public-contract versus private-helper documentation guidance. A reader must be able to distinguish an active rule, a manual expectation, and a baseline rule not adopted by the project.
+5. Inspect the guidelines delivery diff: contributor Markdown and planning artifacts only. Record which checks ran and which were only cross-checked against configuration.
+6. Validate the dependency track independently using [dependency rollout](dependency-rollout.md). Reconcile the fresh inventory with manifests, lockfiles, and GitHub PR outcomes; require clean locked installs and current affected checks. Re-run the guide checks against the resulting base.
