@@ -1,0 +1,20 @@
+# Pre-move inventory
+
+Baseline: `de11f6e`. The Git tree records every source blob, executable bit and original path. Inspect a heading or fragment using `git show de11f6e:bridges/<slug>/docs/<page>.md`. Existing static guides use clean URLs under `/<slug>/`.
+
+| Bridge | Guide pages (original filenames) | Public assets | Feature directories |
+| --- | --- | --- | --- |
+| adguardhome | development.md, verification.md | None | 900-organization-readiness, 901-dependency-security-maintenance |
+| display | configuration.md, deployment.md, development.md, getting-started.md, hardware.md, index.md, mqtt.md, troubleshooting.md, verification.md | favicon.svg, logo.svg | 900-organization-readiness, 901-dependency-security-maintenance |
+| homeconnect | authentication.md, configuration.md, deployment.md, development.md, getting-started.md, index.md, mqtt.md, troubleshooting.md, verification.md | favicon.svg, logo.svg | 900-organization-readiness, 901-dependency-security-maintenance |
+| landroid | authentication.md, configuration.md, deployment.md, development.md, getting-started.md, index.md, mqtt.md, troubleshooting.md, verification.md | favicon.svg, logo.svg | 900-organization-readiness, 901-dependency-security-maintenance |
+| modbus | architecture.md, concepts.md, configuration.md, deployment.md, development.md, getting-started.md, index.md, operations.md, recipes.md, topic-contract.md, troubleshooting.md, verification.md | logo.svg | 900-organization-readiness, 901-dependency-security-maintenance |
+| philips-hue | authentication.md, configuration.md, deployment.md, development.md, getting-started.md, index.md, mqtt.md, troubleshooting.md, verification.md | favicon.svg, logo.svg | 900-organization-readiness, 901-dependency-security-maintenance |
+| ping | configuration.md, getting-started.md, index.md, mqtt.md, operations.md, troubleshooting.md | logo.svg | None |
+| pocketbase | beszel.md, configuration.md, deployment.md, development.md, getting-started.md, index.md, mqtt.md, troubleshooting.md, verification.md | None | 900-organization-readiness, 901-dependency-security-maintenance |
+| roborock | authentication.md, configuration.md, deployment.md, development.md, enum-values.md, getting-started.md, index.md, mqtt.md, troubleshooting.md, verification.md | favicon.svg, logo.svg | 001-roborock-ready-listener, 900-organization-readiness, 901-dependency-security-maintenance |
+| wled | authentication.md, configuration.md, deployment.md, development.md, getting-started.md, index.md, migration.md, mqtt.md, troubleshooting.md, verification.md | favicon.svg, logo.svg | 900-organization-readiness, 901-dependency-security-maintenance, 902-recover-wled-availability |
+
+10 doc trees; 120 tracked guide inputs; 20 feature directories (88 files); 180 Spec Kit files. Nine VitePress sites; AdGuard Home uses its README and two contributor notes.
+
+Consumer boundaries: six Node Dockerfiles copy the docs manifest; seven pnpm workspaces own docs importers; Modbus and Ping use separate npm locks. Modbus renders Mermaid; Ping includes its TOML example from outside the guide. Bridge CI builds guides from their old paths. Guide edit links, public SVG paths, package commands and Pages output require migration. Existing project sites may shadow the organization site at the same public prefix.

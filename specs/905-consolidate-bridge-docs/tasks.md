@@ -8,7 +8,7 @@ Follow the [plan](plan.md) and [layout contract](contracts/layout.md). Each task
 
 ## Migration baseline
 
-- [ ] T002 Record source paths, public routes and fragments, assets, and relevant config consumers against `de11f6e` in `specs/905-consolidate-bridge-docs/inventory.md`. Reproduce counts from the Git tree: ten guide directories, 20 feature directories, 88 spec files and 180 Spec Kit files. Identify runtime references before removing build inputs.
+- [x] T002 Record source paths, public routes and fragments, assets, and relevant config consumers against `de11f6e` in `specs/905-consolidate-bridge-docs/inventory.md`. Reproduce counts from the Git tree: ten guide directories, 20 feature directories, 88 spec files and 180 Spec Kit files. Identify runtime references before removing build inputs.
 
 ## Central documentation (US2)
 
