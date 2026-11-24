@@ -2,7 +2,7 @@
 
 ## Foundation
 
-- [ ] T001 Isolate the requested `archive/idm-energy/` and catalog removal already in the checkout. Run catalog, layout and release selection tests; commit only that increment.
+- [x] T001 Isolate the requested `archive/idm-energy/` and catalog removal already in the checkout. Run catalog, layout and release selection tests; commit only that increment.
 
 ## Bridge automation
 

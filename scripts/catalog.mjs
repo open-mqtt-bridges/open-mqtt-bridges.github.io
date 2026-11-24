@@ -1,4 +1,4 @@
-import { readdirSync } from 'node:fs';
+import { existsSync, readdirSync } from 'node:fs';
 import { readFile } from 'node:fs/promises';
 
 function directories(folder) {
@@ -9,7 +9,7 @@ function directories(folder) {
 
 /** Enforce the public catalog contract, including archive and documentation destinations. */
 export function validateCatalog(catalog) {
-  const archived = new Set(directories('archive'));
+  const archived = new Set(existsSync(new URL('../archive/', import.meta.url)) ? directories('archive') : []);
   const slugs = [...directories('bridges'), ...archived].sort();
   if (!Array.isArray(catalog) || JSON.stringify(catalog.map((bridge) => bridge.slug)) !== JSON.stringify(slugs)) {
     throw new Error('Catalog must match the active and archived bridge directories in alphabetic order.');

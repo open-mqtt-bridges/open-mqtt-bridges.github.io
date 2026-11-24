@@ -264,7 +264,7 @@ const questions = [
   },
   {
     title: 'Are all bridges actively maintained?',
-    answer: `${activeCount} projects are active. Archived bridges remain listed as historical references. Each bridge’s license and security policy apply independently.`,
+    answer: `${activeCount} of the ${bridgeCount} listed bridges are active. Each bridge’s license and security policy apply independently.`,
   },
 ];
 useSeoMeta({

@@ -1,6 +1,6 @@
 # Open MQTT Bridges
 
-Bridge implementations live in [`bridges/`](bridges/); [`archive/idm-energy/`](archive/idm-energy/) preserves the inactive integration. Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version, changelog, and license. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
+Bridge implementations live in [`bridges/`](bridges/). Build and test each bridge from its own directory using its existing toolchain and lockfile. Each bridge retains its own version, changelog, and license. For pre-import file history, start at the import commit's second parent and use the original path, for example `git log <import-commit>^2 -- src/`.
 
 See the [cutover runbook](docs/migration/cutover.md) and [production status](migration/cutover-status.md) for source ownership, package publishing, and rollback.
 
