@@ -1,7 +1,4 @@
 /target/
 /node_modules/
 /config/config.yml
-/docs/.vitepress/cache/
-/docs/.vitepress/dist/
-/docs/.vitepress/.temp/
 /docs/node_modules/

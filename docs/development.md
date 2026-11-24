@@ -28,6 +28,8 @@ bash .specify/scripts/bash/check-prerequisites.sh --json --require-tasks --inclu
 
 Feature context is local checkout state, not a branch-name convention. Preserve existing specifications. Templates and skills are upstream-managed; put project policy in the constitution and this guide.
 
+Keep contributor tooling at the monorepo root. The [bridge specification archive](../.specify/bridges/README.md) preserves each bridge's original feature records and Spec Kit configuration. New guide material belongs in [`docs/bridges/<slug>/`](README.md), with package READMEs linking to the guide. Run bridge runtime commands from `bridges/<slug>/` using its owning lockfile.
+
 ## Contributions and security
 
 Follow the [organization contribution guide](https://github.com/open-mqtt-bridges/.github/blob/main/CONTRIBUTING.md) and any local security policy. Never commit `.env`, runtime configuration, tokens or sessions. Use documented example placeholders. Preserve MQTT topics, payloads, command retention and existing deployment identifiers. A dependency upgrade, release, merge or deployment is a separate action from a Spec Kit step.

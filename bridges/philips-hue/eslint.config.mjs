@@ -10,7 +10,6 @@ export default [
       '**/node_modules/**',
       '**/dist/**',
       '**/coverage/**',
-      '**/docs/.vitepress/**',
     ],
   },
   ...tseslint.configs.recommended,

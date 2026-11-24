@@ -3,6 +3,3 @@ dist
 coverage
 .env
 config/config.yml
-docs/.vitepress/.temp
-docs/.vitepress/dist
-docs/.vitepress/cache

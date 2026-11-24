@@ -19,7 +19,7 @@ Follow the [plan](plan.md) and [layout contract](contracts/layout.md). Each task
 ## Root-owned project metadata (US3)
 
 - [x] T006 [US3] Relocate all tracked `bridges/*/specs/` and `bridges/*/.specify/` content into `.specify/bridges/<slug>/`. Add a root archive index; verify modes, paths and all 268 blobs against T002, including duplicate feature names. Keep historical files out of active formatter and template discovery.
-- [ ] T007 [US3] Remove bridge-local `.agents/`, `.github/` and `.vscode/`; retain unique applicable guidance and settings in their root-owned equivalents. Reconcile CI/Dependabot coverage without enabling old release workflows. Add an active-bridge layout regression check under `test/`; verify root Spec Kit and bridge selectors.
+- [x] T007 [US3] Remove bridge-local `.agents/`, `.github/` and `.vscode/`; retain unique applicable guidance and settings in their root-owned equivalents. Reconcile CI/Dependabot coverage without enabling old release workflows. Add an active-bridge layout regression check under `test/`; verify root Spec Kit and bridge selectors.
 
 ## Acceptance
 
