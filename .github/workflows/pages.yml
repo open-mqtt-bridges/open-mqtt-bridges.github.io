@@ -30,6 +30,8 @@ jobs:
       - run: pnpm build
       - run: node --run check
       - run: node --run test
+      - run: pnpm --dir apps/website exec playwright install --with-deps chromium
+      - run: pnpm --dir apps/website test:browser
       - uses: actions/upload-pages-artifact@v5
         with:
           path: .output/public

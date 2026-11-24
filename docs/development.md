@@ -18,6 +18,8 @@ Lint and format checks do not rewrite source files; builds and some tests produc
 
 `scripts/` contains the bridge CI and release selectors, release notes, catalog and profile synchronization, deployment version, guide assembly, output checks and local preview. `test/` covers bridge layout, catalog/search, CI selection, release selection, release notes and deployment version. The output checks run against a built site rather than as unit tests.
 
+After `pnpm build`, run `pnpm --dir apps/website exec playwright install chromium` once for the pinned browser, then `pnpm --dir apps/website test:browser`. The browser suite serves the assembled output on loopback, checks the mobile search and keyboard focus, and opens the catalog with JavaScript disabled. Pages CI runs it before artifact upload.
+
 ## Coding conventions
 
 ### JavaScript and TypeScript
