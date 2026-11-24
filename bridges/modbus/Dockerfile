@@ -29,6 +29,7 @@ COPY --from=builder /app/config/config.example.yml /app/config/config.yml
 
 # Run as an unprivileged numeric UID/GID (no passwd files needed in scratch).
 USER 65532:65532
+ENV BRIDGE_READY_PORT=38082
 
 # Healthcheck calls the built-in CLI check, which validates config and MQTT broker reachability.
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \

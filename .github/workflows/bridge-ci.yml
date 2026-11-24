@@ -94,6 +94,7 @@ jobs:
           cargo test --locked --all-targets --all-features
           cargo test --locked --test mqtt_command_recovery -- --ignored
           cargo build --locked --release
+      - run: docker build --tag modbus-mqtt-bridge:ci . && bash ../../scripts/check-native-readiness.sh modbus modbus-mqtt-bridge:ci
   adguardhome:
     needs: select
     if: contains(fromJSON(needs.select.outputs.bridges), 'adguardhome')
@@ -101,6 +102,7 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - run: docker build --tag adguard-mqtt-bridge:ci bridges/adguardhome
+      - run: bash scripts/check-native-readiness.sh adguardhome adguard-mqtt-bridge:ci
   display:
     needs: select
     if: contains(fromJSON(needs.select.outputs.bridges), 'display')
@@ -117,6 +119,7 @@ jobs:
       - run: cargo fmt --check && cargo clippy --locked --all-targets -- -D warnings && cargo test --locked && cargo build --locked --release
       - run: cargo test --locked --test mqtt_reconnect -- --ignored
       - run: docker build --tag displays-mqtt-bridge:ci .
+      - run: bash ../../scripts/check-native-readiness.sh display displays-mqtt-bridge:ci
   ping:
     needs: select
     if: contains(fromJSON(needs.select.outputs.bridges), 'ping')

@@ -35,5 +35,7 @@ WORKDIR /app
 
 # Copy only bundled output (no node_modules needed)
 COPY --from=build /app/dist ./dist
+COPY tools/readycheck.cjs ./tools/readycheck.cjs
+ENV BRIDGE_READY_PORT=38083
 
 CMD ["node", "dist/index.js"]

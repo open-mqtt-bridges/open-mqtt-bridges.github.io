@@ -4,6 +4,7 @@ mod config;
 mod control;
 mod mqtt;
 mod protocol;
+mod readiness;
 
 use anyhow::Result;
 use clap::Parser;
@@ -21,5 +22,8 @@ async fn main() -> Result<()> {
         .init();
 
     let args = Args::parse();
+    if args.readycheck {
+        return readiness::check().await;
+    }
     app::run(load_config(&args.config)?).await
 }

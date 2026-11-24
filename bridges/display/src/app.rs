@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{sync::atomic::Ordering::Relaxed, time::Duration};
 
 use anyhow::{Result, ensure};
 use rumqttc::{AsyncClient, Event, Packet, SubscribeReasonCode, valid_filter};
@@ -13,6 +13,7 @@ use crate::{
     control::{ScanResult, ScreenController},
     mqtt::Publisher,
     protocol::{Command, CommandResult, DisplayStatus, Status},
+    readiness,
 };
 
 pub async fn run(config: Config) -> Result<()> {
@@ -23,6 +24,7 @@ pub async fn run(config: Config) -> Result<()> {
     let publisher = Publisher::new(client, &config.topic);
     let command_topic = publisher.command_topic();
     ensure!(valid_filter(&command_topic), "invalid MQTT command topic");
+    let ready = readiness::start().await?;
     let mut subscription_pending = false;
 
     info!(%broker_host, broker_port, topic = %config.topic, update_interval_secs = config.update_interval_secs, "starting MQTT screen controller");
@@ -42,6 +44,7 @@ pub async fn run(config: Config) -> Result<()> {
             event = eventloop.poll() => match event {
                 Ok(Event::Incoming(Packet::ConnAck(ack))) => {
                     info!("MQTT connection established");
+                    ready.store(ack.session_present, Relaxed);
                     // Establish the subscription before publishing the first status of a new session.
                     subscription_pending = !ack.session_present
                         && publisher.try_subscribe_to_commands(&command_topic).is_err();
@@ -53,8 +56,12 @@ pub async fn run(config: Config) -> Result<()> {
                         debug!("DDC/CI scan is already running after MQTT reconnect");
                     }
                 }
-                Ok(Event::Incoming(Packet::SubAck(ack))) if ack.return_codes.contains(&SubscribeReasonCode::Failure) => {
-                    warn!(topic = %command_topic, "broker rejected MQTT command subscription");
+                Ok(Event::Incoming(Packet::SubAck(ack))) => {
+                    let accepted = matches!(ack.return_codes.as_slice(), [SubscribeReasonCode::Success(_)]);
+                    ready.store(accepted, Relaxed);
+                    if !accepted {
+                        warn!(topic = %command_topic, "broker rejected MQTT command subscription");
+                    }
                 }
                 Ok(Event::Incoming(Packet::Publish(message))) if message.topic == command_topic => {
                     info!(topic = %message.topic, bytes = message.payload.len(), "received MQTT command");
@@ -71,6 +78,7 @@ pub async fn run(config: Config) -> Result<()> {
                 }
                 Ok(event) => debug!(?event, "processed MQTT event"),
                 Err(error) => {
+                    ready.store(false, Relaxed);
                     subscription_pending = false;
                     error!(%error, "MQTT event loop failed; retrying in two seconds");
                     tokio::time::sleep(Duration::from_secs(2)).await;
